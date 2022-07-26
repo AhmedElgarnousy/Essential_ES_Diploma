@@ -1,0 +1,12 @@
+13:45:05 **** Incremental Build of configuration Debug for project SWC_SSD ****
+make all 
+'Invoking: Print Size'
+avr-size --format=berkeley -t SWC_SSD.elf
+   text	   data	    bss	    dec	    hex	filename
+   3296	     14	      0	   3310	    cee	SWC_SSD.elf
+   3296	     14	      0	   3310	    cee	(TOTALS)
+'Finished building: sizedummy'
+' '
+
+13:45:05 Build Finished. 0 errors, 0 warnings. (took 330ms)
+

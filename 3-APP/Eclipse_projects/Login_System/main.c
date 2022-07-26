@@ -1,0 +1,23 @@
+#include "STD_TYPES.h"
+#include "BIT_MATH.h"
+
+#include "DIO_interface.h"
+#include "PORT_interface.h"
+
+#include "CLCD_interface.h"
+
+
+
+void main()
+{
+	PORT_voidInit();
+	CLCD_voidInit();
+
+	while(1)
+	{
+
+
+	}
+
+
+}

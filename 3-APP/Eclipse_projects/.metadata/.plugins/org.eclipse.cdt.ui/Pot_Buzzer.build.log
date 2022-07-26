@@ -1,0 +1,26 @@
+23:55:13 **** Incremental Build of configuration Debug for project Pot_Buzzer ****
+make all 
+'Building file: ../PORT_program.c'
+'Invoking: AVR Compiler'
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"PORT_program.d" -MT"PORT_program.o" -c -o "PORT_program.o" "../PORT_program.c"
+'Finished building: ../PORT_program.c'
+' '
+'Building target: Pot_Buzzer.elf'
+'Invoking: AVR C Linker'
+avr-gcc -Wl,-Map,Pot_Buzzer.map -mmcu=atmega32 -o "Pot_Buzzer.elf"  ./ADC_program.o ./DIO_program.o ./GIE_program.o ./PORT_program.o ./main.o   
+'Finished building target: Pot_Buzzer.elf'
+' '
+'Invoking: AVR Create Extended Listing'
+avr-objdump -h -S Pot_Buzzer.elf  >"Pot_Buzzer.lss"
+'Finished building: Pot_Buzzer.lss'
+' '
+'Invoking: Print Size'
+avr-size --format=berkeley -t Pot_Buzzer.elf
+   text	   data	    bss	    dec	    hex	filename
+   3676	      0	     13	   3689	    e69	Pot_Buzzer.elf
+   3676	      0	     13	   3689	    e69	(TOTALS)
+'Finished building: sizedummy'
+' '
+
+23:55:14 Build Finished. 0 errors, 0 warnings. (took 846ms)
+

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;SWC_CLCD/CLCD_interface&apos; to &apos;CLCD_interface.h&apos;" description="Rename resource &apos;CLCD_interface&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="CLCD_interface" name="CLCD_interface.h" stamp="1650212247304" updateReferences="true"/>
+</session>

@@ -1,0 +1,34 @@
+11:50:01 **** Build of configuration Debug for project SWC_Switch ****
+make all 
+'Building file: ../Switch_program.c'
+'Invoking: AVR Compiler'
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"Switch_program.d" -MT"Switch_program.o" -c -o "Switch_program.o" "../Switch_program.c"
+'Finished building: ../Switch_program.c'
+' '
+'Building file: ../main.c'
+'Invoking: AVR Compiler'
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+../main.c:17:6: warning: return type of 'main' is not 'int' [-Wmain]
+   17 | void main()
+      |      ^~~~
+'Finished building: ../main.c'
+' '
+'Building target: SWC_Switch.elf'
+'Invoking: AVR C Linker'
+avr-gcc -Wl,-Map,SWC_Switch.map -mmcu=atmega32 -o "SWC_Switch.elf"  ./Switch_program.o ./main.o   
+'Finished building target: SWC_Switch.elf'
+' '
+'Invoking: AVR Create Extended Listing'
+avr-objdump -h -S SWC_Switch.elf  >"SWC_Switch.lss"
+'Finished building: SWC_Switch.lss'
+' '
+'Invoking: Print Size'
+avr-size --format=berkeley -t SWC_Switch.elf
+   text	   data	    bss	    dec	    hex	filename
+    122	      0	      0	    122	     7a	SWC_Switch.elf
+    122	      0	      0	    122	     7a	(TOTALS)
+'Finished building: sizedummy'
+' '
+
+11:50:02 Build Finished. 0 errors, 1 warnings. (took 1s.65ms)
+

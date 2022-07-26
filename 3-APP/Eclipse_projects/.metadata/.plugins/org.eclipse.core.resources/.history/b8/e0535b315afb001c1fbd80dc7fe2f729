@@ -1,0 +1,21 @@
+#include"STD_TYPES.h"
+#include "BIT_MATH.h"
+
+#include "PORT_interface.h"
+#include "DIO_interface.h"
+
+#include"RTOS_interface.h"
+
+
+
+
+
+void main()
+{
+	PORT_
+	while()
+	{
+
+	}
+
+}

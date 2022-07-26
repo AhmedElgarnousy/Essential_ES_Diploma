@@ -1,0 +1,44 @@
+16:30:57 **** Incremental Build of configuration Debug for project RTOS ****
+make all 
+'Building file: ../RTOS_program.c'
+'Invoking: AVR Compiler'
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"RTOS_program.d" -MT"RTOS_program.o" -c -o "RTOS_program.o" "../RTOS_program.c"
+'Finished building: ../RTOS_program.c'
+' '
+'Building file: ../main.c'
+'Invoking: AVR Compiler'
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+In file included from ../main.c:9:
+c:\users\ahmed kamal\downloads\program\avr-gcc-9.1.0-x64-mingw\avr\include\util\delay.h:112:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed" [-Wcpp]
+  112 | # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+      |   ^~~~~~~
+../main.c:16:6: warning: return type of 'main' is not 'int' [-Wmain]
+   16 | void main()
+      |      ^~~~
+../main.c: In function 'main':
+../main.c:20:2: error: too few arguments to function 'RTOS_voidCreateTask'
+   20 |  RTOS_voidCreateTask(0,1000,&LED1); /*1000 System Ticks*/
+      |  ^~~~~~~~~~~~~~~~~~~
+In file included from ../main.c:7:
+../RTOS_interface.h:15:4: note: declared here
+   15 | u8 RTOS_voidCreateTask(u8 Copy_u8Priority, u16 Periodicity, void(*Copy_pvTaskFunc)(void),u16 Copy_u16FirstDelay);
+      |    ^~~~~~~~~~~~~~~~~~~
+../main.c:21:2: error: too few arguments to function 'RTOS_voidCreateTask'
+   21 |  RTOS_voidCreateTask(1,2000,&LED2);
+      |  ^~~~~~~~~~~~~~~~~~~
+In file included from ../main.c:7:
+../RTOS_interface.h:15:4: note: declared here
+   15 | u8 RTOS_voidCreateTask(u8 Copy_u8Priority, u16 Periodicity, void(*Copy_pvTaskFunc)(void),u16 Copy_u16FirstDelay);
+      |    ^~~~~~~~~~~~~~~~~~~
+../main.c:22:2: error: too few arguments to function 'RTOS_voidCreateTask'
+   22 |  RTOS_voidCreateTask(2,3000,&LED3);
+      |  ^~~~~~~~~~~~~~~~~~~
+In file included from ../main.c:7:
+../RTOS_interface.h:15:4: note: declared here
+   15 | u8 RTOS_voidCreateTask(u8 Copy_u8Priority, u16 Periodicity, void(*Copy_pvTaskFunc)(void),u16 Copy_u16FirstDelay);
+      |    ^~~~~~~~~~~~~~~~~~~
+make: *** [subdir.mk:35: main.o] Error 1
+"make all" terminated with exit code 2. Build might be incomplete.
+
+16:30:58 Build Failed. 4 errors, 2 warnings. (took 597ms)
+

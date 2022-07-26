@@ -1,0 +1,223 @@
+08:55:37 **** Incremental Build of configuration Debug for project Hamoksha_Video ****
+make all 
+'Building file: ../main.c'
+'Invoking: AVR Compiler'
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+In file included from ../main.c:4:
+c:\users\ahmed kamal\downloads\program\avr-gcc-9.1.0-x64-mingw\avr\include\util\delay.h:112:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed" [-Wcpp]
+  112 | # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+      |   ^~~~~~~
+../main.c:14:6: warning: return type of 'main' is not 'int' [-Wmain]
+   14 | void main(void)
+      |      ^~~~
+../main.c: In function 'main':
+../main.c:135:36: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  135 |     CLCD_voidWriteSpecialCharacter(&Hamoksha,0,0,15);
+      |                                    ^~~~~~~~~
+      |                                    |
+      |                                    u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:142:36: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  142 |     CLCD_voidWriteSpecialCharacter(&Hamoksha,0,0,15);
+      |                                    ^~~~~~~~~
+      |                                    |
+      |                                    u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:143:36: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  143 |     CLCD_voidWriteSpecialCharacter(&BALL,1,0,14);
+      |                                    ^~~~~
+      |                                    |
+      |                                    u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:148:35: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  148 |    CLCD_voidWriteSpecialCharacter(&Hamoksha_up,0,0,15);
+      |                                   ^~~~~~~~~~~~
+      |                                   |
+      |                                   u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:149:35: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  149 |    CLCD_voidWriteSpecialCharacter(&BALL_up,1,0,14);
+      |                                   ^~~~~~~~
+      |                                   |
+      |                                   u8 (*)[8] {aka unsigned char (*)[8]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[8]' {aka 'unsigned char (*)[8]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:151:35: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  151 |    CLCD_voidWriteSpecialCharacter(&Hamoksha_down,0,0,15);
+      |                                   ^~~~~~~~~~~~~~
+      |                                   |
+      |                                   u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:152:35: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  152 |    CLCD_voidWriteSpecialCharacter(&BALL_dowm,1,0,14);
+      |                                   ^~~~~~~~~~
+      |                                   |
+      |                                   u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:158:34: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  158 |   CLCD_voidWriteSpecialCharacter(&Hamoksha,0,0,15);
+      |                                  ^~~~~~~~~
+      |                                  |
+      |                                  u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:163:35: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  163 |    CLCD_voidWriteSpecialCharacter(&Hamoksha_down,0,1,Local_u8Counter1);
+      |                                   ^~~~~~~~~~~~~~
+      |                                   |
+      |                                   u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:166:35: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  166 |    CLCD_voidWriteSpecialCharacter(&Hamoksha_up,0,1,Local_u8Counter1);
+      |                                   ^~~~~~~~~~~~
+      |                                   |
+      |                                   u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:173:34: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  173 |   CLCD_voidWriteSpecialCharacter(&Hamoksha,0,0,15);
+      |                                  ^~~~~~~~~
+      |                                  |
+      |                                  u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:178:35: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  178 |    CLCD_voidWriteSpecialCharacter(&dance1,0,0,15);
+      |                                   ^~~~~~~
+      |                                   |
+      |                                   u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:181:35: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  181 |    CLCD_voidWriteSpecialCharacter(&dance2,0,0,15);
+      |                                   ^~~~~~~
+      |                                   |
+      |                                   u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:186:34: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  186 |   CLCD_voidWriteSpecialCharacter(&gun,0,0,0);
+      |                                  ^~~~
+      |                                  |
+      |                                  u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:187:34: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  187 |   CLCD_voidWriteSpecialCharacter(&Hamoksha,1,0,15);
+      |                                  ^~~~~~~~~
+      |                                  |
+      |                                  u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:192:34: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  192 |   CLCD_voidWriteSpecialCharacter(&Hamoksha,1,0,15);
+      |                                  ^~~~~~~~~
+      |                                  |
+      |                                  u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:196:34: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  196 |   CLCD_voidWriteSpecialCharacter(&gun,0,0,0);
+      |                                  ^~~~
+      |                                  |
+      |                                  u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:197:34: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  197 |   CLCD_voidWriteSpecialCharacter(&Hamoksha,1,0,15);
+      |                                  ^~~~~~~~~
+      |                                  |
+      |                                  u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:201:35: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  201 |    CLCD_voidWriteSpecialCharacter(&bullet,2,0,Local_u8Counter3);
+      |                                   ^~~~~~~
+      |                                   |
+      |                                   u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:207:34: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  207 |   CLCD_voidWriteSpecialCharacter(&gun,0,0,0);
+      |                                  ^~~~
+      |                                  |
+      |                                  u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+../main.c:208:34: warning: passing argument 1 of 'CLCD_voidWriteSpecialCharacter' from incompatible pointer type [-Wincompatible-pointer-types]
+  208 |   CLCD_voidWriteSpecialCharacter(&Hamoksha_Died,1,0,15);
+      |                                  ^~~~~~~~~~~~~~
+      |                                  |
+      |                                  u8 (*)[7] {aka unsigned char (*)[7]}
+In file included from ../main.c:9:
+../CLCD_interface.h:25:40: note: expected 'u8 *' {aka 'unsigned char *'} but argument is of type 'u8 (*)[7]' {aka 'unsigned char (*)[7]'}
+   25 | void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos);
+      |                                     ~~~^~~~~~~~~~~~~~~
+'Finished building: ../main.c'
+' '
+'Building target: Hamoksha_Video.elf'
+'Invoking: AVR C Linker'
+avr-gcc -Wl,-Map,Hamoksha_Video.map -mmcu=atmega32 -o "Hamoksha_Video.elf"  ./CLCD_program.o ./DIO_program.o ./PORT_program.o ./main.o   
+'Finished building target: Hamoksha_Video.elf'
+' '
+'Invoking: AVR Create Extended Listing'
+avr-objdump -h -S Hamoksha_Video.elf  >"Hamoksha_Video.lss"
+'Finished building: Hamoksha_Video.lss'
+' '
+'Invoking: Print Size'
+avr-size --format=berkeley -t Hamoksha_Video.elf
+   text	   data	    bss	    dec	    hex	filename
+  10670	    158	      0	  10828	   2a4c	Hamoksha_Video.elf
+  10670	    158	      0	  10828	   2a4c	(TOTALS)
+'Finished building: sizedummy'
+' '
+
+08:55:38 Build Finished. 0 errors, 23 warnings. (took 778ms)
+

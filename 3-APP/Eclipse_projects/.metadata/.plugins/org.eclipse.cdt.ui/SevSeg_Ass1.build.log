@@ -1,0 +1,12 @@
+19:18:08 **** Incremental Build of configuration Debug for project SevSeg_Ass1 ****
+make all 
+'Invoking: Print Size'
+avr-size --format=berkeley -t SevSeg_Ass1.elf
+   text	   data	    bss	    dec	    hex	filename
+   2222	     64	      0	   2286	    8ee	SevSeg_Ass1.elf
+   2222	     64	      0	   2286	    8ee	(TOTALS)
+'Finished building: sizedummy'
+' '
+
+19:18:09 Build Finished. 0 errors, 0 warnings. (took 279ms)
+

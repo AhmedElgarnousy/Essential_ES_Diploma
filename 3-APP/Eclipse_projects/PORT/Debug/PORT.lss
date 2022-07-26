@@ -1,0 +1,144 @@
+
+PORT.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000ca  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  000000ca  0000013e  2**0
+                  ALLOC, LOAD, DATA
+  2 .stab         00000690  00000000  00000000  00000140  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      00000875  00000000  00000000  000007d0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .comment      00000011  00000000  00000000  00001045  2**0
+                  CONTENTS, READONLY
+  5 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00001058  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_aranges 00000020  00000000  00000000  00001098  2**3
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_info   0000050c  00000000  00000000  000010b8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_abbrev 000004b7  00000000  00000000  000015c4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_line   0000007e  00000000  00000000  00001a7b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    000001f4  00000000  00000000  00001af9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 5e 00 	call	0xbc	; 0xbc <main>
+  64:	0c 94 63 00 	jmp	0xc6	; 0xc6 <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <PORT_voidInit>:
+#include"PORT_interface.h"
+#include"PORT_register.h"
+
+
+void PORT_voidInit()
+{
+  6c:	cf 93       	push	r28
+  6e:	df 93       	push	r29
+  70:	cd b7       	in	r28, 0x3d	; 61
+  72:	de b7       	in	r29, 0x3e	; 62
+	DDRA=PORTA_DIR;
+  74:	8a e3       	ldi	r24, 0x3A	; 58
+  76:	90 e0       	ldi	r25, 0x00	; 0
+  78:	fc 01       	movw	r30, r24
+  7a:	10 82       	st	Z, r1
+	DDRB=PORTB_DIR;
+  7c:	87 e3       	ldi	r24, 0x37	; 55
+  7e:	90 e0       	ldi	r25, 0x00	; 0
+  80:	fc 01       	movw	r30, r24
+  82:	10 82       	st	Z, r1
+	DDRC=PORTC_DIR;
+  84:	84 e3       	ldi	r24, 0x34	; 52
+  86:	90 e0       	ldi	r25, 0x00	; 0
+  88:	fc 01       	movw	r30, r24
+  8a:	10 82       	st	Z, r1
+	DDRD=PORTD_DIR;
+  8c:	81 e3       	ldi	r24, 0x31	; 49
+  8e:	90 e0       	ldi	r25, 0x00	; 0
+  90:	fc 01       	movw	r30, r24
+  92:	10 82       	st	Z, r1
+
+	PORTA=PORTA_InitVal;
+  94:	8b e3       	ldi	r24, 0x3B	; 59
+  96:	90 e0       	ldi	r25, 0x00	; 0
+  98:	fc 01       	movw	r30, r24
+  9a:	10 82       	st	Z, r1
+	PORTB=PORTB_InitVal;
+  9c:	88 e3       	ldi	r24, 0x38	; 56
+  9e:	90 e0       	ldi	r25, 0x00	; 0
+  a0:	fc 01       	movw	r30, r24
+  a2:	10 82       	st	Z, r1
+	PORTC=PORTC_InitVal;
+  a4:	85 e3       	ldi	r24, 0x35	; 53
+  a6:	90 e0       	ldi	r25, 0x00	; 0
+  a8:	fc 01       	movw	r30, r24
+  aa:	10 82       	st	Z, r1
+	PORTD=PORTD_InitVal;
+  ac:	82 e3       	ldi	r24, 0x32	; 50
+  ae:	90 e0       	ldi	r25, 0x00	; 0
+  b0:	fc 01       	movw	r30, r24
+  b2:	10 82       	st	Z, r1
+}
+  b4:	00 00       	nop
+  b6:	df 91       	pop	r29
+  b8:	cf 91       	pop	r28
+  ba:	08 95       	ret
+
+000000bc <main>:
+#include"PORT_interface.h"
+#include"PORT_register.h"
+
+
+void main()
+{
+  bc:	cf 93       	push	r28
+  be:	df 93       	push	r29
+  c0:	cd b7       	in	r28, 0x3d	; 61
+  c2:	de b7       	in	r29, 0x3e	; 62
+
+	while(1)
+  c4:	ff cf       	rjmp	.-2      	; 0xc4 <main+0x8>
+
+000000c6 <_exit>:
+  c6:	f8 94       	cli
+
+000000c8 <__stop_program>:
+  c8:	ff cf       	rjmp	.-2      	; 0xc8 <__stop_program>

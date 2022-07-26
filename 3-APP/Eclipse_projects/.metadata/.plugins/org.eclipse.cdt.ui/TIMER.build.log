@@ -1,0 +1,30 @@
+02:31:41 **** Incremental Build of configuration Debug for project TIMER ****
+make all 
+'Building file: ../PORT_program.c'
+'Invoking: AVR Compiler'
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"PORT_program.d" -MT"PORT_program.o" -c -o "PORT_program.o" "../PORT_program.c"
+'Finished building: ../PORT_program.c'
+' '
+'Building target: TIMER.elf'
+'Invoking: AVR C Linker'
+avr-gcc -Wl,-Map,TIMER.map -mmcu=atmega32 -o "TIMER.elf"  ./ADC_program.o ./DIO_program.o ./GIE_program.o ./PORT_program.o ./TIMER_program.o ./main.o   
+'Finished building target: TIMER.elf'
+' '
+'Invoking: AVR Create Extended Listing'
+avr-objdump -h -S TIMER.elf  >"TIMER.lss"
+'Finished building: TIMER.lss'
+' '
+'Create Flash image (ihex format)'
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex TIMER.elf  "TIMER.hex"
+'Finished building: TIMER.hex'
+' '
+'Invoking: Print Size'
+avr-size --format=berkeley -t TIMER.elf
+   text	   data	    bss	    dec	    hex	filename
+   3880	      0	     17	   3897	    f39	TIMER.elf
+   3880	      0	     17	   3897	    f39	(TOTALS)
+'Finished building: sizedummy'
+' '
+
+02:31:42 Build Finished. 0 errors, 0 warnings. (took 966ms)
+

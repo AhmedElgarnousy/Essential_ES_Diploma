@@ -1,0 +1,12 @@
+15:10:41 **** Incremental Build of configuration Debug for project SWC-LED ****
+make all 
+'Invoking: Print Size'
+avr-size --format=berkeley -t SWC-LED.elf
+   text	   data	    bss	    dec	    hex	filename
+   3876	      0	      0	   3876	    f24	SWC-LED.elf
+   3876	      0	      0	   3876	    f24	(TOTALS)
+'Finished building: sizedummy'
+' '
+
+15:10:41 Build Finished. 0 errors, 0 warnings. (took 286ms)
+

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;SWC_SSD/SSD_program.h&apos; to &apos;SSD_program.c&apos;" description="Rename resource &apos;SSD_program.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="SSD_program.h" name="SSD_program.c" stamp="1649392450139" updateReferences="true"/>
+</session>

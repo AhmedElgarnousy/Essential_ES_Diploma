@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;SWC_SSD/DIO_program.c&apos;" deleteContents="false" description="Delete resource &apos;SWC_SSD/DIO_program.c&apos;" element1="/SWC_SSD/DIO_program.c" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1649849869878"/>&#x0A;<refactoring comment="Rename resource &apos;SWC-Led&apos; to &apos;SWC-LED&apos;" description="Rename resource &apos;SWC-Led&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/SWC-Led" name="SWC-LED" stamp="1650083620525" updateReferences="true"/>
+</session>

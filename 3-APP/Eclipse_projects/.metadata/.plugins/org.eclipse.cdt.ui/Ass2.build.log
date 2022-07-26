@@ -1,0 +1,12 @@
+21:49:22 **** Incremental Build of configuration Debug for project Ass2 ****
+make all 
+'Invoking: Print Size'
+avr-size --format=berkeley -t Ass2.elf
+   text	   data	    bss	    dec	    hex	filename
+   6178	     16	      0	   6194	   1832	Ass2.elf
+   6178	     16	      0	   6194	   1832	(TOTALS)
+'Finished building: sizedummy'
+' '
+
+21:49:22 Build Finished. 0 errors, 0 warnings. (took 345ms)
+

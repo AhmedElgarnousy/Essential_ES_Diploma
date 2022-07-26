@@ -1,0 +1,33 @@
+11:10:56 **** Incremental Build of configuration Debug for project LDR_LED ****
+make all 
+'Building file: ../main.c'
+'Invoking: AVR Compiler'
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+../main.c:8:6: warning: return type of 'main' is not 'int' [-Wmain]
+    8 | void main ()
+      |      ^~~~
+../main.c: In function 'main':
+../main.c:15:6: warning: unused variable 'MIN_READING' [-Wunused-variable]
+   15 |   u8 MIN_READING;
+      |      ^~~~~~~~~~~
+'Finished building: ../main.c'
+' '
+'Building target: LDR_LED.elf'
+'Invoking: AVR C Linker'
+avr-gcc -Wl,-Map,LDR_LED.map -mmcu=atmega32 -o "LDR_LED.elf"  ./ADC_program.o ./DIO_program.o ./PORT_program.o ./main.o   
+'Finished building target: LDR_LED.elf'
+' '
+'Invoking: AVR Create Extended Listing'
+avr-objdump -h -S LDR_LED.elf  >"LDR_LED.lss"
+'Finished building: LDR_LED.lss'
+' '
+'Invoking: Print Size'
+avr-size --format=berkeley -t LDR_LED.elf
+   text	   data	    bss	    dec	    hex	filename
+   1442	      0	      0	   1442	    5a2	LDR_LED.elf
+   1442	      0	      0	   1442	    5a2	(TOTALS)
+'Finished building: sizedummy'
+' '
+
+11:10:56 Build Finished. 0 errors, 2 warnings. (took 863ms)
+

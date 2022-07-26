@@ -1,0 +1,18 @@
+14:25:56 **** Incremental Build of configuration Debug for project SWC_KPD ****
+make all 
+'Building file: ../main.c'
+'Invoking: AVR Compiler'
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=16000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+../main.c:9:6: warning: return type of 'main' is not 'int' [-Wmain]
+    9 | void main(void)
+      |      ^~~~
+../main.c: In function 'main':
+../main.c:21:25: error: 'KPD_NO_PRESSED_KEY' undeclared (first use in this function)
+   21 |   }while(Local_u8Key == KPD_NO_PRESSED_KEY);
+      |                         ^~~~~~~~~~~~~~~~~~
+../main.c:21:25: note: each undeclared identifier is reported only once for each function it appears in
+make: *** [subdir.mk:32: main.o] Error 1
+"make all" terminated with exit code 2. Build might be incomplete.
+
+14:25:56 Build Failed. 2 errors, 1 warnings. (took 348ms)
+

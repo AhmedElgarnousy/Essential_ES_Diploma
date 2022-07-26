@@ -1,0 +1,12 @@
+02:25:01 **** Incremental Build of configuration Debug for project DIO ****
+make all 
+'Invoking: Print Size'
+avr-size --format=berkeley -t DIO.elf
+   text	   data	    bss	    dec	    hex	filename
+   1806	      0	      1	   1807	    70f	DIO.elf
+   1806	      0	      1	   1807	    70f	(TOTALS)
+'Finished building: sizedummy'
+' '
+
+02:25:01 Build Finished. 0 errors, 0 warnings. (took 310ms)
+
