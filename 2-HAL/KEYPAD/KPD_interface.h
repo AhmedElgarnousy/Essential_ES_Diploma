@@ -15,7 +15,7 @@
 #define pressed 0
 #define Notpressed 1
 */
-#define KPD_NO_PRESSED_KEY	0xff
+#define KPD_NO_PRESSED_KEY	0xf0
 
 u8 KPD_u8GetPressedKey(void);
 

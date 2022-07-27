@@ -19,9 +19,7 @@
 
 u8 KPD_u8GetPressedKey(void)
 {
- u8  Local_u8PinState , Local_u8ColumnIdx, Local_u8RowIdx;
-// u8 Local_u8PressedKey = KPD_NO_PRESSED_KEY;
-static u8 Local_u8PressedKey;
+u8 Local_u8PressedKey = KPD_NO_PRESSED_KEY , Local_u8PinState , Local_u8ColumnIdx, Local_u8RowIdx;
 static u8 Local_u8KPDArr[KPD_ROW_NUM][KPD_COLUMN_NUM] = KPD_ARR_VAL;
 static u8 Local_u8KPDColumnArr[KPD_COLUMN_NUM] = {KPD_COLUMN0_PIN,KPD_COLUMN1_PIN,KPD_COLUMN2_PIN,KPD_COLUMN3_PIN};
 static u8 Local_u8KPDRowArr[KPD_ROW_NUM] = {KPD_ROW0_PIN,KPD_ROW1_PIN,KPD_ROW2_PIN,KPD_ROW3_PIN};
@@ -37,8 +35,9 @@ for(Local_u8ColumnIdx=0; Local_u8ColumnIdx < KPD_COLUMN_NUM; Local_u8ColumnIdx++
 		DIO_u8GetPinValue(KPD_PORT, Local_u8KPDRowArr[Local_u8RowIdx], &Local_u8PinState);
 
 		 /*Check switch is pressed*/
-		if(DIO_u8PIN_LOW == Local_u8PinState)
+		if( Local_u8PinState == DIO_u8PIN_LOW)
 		{
+			/*Switch is pressed*/
 			Local_u8PressedKey = Local_u8KPDArr[Local_u8RowIdx][Local_u8ColumnIdx];
 
 			/*polling (busy waiting) until the key is released*/
@@ -46,7 +45,6 @@ for(Local_u8ColumnIdx=0; Local_u8ColumnIdx < KPD_COLUMN_NUM; Local_u8ColumnIdx++
 			{
 				DIO_u8GetPinValue(KPD_PORT,Local_u8KPDRowArr[Local_u8RowIdx],&Local_u8PinState);
 			}
-
 			return Local_u8PressedKey;
 		}
 	}
