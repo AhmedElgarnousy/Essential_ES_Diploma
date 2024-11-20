@@ -661,10 +661,324 @@ x = 20; // compiler error
 
 ### Session 8
 
+- How to get the array size?
+  - Answer: we can't know
+  - what about sizeof()? is an operator get result in `compile time`.
+
+```c
+u16 arr[3] = {1,2,3};
+u8 size = sizeof(arr) / sizeof(arr[0]);
+```
+
+### see of the sizeof fails to get array size
+
+```c
+// file1
+#include<stdio.h>
+
+void func(int *ptr);
+
+int main()
+{
+    int arr[3] = {1,2,3};
+    printf("%d from file1\n", sizeof(arr) / sizeof(arr[0])); // 3
+    func(arr);
+    return 0;
+}
+```
+
+```c
+// file2
+#include<stdio.h>
+
+void func(int *ptr)
+{
+    printf("%d from file2\n", sizeof(ptr) / sizeof(ptr[0])); // 2 or garbage
+}
+```
+
+##### why we have void data type ?!
+
+- void pointer -> void \* Name;
+- sizeof(void) is compiler dependent (for ex: 1 byte)
+
+```c
+    printf("%d\n", sizeof(void)); // 1 is a compiler dependent
+```
+
+- u can cast it to int or char or float as u like.
+- type casting means type change -> (required type)
+
+```c
+int * x = (int *) func(4);
+// func returns a void pointer to first byte
+```
+
+- heap is a memory section in RAM, u have to `reserve before` use and `delete it after usag`e
+- through system call memory manager
+
+##### user defined data types
+
+###### struct sytax
+
+```c
+// this is a declaration
+struct employee
+{
+    // char name[10];
+    u16 salary;
+    u8 deductions;
+    // u8 age;
+};
+// 2 ways for initialization
+// way1
+struct employee ali = {3000,200};
+
+// way2
+struct employee ali;
+ali.salary = 3000;
+ali.deductions = 200;
+```
+
+```c
+// another way of declaration
+struct name
+{
+    u16 x;
+    u16 y;
+} name1, name2;
+```
+
+- lab
+
+###### struct has assignment operator
+
+- must be same struct
+
+```c
+struct emloyee Ahmed, Amr;
+Amr = Ahmed;
+```
+
+###### passing struct to a function
+
+```c
+int prog2(struct employee emp)
+{
+    return emp.salary + emp.bonus;
+}
+```
+
+###### function return a struct
+
+```c
+
+struct employee scanEmployee(void)
+{
+    struct employee emp;
+    // code
+    return emp;
+}
+```
+
+###### typedef struct
+
+```c
+// struct employee old name
+typedef struct employee
+{
+    int salary ;
+    int bonus ;
+    int deductions ;
+}employee;
+
+// common better way
+typedef struct
+{
+    int salary ;
+    int bonus ;
+    int deductions ;
+}employee;
+
+employee ahmed;
+```
+
+###### pointer to struct
+
+- any thing has address you can make pointer to it.
+
+```c
+    employee emp1 = {100, 140, 90};
+    employee* ptr= & emp1;
+
+    printf("%d\n", ptr->salary);
+```
+
+###### array of struct
+
+- lab
+
+###### Bit Fields
+
+![bit_field](imgs/bit_field.JPG)
+
+- total size of this object `1 byte` not (3 bytes or 7 bits)
+- if x is u16 instead of u8
+- the size of object will be 2 bytes
+
+- bit fields has important usecase
+-
+
+###### size of struct
+
+packing and padding
+
+padding == means let empty byte
+packing == means don't let empty byte
+
+```c
+  typedef struct
+    {
+        u8 ID;
+        u16 salary;
+        u8 bonus;
+    }employee;
+
+    employee adel;
+    printf("%d\n", sizeof(adel)); // 6 bytes
+```
+
+- talking to the compiler (compiler dependent)
+
+```c
+#pragma pack(1) // compiler directive
+```
+
+- the only keyword that starts with # and not preprocessor directive
+
+#### union Name
+
+- only one element of union is valid at a time
+
+```c
+union my_union
+{
+    u8 x;
+    u8 y;
+};
+// size of union is 1 `Byte`
+```
+
+```c
+    typedef union
+    {
+        u8 x;
+        u16 y;
+    }MyUnion;
+
+    MyUnion obj1;
+
+    printf("%d\n", sizeof(obj1)); // 2 byte
+
+    obj1.x = 10;
+    printf("%d\n", obj1.y); // 10
+```
+
+##### union usecase
+
+```c
+typedef union
+{
+    struct
+    {
+        u8 Bit1 : 1;
+        u8 Bit2 : 1;
+        u8 Bit3 : 1;
+        u8 Bit4 : 1;
+        u8 Bit5 : 1;
+        u8 Bit6 : 1;
+        u8 Bit7 : 1;
+    } BitAccess;
+
+    u8 ByteAccess;
+}register_t;
+
+register_t MemoryByte;
+
+MemoryByte.ByteAccess = 20;
+MemoryByte.BitAccess.Bit1 = 1;
+```
+
 ---
 
 ### Session 9
 
----
+##### building process
+
+- preprocessor
+- compiler
+- assembler
+- linker
+
+```bash
+// to get the intermidate file write
+$ gcc -E -P filename.c -o out.i
+```
+
+##### preprocessor directives
+
+1. \# define
+2. \# undef
+3. \# include
+4. \# if
+5. \# elif
+6. \# else
+7. \# endif
+8. \# iddef
+9. \# ifndef
+10. \# warring
+11. \# error
+
+- \# include (copy and paste file)
+- 2 ways to make include
+
+![include](imgs/include.JPG)
+
+- \# define
+
+![define](imgs/define.JPG)
+
+- what if
+
+## ![whatif](imgs/whatif.JPG)
+
+- /# undef
+
+## ![undef](imgs/undef.JPG)
+
+## ![macro](imgs/macro.JPG)
+
+## ![funclikemacro](imgs/funclikemacro.JPG)
+
+#### features explicitly for function like macro
+
+##### 1- stringification
+
+##### 2- concatination
+
+#### conditional directives
+
+```c
+#if x==0
+    printf("zero state\n");
+#else
+	printf("non zero state\n");
+#endif
+```
+
+### usage of preprocessors
+
+1. configurability
+2. readability
 
 ### Session 10
