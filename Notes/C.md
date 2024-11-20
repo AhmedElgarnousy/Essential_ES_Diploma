@@ -1,9 +1,11 @@
 ## Basics of C Language course
 
+C For Embedded Systems Perspective
+
 ### Session 1
 
 - What is Embedded System?
-- Environment Setup
+- C Language Environment Setup
   - MingW Installation
   - Notepad++
 - Hello World Program
@@ -95,7 +97,7 @@ if the program requires more than 2 checks (equalilty check) use switch case
 
 ## Session 3
 
--Lab: set , clear, toggle operation on real numbers
+- Lab: set , clear, toggle operation on real numbers
 
 - lab for loop
 - for
@@ -106,7 +108,7 @@ if the program requires more than 2 checks (equalilty check) use switch case
 - float comparsion
 - lab: factorial iterative way
 
-###### websites
+###### problem solving websites
 
 leetcode
 indiabix
@@ -169,7 +171,7 @@ uva
 
 ###### poniter to function declaration
 
-- application of that is the `callback` or notification
+- one of its important application is the **callback** or `notification`
 
 ```c
 void func(void){
@@ -185,9 +187,10 @@ ptrToFunc(); // call it with another name
 
 ### operations on pointers
 
-- remember operation by steps
-- int -> 4steps
-- char -> 1step
+`!remember` `pointer operations` done by `step size`
+
+- int -> 4 steps
+- char -> 1 step
 
 - operations on pointers has very important applications
   - like as I/O memory.
@@ -300,13 +303,13 @@ printf("%d", x); // -128
 
 ##### 3 rules for modifiers
 
-1. arrangment is Not important
+1. order is Not important
 
 ```c
 unsigned short int == short unsigned int
 ```
 
-2. Not all modifiers can bed used with all datatypes
+2. Not all modifiers can be used with all datatypes
 
 ```c
 signed, unsigned -> only comes int , char
@@ -320,15 +323,15 @@ long -> int, double
 short long int x ; // wrong
 ```
 
-###### define our standard datatypes
+###### Let's define our standard datatypes
 
-- when you move to another target just edit interal implementation of these standard types
+- Portability: when you move to another target just edit internal implementation of these standard types
 - but the main code doesn't change
 
 ```c
 // for example
-typedef unsigned short int u16;  // target 1
-typedef unsigned int u16;   // target 2
+typedef unsigned short int u16;  // u16 for target 1
+typedef unsigned int u16;   // u16 for target 2
 ```
 
 - write the STD_TYPES.h file
@@ -753,7 +756,7 @@ struct name
 
 ###### struct has assignment operator
 
-- must be same struct
+- rhs_struct = lhs_struct -> rhs,lsh must be from the same struct
 
 ```c
 struct emloyee Ahmed, Amr;
@@ -822,12 +825,11 @@ employee ahmed;
 
 ![bit_field](imgs/bit_field.JPG)
 
-- total size of this object `1 byte` not (3 bytes or 7 bits)
-- if x is u16 instead of u8
-- the size of object will be 2 bytes
+- total size of this object `1 byte` NOT (3 bytes or 7 bits)
+- if x is u16 instead of u8, the size of object will be 2 bytes
 
-- bit fields has important usecase
--
+- bit fields has union usecase
+  has an important usecase (I/O Memory)
 
 ###### size of struct
 
@@ -884,7 +886,7 @@ union my_union
     printf("%d\n", obj1.y); // 10
 ```
 
-##### union usecase
+##### union with bit fields I/O memory usecase
 
 ```c
 typedef union
