@@ -70,7 +70,7 @@ _delay_us(100);
 
 ##### Do i need while(1) even if i don't need program to repeat?
 
-- to prevent the program counter(PC) to load garbage address
+- yes, to prevent the program counter(PC) to load garbage address
 - by prevent the CPU to execute out of main function
   ![while1](imgs/while1.JPG)
 
@@ -85,10 +85,14 @@ void main()
 }
 ```
 
-but when we in computer we have OS so it know the main return
-int main(){
-return 0;
+but when we in computer we have OS so it know when main return
+
+```c
+int main() {
+  //
+  return 0;
 }
+```
 
 #### Seven Segment
 
@@ -184,6 +188,6 @@ divide to many type categories
 - internal pull up resistor
 
 - Ass 1
-- ![dio_ass1](imgs/dio_ass1.JPG)
+  ![dio_ass1](imgs/dio_ass1.JPG)
 - Ass 2
-- ![dio_ass2](imgs/dio_ass2.PNG)
+  ![dio_ass2](imgs/dio_ass2.PNG)
