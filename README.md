@@ -26,7 +26,7 @@
 
   ![toolchain paths](Notes/imgs/window.JPG)
 
-##### usbasp setup
+##### usbasp programmer setup
 
 `before installing driver`, we shall disable the "driver signature check" feature for windows 8 and 10 only to allow us to install driver correctly
 
@@ -75,6 +75,8 @@
 - **Smart Home**
 
 #### other resources
+
+- [Standard C library for AVR-GCC](https://www.nongnu.org/avr-libc/user-manual/index.html)
 
 - download AVR Toolchain [link](https://sourceforge.net/projects/winavr/)
 - http://www.tuxgraphics.org/electronics/200904/avr-c-programming.shtml
