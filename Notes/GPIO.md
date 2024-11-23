@@ -191,3 +191,82 @@ divide to many type categories
   ![dio_ass1](imgs/dio_ass1.JPG)
 - Ass 2
   ![dio_ass2](imgs/dio_ass2.PNG)
+
+##### If DDRx = 0x00; input, and PORTx = 0xff; why LED turned on?
+
+because this activate the pullup resistor that turns on the connected led
+![input_led](imgs/inp_led.JPG)
+
+##### problems of temporary switches
+
+because these switches has internal spring
+
+- switch bouncing
+  Debouncing (solution of switch bouncing)
+
+bouncing time = ~ (200 to 250 ms)
+
+- simplest and worset solution
+
+```c
+_delay_ms(250); // waste much time
+```
+
+- [ ] search for better debouncing techiques
+
+![debouncing](imgs/debouncing.JPG)
+
+###### SevenSegment Multiplexing
+
+let's say we have 2 or more 7-seg in our projects
+so we need 16 pin pr more for only seven segments
+
+###### POV(Persistence of vision) قصور الرؤية
+
+most humans sees less than 25 fps(frame per second)
+that means we can't note changes with rate less than 40 ms
+
+- This concept widely used
+
+  - media industry
+  - advertising (while watching film in cinima but speed frames about burgur for example)
+
+  - Home Lighting
+    is a AC Signal with Freq 50Hz
+
+real test
+
+```c
+while(1){
+  // LED on
+  _delay_ms(10);
+  // LED off
+  _delay_ms(10);
+  // you may see this with mobile camera
+}
+```
+
+best POV
+50 to 70 hz
+
+- (< 50 hz): flickering
+- (> 70 hz): ghosting (شبح)
+
+for example for we choose 50hz and we have 2 SSD
+![2ssd](imgs/ss2)
+for example for we choose 50hz and we have 4 SSD
+![4ssd](imgs/ssd4.JPG)
+
+but we notice with icreasing the number of 7 segments
+the light intensity with decrease (as we turn for 5ms and turn off for 15ms)
+
+- Assignment 2 : 2 Multiplexed seven segments
+
+1. display your birth day last 2 number
+2. counting up and dowm
+3. display number 50, and use sw1 to increment and sw2 to decrement
+   if we pressed for big press seven segment in/decrement faster
+
+---
+
+resuable/ portable software
