@@ -253,7 +253,7 @@ best POV
 - (> 70 hz): ghosting (شبح)
 
 for example for we choose 50hz and we have 2 SSD
-![2ssd](imgs/ss2)
+![2ssd](imgs/ss2.JPG)
 for example for we choose 50hz and we have 4 SSD
 ![4ssd](imgs/ssd4.JPG)
 
@@ -269,4 +269,103 @@ the light intensity with decrease (as we turn for 5ms and turn off for 15ms)
 
 ---
 
-resuable/ portable software
+##### resuable/ portable software
+
+```c
+#include <avr/io.h>
+
+void main(void)
+{
+	  DDRA = 0xff;
+
+    while(1)
+    {
+    	for(int i = 0; i < 10; i++) {
+    		 PORTA = sevenSegNums[i];
+    		_delay_ms(1000);
+
+    	}
+    }
+}
+```
+
+- This BareMetal sw is a `spachettic code`.
+
+useful book for this topic
+[resuable firmware development pdf](#)
+
+---
+
+##### Software Architecture
+
+- class Model
+- client / server
+- layered architecture (common in embedded system)
+
+Layers of our software
+
+- MCAL (Microcontroller Abstraction Layer)
+- HAL (Hardware Abstraction Layer)
+- APP (Application Layer)
+
+These are Virtual Layer
+![layered](imgs/layeredArch.JPG)
+
+Each Layered has (Software Component)SWCs or called drivers
+
+Embedded Software Engineers Positions in componies
+
+![pos](imgs/positions.JPG)
+
+##### Rules of Layered Architecture
+
+1. Call direction From top to bottom
+2. Abstraction concepts
+
+service layer is may be optional
+
+![cots](imgs/ctos.JPG)
+
+- SWC_iterface.h is (exported to user)
+
+---
+
+DIO driver
+
+##### Register Summary in Datasheet
+
+!remember 2 Addreses for each register one for Port map and memory map connections in AVR
+
+we used memory map address to access it with C language - > $portMap addr(memMap Addr)
+
+each I/O memory is 8 bit.
+![alt](imgs/hashfree.JPG)
+
+```c
+#define DDRA *DDRA
+
+u*DDRA =0x3f;
+
+DDRA = value;
+```
+
+we will not create to each register a pointer in memory it's a waste of memory
+
+> **كل # ببلاش**
+
+```c
+#define  DDRA *( (u8*) 0x3f )
+```
+
+##### volatile
+
+keyword is directed to optimizator (`SAYS PLS DON'T Optimize here`)
+
+![alt](imgs/goofOptimizater.JPG)
+
+But the issue the optimizater may cause problems.
+
+- for example: optimizator know that you read the PINA Register much more
+  then takes it in GPRs inside processor in boost the accessing time
+
+![alt](imgs/badOptimizater.JPG)
