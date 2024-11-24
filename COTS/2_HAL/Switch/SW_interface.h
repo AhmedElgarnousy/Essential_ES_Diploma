@@ -16,6 +16,5 @@ u8 SW_u8GetState(
     u8 Copy_u8Port, u8 Copy_u8Pin, u8 Copy_u8SelfLocking, u8 Copy_u8PullType,
     u8 *Copy_pu8Value);
 
-// return : pressed or not
 
 #endif /* SW_INTERFACE_H_ */

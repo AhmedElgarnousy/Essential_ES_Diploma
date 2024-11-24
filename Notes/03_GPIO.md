@@ -414,6 +414,7 @@ u8 SSD_u8Disable_SDD(SSD_t * Copy_u16Ptr);
 ##### LED_SWC
 
 - source and sink LED connection
+  ![ledConnc](imgs/ledConn.png)
 
 ```c
 typedef struct{
@@ -432,6 +433,9 @@ LED_u8TurnOff(LED_t *Copy_u16Ptr);
   - SelfLocking -> don't handle debouncing now (by delay)
 
 ```c
-u8 SW_u7GetState(port, pin, selfLocking, pullType);
+u8 SW_u8GetState(port, pin, selfLocking, pullType);
 // return : pressed or not
+u8 SW_u8GetState(
+    u8 Copy_u8Port, u8 Copy_u8Pin, u8 Copy_u8SelfLocking, u8 Copy_u8PullType,
+    u8 *Copy_pu8Value);
 ```
