@@ -16,4 +16,4 @@
 #define ONE  1
 #define TWO	2
 
-#endif
+#endif /*CLCD_private_H_*/

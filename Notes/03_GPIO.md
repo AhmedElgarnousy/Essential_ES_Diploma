@@ -411,6 +411,21 @@ u8 SSD_u8Disable_SDD(SSD_t * Copy_u16Ptr);
 
 - **Note**: if u have many function arguments collect them in struct to avoid stack-overflow due to small stack size
 
+````
+
+##### SW_SWC
+
+- Temporary or maintained
+  - SelfLocking -> don't handle debouncing now (by delay)
+
+```c
+u8 SW_u8GetState(port, pin, selfLocking, pullType);
+// return : pressed or not
+u8 SW_u8GetState(
+    u8 Copy_u8Port, u8 Copy_u8Pin, u8 Copy_u8SelfLocking, u8 Copy_u8PullType,
+    u8 *Copy_pu8Value);
+````
+
 ##### LED_SWC
 
 - source and sink LED connection
@@ -425,17 +440,31 @@ typedef struct{
 
 LED_u8TurnOn(LED_t *Copy_u16Ptr);
 LED_u8TurnOff(LED_t *Copy_u16Ptr);
+
 ```
 
-##### SW_SWC
+##### This a post build configuration
 
-- Temporary or maintained
-  - SelfLocking -> don't handle debouncing now (by delay)
+because we now the parameter in runtime
+even we can change it in run time
 
-```c
-u8 SW_u8GetState(port, pin, selfLocking, pullType);
-// return : pressed or not
-u8 SW_u8GetState(
-    u8 Copy_u8Port, u8 Copy_u8Pin, u8 Copy_u8SelfLocking, u8 Copy_u8PullType,
-    u8 *Copy_pu8Value);
+```C
+LED_t led1 = {...}
+led1.pin = 3;
 ```
+
+##### Prebuild(PreCompiled) configuration
+
+![prebuild](imgs/prebuild.JPG)
+
+##### so what is the best configs Prebuild or post build?
+
+this Prebuild has small memory size
+but can not change configs in runtime
+and the post build is the opposites
+
+- **note**: `it will awesome driver that provides the 2 options and developer can choose`
+
+#### Real Automotive Example on post/pre build configs
+
+![exa](imgs/exampleConf.JPG)
