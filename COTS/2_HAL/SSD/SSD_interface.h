@@ -29,10 +29,13 @@ typedef struct
 	u8 COM_Type;
 	u8 Port;
 	u8 EnablePort;
-	u8 EnablePin;
+	u8 EnablePin; // COM pin
 }SSD_t;
 
 
+/*make Function for enable and disable the 7_seg to used for multiplexing */
+// u8 SSD_u8Enable_SDD(SSD_t * Copy_u16Ptr);
+// u8 SSD_u8Disable_SDD(SSD_t * Copy_u16Ptr);
 u8 SSD_u8SetNumber(u8 Copy_u8Number,SSD_t*Copy_u16Ptr);
 
 

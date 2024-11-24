@@ -35,4 +35,4 @@ typedef double f64;
 #define IDLE	0
 #define BUSY	1
 
-#endif
+#endif /* STD_TYPES_H_ */

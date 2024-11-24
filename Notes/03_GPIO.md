@@ -326,7 +326,8 @@ service layer is may be optional
 
 ![cots](imgs/ctos.JPG)
 
-- SWC_iterface.h is (exported to user)
+- **SWC_iterface.h** is (`exported to user`)
+- the way of communication between developers
 
 ---
 
@@ -365,7 +366,72 @@ keyword is directed to optimizator (`SAYS PLS DON'T Optimize here`)
 
 But the issue the optimizater may cause problems.
 
-- for example: optimizator know that you read the PINA Register much more
+- for example (caching): optimizator know that you read the PINA Register much more
   then takes it in GPRs inside processor in boost the accessing time
+  bcause it doesn't change as a software it just a memory change it's not a variable
+  ![alt](imgs/badOptimizater.JPG)
 
-![alt](imgs/badOptimizater.JPG)
+```c
+#define DDRA *( (volatile u8*) 0x3f )
+```
+
+- [Doxygon](https://www.doxygen.nl/#google_vignette): Tool that generates a doc for your code from comments template
+
+#### Preprocessor File Guard
+
+##### Rules of Preprocessor File Guard
+
+1. Don't declare any variable in header file
+2. implement file guard for your header files
+3. optional don't include header files in your header files
+
+```c
+#ifndef FILE_NAME_H_
+#define FILE_NAME_H_
+
+// code
+
+#endif /*FILE_NAME_H_*/
+```
+
+#### repo naming rules
+
+DescriptionVerb like set
+![namingRules](imgs/naming.JPG)
+
+#### Assignment
+
+##### SevenSegment Driver: SSD_SWC
+
+```c
+u8 SSD_u8SetNumber(u8 Copy_u8Number, SSD_t * Copy_u16Ptr);
+u8 SSD_u8Enable_SDD(SSD_t * Copy_u16Ptr);
+u8 SSD_u8Disable_SDD(SSD_t * Copy_u16Ptr);
+```
+
+- **Note**: if u have many function arguments collect them in struct to avoid stack-overflow due to small stack size
+
+##### LED_SWC
+
+- source and sink LED connection
+
+```c
+typedef struct{
+  u8 Port;
+  u8 Pin;
+  u8 ConnType; // src, sink
+} LED_t;
+
+LED_u8TurnOn(LED_t *Copy_u16Ptr);
+LED_u8TurnOff(LED_t *Copy_u16Ptr);
+```
+
+##### SW_SWC
+
+- Temporary or maintained
+  - SelfLocking -> don't handle debouncing now (by delay)
+
+```c
+u8 SW_u7GetState(port, pin, selfLocking, pullType);
+// return : pressed or not
+```
