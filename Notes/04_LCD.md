@@ -95,8 +95,16 @@ we will change hw connection in runtime
 
 - Entry Mode set : advanced command doesn't matter now
 
-##### Datasheet 4-bit Iniialization
-
 C know the ASCII Table just put it in single quote like -> 'A'
 
 - C rule: String is array of char NOT (unsigned or signed char)
+
+##### Datasheet 4-bit Iniialization
+
+## connecting new MCU first time
+
+should define its clock firstly by fuses
+
+- project Properities
+  - Fuses
+    - Direct hex value -> FF D9

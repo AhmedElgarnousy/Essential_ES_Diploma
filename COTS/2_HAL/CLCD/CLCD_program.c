@@ -20,55 +20,54 @@
 
 void CLCD_voidSendCommand(u8 Copy_u8Command)
 {
-#if  CLCD_Mode == Eight_Bit_Mode
 	/*set RS pin to LOW for command*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_RS_PIN,DIO_u8PIN_LOW);
 
-	/*set RW pin to Low for write*/
+	/*set RW pin to Low for write */
+	// connected automatically to gnd on fares pcb 
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_RW_PIN,DIO_u8PIN_LOW);
 
+#if  CLCD_Mode == Eight_Bit_Mode
 	/*set command  to Data pins*/
 	DIO_u8SetPortValue(CLCD_DATA_PORT,Copy_u8Command);
+
+#elif CLCD_Mode==Four_Bit_Mode
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D7,(Copy_u8Command & 0b10000000)>>7);
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D6,(Copy_u8Command & 0b01000000)>>6);
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D5,(Copy_u8Command & 0b00100000)>>5);
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D4,(Copy_u8Command & 0b00010000)>>4);
 
 	/*set E pin to HIGH for Enable*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
 	_delay_ms(2);
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 
-#elif CLCD_Mode==Four_Bit_Mode
-
-
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D4,0); // (Copy_u8Command & 0b00000001)>>0
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D7,(Copy_u8Command & 0b00001000)>>3);
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D6,(Copy_u8Command & 0b00000100)>>2);
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D5,(Copy_u8Command & 0b00000010)>>1);
 #endif
-
+	/*set E pin to HIGH for Enable*/
+	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
+	_delay_ms(2);
+	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 }
 
 void CLCD_voidSendData(u8 Copy_u8Data)
 {
-
-#if CLCD_Mode == Eight_Bit_Mode
-
 	/*set RS pin to HIGH for Data*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_RS_PIN,DIO_u8PIN_HIGH);
 
 	/*set RW pin to HIGH for write*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_RW_PIN,DIO_u8PIN_LOW);
 
+#if CLCD_Mode == Eight_Bit_Mode
 	/*set data  to Data pins*/
 	DIO_u8SetPortValue(CLCD_DATA_PORT,Copy_u8Data);
 
-	/*Send enable pulse*/
-	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
-	_delay_ms(2);
-	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 
-#elif CLCD_Mode==Four_Bit_Mode
-	/*set RS pin to LOW for command*/
-	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_RS_PIN,DIO_u8PIN_HIGH);
-
-	/*set RW pin to HIGH for write*/
-	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_RW_PIN,DIO_u8PIN_LOW);
-
-	//send last 4bits of command
+#elif CLCD_Mode == Four_Bit_Mode
+	/*set data  to Data pins*/
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D7,(Copy_u8Data & 0b10000000)>>7);
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D6,(Copy_u8Data & 0b01000000)>>6);
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D5,(Copy_u8Data & 0b00100000)>>5);
@@ -79,26 +78,23 @@ void CLCD_voidSendData(u8 Copy_u8Data)
 	_delay_ms(2);
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 
-	//send first 4bits of command
-	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D7,(Copy_u8Data & 0b00001000) >>3);
-	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D6,(Copy_u8Data & 0b00000100) >>2);
-	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D5,(Copy_u8Data & 0b00000010) >>1);
-	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D4,(Copy_u8Data & 0b00000001) );
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D6,(Copy_u8Data & 0b00000100)>>2);
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D5,(Copy_u8Data & 0b00000010)>>1);
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D4,(Copy_u8Data & 0b00000001)>>0);
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D7,(Copy_u8Data & 0b00001000)>>3);
 
-	/*set E pin to HIGH for Enable*/
+#endif
+
+	/*Send enable pulse*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
 	_delay_ms(2);
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
-
-#endif
 }
 
 void CLCD_voidInit(void)
 {
-#if  CLCD_Mode == Eight_Bit_Mode
-
 	/*wait for more than 30ms*/
-	_delay_ms(40);
+	_delay_ms(50);
 
 	/*function set command: 
 	N -> no of lines: 0 -> 1 line , 1 -> 2 lines 
@@ -106,10 +102,26 @@ void CLCD_voidInit(void)
 	// if will use cursor, it will be 5 * 7 or 5 * 11
 	our option: 2 lines , 5*8 Font Size
 	*/
+#if  CLCD_Mode == Eight_Bit_Mode
 	CLCD_voidSendCommand(0b00111000);
 
+#elif CLCD_Mode == Four_Bit_Mode
+	 CLCD_voidSendCommand(0b00100010); // DL(DB4): 0 , Data Length 4-bit Mode // 0b00101000
+
+	 DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D7,1);
+	 DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D4,0);
+	 DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D5,0);
+	 DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D6,0);
+
+	// set E pin to HIGH for Enable
+	 DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
+	 _delay_ms(2);
+	 DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
+
+#endif
+
 	/*
-	our option: Display ON/OFF control: display enable, disable cursor, no blink cursor
+		our option: Display ON/OFF control: display enable, disable cursor, no blink cursor
 	*/
 	CLCD_voidSendCommand(0b00001100);
 
@@ -117,29 +129,6 @@ void CLCD_voidInit(void)
 	CLCD_voidSendCommand(1);
 
 	/*Entry Mode set : advanced command doesn't matter now*/
-
-#elif CLCD_Mode == Four_Bit_Mode
-		_delay_ms(40);
-
-		/*Function Set */
-		CLCD_voidSendCommand(0b00100010);
-
-		DIO_u8SetPinValue(CLCD_DATA_PORT,DIO_u8PIN7,1);
-		DIO_u8SetPinValue(CLCD_DATA_PORT,DIO_u8PIN6,0);
-		DIO_u8SetPinValue(CLCD_DATA_PORT,DIO_u8PIN5,0);
-		DIO_u8SetPinValue(CLCD_DATA_PORT,DIO_u8PIN4,0);
-
-		/*set E pin to HIGH for Enable*/
-		DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
-		_delay_ms(2);
-		DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
-
-		/*Display ON/OFF Control*/
-		CLCD_voidSendCommand(0b00001100);
-
-		/*Display Clear*/
-		CLCD_voidSendCommand(0b00000001);
-#endif
 }
 
 void CLCD_voidSendString(const char*Copy_pcString )
@@ -218,5 +207,5 @@ void CLCD_voidWriteNumber(u32 Copy_u32Number)
 
 void CLCD_voidClearScreen()
 {
-	CLCD_voidSendCommand('1');
+	CLCD_voidSendCommand(1);
 }
