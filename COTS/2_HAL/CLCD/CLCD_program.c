@@ -143,47 +143,53 @@ void CLCD_voidSendString(const char*Copy_pcString )
 
 }
 
-void CLCD_voidGoToXY(u8 Copy_u8XPos,u8 Copy_u8YPos)
+u8 CLCD_voidGoToXY(u8 Copy_u8XPos,u8 Copy_u8YPos)
 {
 	u8 Local_u8ErrorState=0;
+
 	u8 Local_u8Address;
-	if(Copy_u8XPos==0)
+	if(Copy_u8XPos == 0)
 	{
 		/*Location is at first line in CLCD 16*2*/
 		Local_u8Address=Copy_u8YPos;
 	}
-	else if(Copy_u8XPos==1)
+	else if(Copy_u8XPos == 1)
 	{
 		/*Location is at Second line in CLCD 16*2*/
 		Local_u8Address=Copy_u8YPos+0x40;
 	}
+	else
+	{
+		Local_u8Address = 1; // wrong pos
+	}
 	/*set bit number 7 for set DDRAM Address command then send the command*/
-	CLCD_voidSendCommand(Local_u8Address+128);
+	CLCD_voidSendCommand(Local_u8Address + 128);
+
+	return Local_u8Address;
 }
 
 void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos)
 {
-	u8 Local_u8CGRAMAddress=0,Local_u8Iterator;
+	u8 Local_u8CGRAMAddress = 0, Local_u8Iterator;
 
 	/*calculate the CGRAM Address whose each block is 8 bytes */
-	Local_u8CGRAMAddress=Copy_u8PatternNumber*8;
+	Local_u8CGRAMAddress = Copy_u8PatternNumber * 8;
 
 	/*send CGRAM Address command to LCD, with setting bit 6,clearing bit 7*/
-	CLCD_voidSendCommand(Local_u8CGRAMAddress+64);
+	CLCD_voidSendCommand(Local_u8CGRAMAddress + 64);
 
 	/*write pattern into CGRAM*/
-	for(Local_u8Iterator=0;Local_u8Iterator<8;Local_u8Iterator++)
+	for(Local_u8Iterator=0; Local_u8Iterator < 8; Local_u8Iterator++)
 	{
-		CLCD_voidSendData(Copy_pu8Pattern[Local_u8Iterator]);
+		CLCD_voidSendData(Copy_pu8Pattern[Local_u8Iterator]); // address counter register auto increment
 	}
 
 	/*Go back to the DDRAM to display the pattern*/
-	CLCD_voidGoToXY(Copy_u8XPos,Copy_u8YPos);
+	CLCD_voidGoToXY(Copy_u8XPos, Copy_u8YPos);
 
 	/*Display the pattern written in the CG RAM
 	 * DDRAM treat with the CGRAM with location(block) number from 0 to 7*/
 	CLCD_voidSendData(Copy_u8PatternNumber);
-
 }
 
 
