@@ -39,17 +39,17 @@ void CLCD_voidSendCommand(u8 Copy_u8Command)
 
 	/*set E pin to HIGH for Enable*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
-	_delay_ms(2);
+	_delay_ms(5);
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 
-	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D4,0); // (Copy_u8Command & 0b00000001)>>0
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D4,								 0); // (Copy_u8Command & 0b00000001)>>0
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D7,(Copy_u8Command & 0b00001000)>>3);
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D6,(Copy_u8Command & 0b00000100)>>2);
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D5,(Copy_u8Command & 0b00000010)>>1);
 #endif
 	/*set E pin to HIGH for Enable*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
-	_delay_ms(2);
+	_delay_ms(5);
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 }
 
@@ -75,7 +75,7 @@ void CLCD_voidSendData(u8 Copy_u8Data)
 
 	/*set E pin to HIGH for Enable*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
-	_delay_ms(2);
+	_delay_ms(5);
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D6,(Copy_u8Data & 0b00000100)>>2);
@@ -87,14 +87,14 @@ void CLCD_voidSendData(u8 Copy_u8Data)
 
 	/*Send enable pulse*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
-	_delay_ms(2);
+	_delay_ms(5);
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 }
 
 void CLCD_voidInit(void)
 {
 	/*wait for more than 30ms*/
-	_delay_ms(50);
+	_delay_ms(100);
 
 	/*function set command: 
 	N -> no of lines: 0 -> 1 line , 1 -> 2 lines 
@@ -115,7 +115,7 @@ void CLCD_voidInit(void)
 
 	// set E pin to HIGH for Enable
 	 DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
-	 _delay_ms(2);
+	 _delay_ms(5);
 	 DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 
 #endif
@@ -143,31 +143,32 @@ void CLCD_voidSendString(const char*Copy_pcString )
 
 }
 
-u8 CLCD_voidGoToXY(u8 Copy_u8XPos,u8 Copy_u8YPos)
+void CLCD_voidGoToXY(u8 Copy_u8XPos,u8 Copy_u8YPos)
 {
-	u8 Local_u8ErrorState=0;
+//	u8 Local_u8ErrorState = 0;
 
 	u8 Local_u8Address;
 	if(Copy_u8XPos == 0)
 	{
 		/*Location is at first line in CLCD 16*2*/
-		Local_u8Address=Copy_u8YPos;
+		Local_u8Address = Copy_u8YPos;
 	}
 	else if(Copy_u8XPos == 1)
 	{
 		/*Location is at Second line in CLCD 16*2*/
-		Local_u8Address=Copy_u8YPos+0x40;
+		Local_u8Address = Copy_u8YPos + 0x40;
 	}
 	else
 	{
-		Local_u8Address = 1; // wrong pos
+//		Local_u8ErrorState = 1; // wrong pos
 	}
 	/*set bit number 7 for set DDRAM Address command then send the command*/
 	CLCD_voidSendCommand(Local_u8Address + 128);
 
-	return Local_u8Address;
+
 }
 
+// Copy_u8XPos (0 0r 1), Copy_u8YPos :(0 - 15)
 void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u8 Copy_u8XPos,u8 Copy_u8YPos)
 {
 	u8 Local_u8CGRAMAddress = 0, Local_u8Iterator;
@@ -229,10 +230,9 @@ void CLCD_voidWriteNumber_v2(u32 Copy_u32Number) {
 	}
  */
 
-	u8 arr[10] = {0}; // 10 because max num of u32 is 4 billion
+	u8 arr[10] = {0}; // 10 because max num of u32 is 4 billion and its 10 digits
 	u8 noOfDigits = 0;
 
-	// REVERSE the num first
 	while(Local_u32num != 0)
 	{
 		arr[noOfDigits] = Local_u32num % 10;
@@ -242,7 +242,7 @@ void CLCD_voidWriteNumber_v2(u32 Copy_u32Number) {
 
 	for (s8 i = noOfDigits -1; (s8)i >= 0 ; i--) // signed
 	{
-		CLCD_voidSendData(arr[i] + '0');
+		CLCD_voidSendData(arr[i] + '0'); // '0' or 48 is ASCII of num ZERO
 	}
 }
 

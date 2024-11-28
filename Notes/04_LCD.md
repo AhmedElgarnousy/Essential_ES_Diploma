@@ -192,16 +192,16 @@ u8 CLCD_voidGoToXY(u8 Copy_u8XPos,u8 Copy_u8YPos)
 	else if(Copy_u8XPos == 1)
 	{
 		/*Location is at Second line in CLCD 16*2*/
-		Local_u8Address=Copy_u8YPos+0x40;
+		Local_u8Address = Copy_u8YPos + 0x40;
 	}
 	else
 	{
-		Local_u8Address = 1; // wrong pos
+		Local_u8ErrorState = 1; // wrong pos
 	}
 	/*set bit number 7 for set DDRAM Address command then send the command*/
 	CLCD_voidSendCommand(Local_u8Address + 128);
 
-	return Local_u8Address;
+	return Local_u8ErrorState;
 }
 ```
 
