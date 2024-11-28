@@ -192,23 +192,58 @@ void CLCD_voidWriteSpecialCharacter(u8*Copy_pu8Pattern,u8 Copy_u8PatternNumber,u
 	CLCD_voidSendData(Copy_u8PatternNumber);
 }
 
-
+// u32 so num must be unsigned (positive)
 void CLCD_voidWriteNumber(u32 Copy_u32Number)
 {
-	u32 Local_u32Reserverd=1;
+	u32 Local_u32Reserverd = 1;
 
-	while(Copy_u32Number !=0)
+	// reverse the numnber
+	while(Copy_u32Number != 0)
 	{
-		Local_u32Reserverd=Local_u32Reserverd*10 + Copy_u32Number%10;
-		Copy_u32Number/=10;
+		Local_u32Reserverd = Local_u32Reserverd * 10 + Copy_u32Number % 10;
+		Copy_u32Number /= 10;
 	}
 
 	do
 	{
-		CLCD_voidSendData((Local_u32Reserverd%10)+'0');
-		Local_u32Reserverd/=10;
+		CLCD_voidSendData((Local_u32Reserverd % 10) + '0');
+		Local_u32Reserverd /= 10;
 
-	}while(Local_u32Reserverd !=1);
+	}while(Local_u32Reserverd != 1);
+}
+
+void CLCD_voidWriteNumber_v2(u32 Copy_u32Number) {
+
+	u32 Local_u32num = Copy_u32Number;
+/*
+	if(Copy_u32Number == 0)
+	{
+		CLCD_voidSendData(48);
+		return;
+	}
+
+	if(Copy_u32Number < 0)
+	{
+		CLCD_voidSendData('-'); // neg sign
+		Local_u32num = - Copy_u32Number;
+	}
+ */
+
+	u8 arr[10] = {0}; // 10 because max num of u32 is 4 billion
+	u8 noOfDigits = 0;
+
+	// REVERSE the num first
+	while(Local_u32num != 0)
+	{
+		arr[noOfDigits] = Local_u32num % 10;
+		Local_u32num /= 10;
+		noOfDigits ++;
+	}
+
+	for (s8 i = noOfDigits -1; (s8)i >= 0 ; i--) // signed
+	{
+		CLCD_voidSendData(arr[i] + '0');
+	}
 }
 
 void CLCD_voidClearScreen()
