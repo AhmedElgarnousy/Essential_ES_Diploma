@@ -128,3 +128,14 @@ void PORT_voidInit()
 ---
 
 ### Keypad
+
+- KEYPAD is about HW connection and SW sol
+  ![keypad_intuation](imgs/keypad_intuation.JPG)
+
+- connection details
+  ![keypad](imgs/keypad.JPG)
+- connection details
+  ![multudementionalArr](imgs/multudementionalArr.JPG)
+
+- normal switch presseing from 200ms to 250 ms
+- polling : is a busy waiting until specific event happened
