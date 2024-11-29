@@ -39,23 +39,23 @@ void CLCD_voidSendCommand(u8 Copy_u8Command)
 
 	/*set E pin to HIGH for Enable*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
-	_delay_ms(5);
+	_delay_ms(2);
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 
-	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D4,								 0); // (Copy_u8Command & 0b00000001)>>0
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D7,(Copy_u8Command & 0b00001000)>>3);
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D6,(Copy_u8Command & 0b00000100)>>2);
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D5,(Copy_u8Command & 0b00000010)>>1);
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D4,(Copy_u8Command & 0b00000001)>>0); // 0
 #endif
 	/*set E pin to HIGH for Enable*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
-	_delay_ms(5);
+	_delay_ms(2);
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 }
 
 void CLCD_voidSendData(u8 Copy_u8Data)
 {
-	static noOfcalls = 0;
+	static u8 noOfcalls = 0;
 	// prevent Displaying on invisible window
 	if(noOfcalls == 16)
 	{
@@ -83,26 +83,26 @@ void CLCD_voidSendData(u8 Copy_u8Data)
 
 	/*set E pin to HIGH for Enable*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
-	_delay_ms(5);
+	_delay_ms(2);
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 
+	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D7,(Copy_u8Data & 0b00001000)>>3);
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D6,(Copy_u8Data & 0b00000100)>>2);
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D5,(Copy_u8Data & 0b00000010)>>1);
 	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D4,(Copy_u8Data & 0b00000001)>>0);
-	DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D7,(Copy_u8Data & 0b00001000)>>3);
 
 #endif
 
 	/*Send enable pulse*/
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
-	_delay_ms(5);
+	_delay_ms(2);
 	DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 }
 
 void CLCD_voidInit(void)
 {
 	/*wait for more than 30ms*/
-	_delay_ms(100);
+	_delay_ms(40);
 
 	/*function set command: 
 	N -> no of lines: 0 -> 1 line , 1 -> 2 lines 
@@ -117,13 +117,13 @@ void CLCD_voidInit(void)
 	 CLCD_voidSendCommand(0b00100010); // DL(DB4): 0 , Data Length 4-bit Mode // 0b00101000
 
 	 DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D7,1);
-	 DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D4,0);
-	 DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D5,0);
 	 DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D6,0);
+	 DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D5,0);
+	 DIO_u8SetPinValue(CLCD_DATA_PORT,CLCD_DATA_D4,0);
 
 	// set E pin to HIGH for Enable
 	 DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_HIGH);
-	 _delay_ms(5);
+	 _delay_ms(2);
 	 DIO_u8SetPinValue(CLCD_CTRL_PORT,CLCD_E_PIN,DIO_u8PIN_LOW);
 
 #endif
@@ -135,6 +135,7 @@ void CLCD_voidInit(void)
 
 	/* Display clear command */
 	CLCD_voidSendCommand(1);
+	_delay_ms(2); // according to datasheet
 
 	/*Entry Mode set : advanced command doesn't matter now*/
 }
@@ -148,7 +149,6 @@ void CLCD_voidSendString(const char*Copy_pcString )
 		CLCD_voidSendData(Copy_pcString[Local_u8Counter]);
 		Local_u8Counter++;
 	}
-
 }
 
 void CLCD_voidGoToXY(u8 Copy_u8XPos,u8 Copy_u8YPos)
@@ -169,8 +169,6 @@ void CLCD_voidGoToXY(u8 Copy_u8XPos,u8 Copy_u8YPos)
 
 	/*set bit number 7 for set DDRAM Address command then send the command*/
 	CLCD_voidSendCommand(Local_u8Address + 128);
-
-
 }
 
 // Copy_u8XPos (0 0r 1), Copy_u8YPos :(0 - 15)
@@ -253,5 +251,6 @@ void CLCD_voidWriteNumber_v2(u32 Copy_u32Number) {
 
 void CLCD_voidClearScreen()
 {
-	CLCD_voidSendCommand(1);
+	CLCD_voidSendCommand(0x01);
+	_delay_ms(2);
 }

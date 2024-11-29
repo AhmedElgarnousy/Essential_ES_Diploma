@@ -143,3 +143,8 @@ That means no complete isolation may be MCU effected by motor BEMF
 ##### Optocoupler (Complete Isolation)
 
 ![optocoupler](imgs/optocoupler.JPG)
+
+---
+
+- **USB to TTL**
+  convert from uart to usb protocols to allow interfacing between MCU and Computer
