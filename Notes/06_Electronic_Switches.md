@@ -148,3 +148,170 @@ That means no complete isolation may be MCU effected by motor BEMF
 
 - **USB to TTL**
   convert from uart to usb protocols to allow interfacing between MCU and Computer
+
+---
+
+##### Relay (Electromechanical switch)
+
+![relay](imgs/relay.JPG)
+
+- coil is a source to electric magnetism
+- switch is made of ferromagnetic material like iron, ..
+
+###### advantages
+
+- complete power isolation
+- high power delivery
+- `control AC load`
+  - in smart homes,
+  - automotive such as (كتاوت) come from cutout word
+
+###### disadvantages
+
+- low frequency (Mechanical action)
+  - switching time more than 50ms
+- low life endurrance
+- high cost
+- big size
+- very high consumed power
+  - more than 30mA
+- high noise
+- back emf
+
+###### Relay types
+
+- SPST ريلي 2 طرف عشان الملف ثابت دايما
+  ![spst](imgs/spst.JPG)
+
+- SPDT
+  ![spdt](imgs/spdt.JPG)
+- DPST
+  ![dpdt](imgs/dpst.JPG)
+- DPDT
+  ![dpdt](imgs/dpdt.JPG)
+
+###### NO , NC
+
+bottom side
+![ourRelay](imgs/ourRelay.JPG)
+
+###### motor connc
+
+![motorIDir](imgs/motorIDir.JPG)
+
+use a switching circuit (transistor) with the relay because the coil may burn the MCU
+
+![relay_cir](imgs/relay_cir.JPG)
+
+##### how we can control motor direction with relays
+
+## ![relayMotorDir](imgs/relayMotorDir.JPG)
+
+#### Darlington pair
+
+intuation: to solve the minimum current delivery
+TRANSISTOR Law:
+
+- I~C~ = Beta \* I~B~
+
+## ![darlington](imgs/darlington.JPG)
+
+acording to this law we can increase the current with this circuit or connection
+
+## ![beta](imgs/beta.JPG)
+
+## ![darlingtonfina](imgs/darlingtonfina.JPG)
+
+- IC contains 7 darlington pairs (ULN2003)
+
+###### It doesn't make sense to generate high to base to get low on collector
+
+## ![makesense](imgs/makesense.JPG)
+
+## ![notgate](imgs/notgate.JPG)
+
+## ![ULN2003](imgs/ULN2003.JPG)
+
+we will use it as controller to stepper motor
+
+##### DC Motor
+
+###### Disadvantages
+
+- Can't be controlled without extra hardware
+  - the given RPM @ no load and specific voltage
+
+![dcmotor](imgs/dcmotor.JPG)
+
+##### Encoder
+
+- types: optical and magnetic
+  ![encoder](imgs/encoder.JPG)
+
+![yellowmotor](imgs/yellowmotor.JPG)
+![yellowmotor](imgs/1_dc_motor_encoder_wheels.jpg)
+![yellowmotor](imgs/dc_motor_with_encoder-1.jpg)
+
+#### Stepper Motor
+
+- according to flamng right hand rule
+- observation: when current CW put N inside and S outside
+  ![flamngrighthandrule](imgs/flamngrighthandrule.jpg)
+
+###### Stepper motor operation theory
+
+- activate coil one then deactivate it and activate next coil
+
+![activate](imgs/activate.jpg)
+
+![ccw](imgs/ccw.jpg)
+
+#### stepper motor types
+
+- 4 coils
+  ![4coil](imgs/4coil.jpg)
+- 2 coils stepper motor called ==Bipolar== bcause we want to change polarity on each coil
+  ![2coils](imgs/2coils.jpg)
+- how many transistors needed to control stepper motor direction?
+
+  - each coil has H_bridge(4 transistor) to change the polarity on it like dc motor(1 coil)
+
+- 2 types for 2coil stepper motor
+  - bipolar
+  - unipolar
+
+##### unipolar (because we don't change polarity)
+
+- here we need just for 4 transistors
+  ![unipolar](imgs/unipolar.jpg)
+
+###### Unipolar vs Bipolar
+
+![polar](imgs/polar.jpg)
+
+- **note**: unipolar be can used as bipolar if u neglect the pin no.5
+
+###### stepping
+
+For high resolotion
+
+- full step: one coil activatation at a time
+- half step: 2 coils activatation at some time
+  ![steping](imgs/steping.jpg)
+- Microstepping
+  - added voltage control paramter
+    ![microstepping](imgs/microstepping.jpg)
+
+##### is the step is 90 deg
+
+- they repeat the 4 coils serveral times and connected them together to decrease the deg per step
+- to know resoution or stride angle(deg/step)
+  - look in datasheet of the motor
+- most famous stepper motors `nema`: its resolution 1.8 deg
+
+#### Additional Resources
+
+[switches](https://www.ermicro.com/blog/?p=423)
+[encoder](https://automaticaddison.com/calculate-pulses-per-revolution-for-a-dc-motor-with-encoder/)
+
+[encoder](https://deepbluembedded.com/arduino-motor-encoder-optical-encoder-interfacing/)
