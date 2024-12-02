@@ -1,1 +1,5 @@
 ## External Interrupt
+
+- Assignment
+
+###### Determinism

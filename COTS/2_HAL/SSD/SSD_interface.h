@@ -13,8 +13,6 @@
 #define SSD_COM_CATHODE 0
 #define SSD_COM_ANODE 1
 
-
-
 // number may differ depend on hw connections
 #define SSD_u8_ZERO  0b01111111  
 #define SSD_u8_ONE  0b00001100   

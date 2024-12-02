@@ -309,6 +309,35 @@ For high resolotion
   - look in datasheet of the motor
 - most famous stepper motors `nema`: its resolution 1.8 deg
 
+#### stepper data sheet
+
+each stepper has gearbox internally
+![stepperdata](imgs/stepperdata.JPG)
+![stepperDatainf](imgs/stepperDatainf.JPG)
+
+- ULN2003 with stepper motor
+
+  - to activate the coil we know that ULN2003 generate low when get low and floating when get high
+  - so we should connect the red pin with vcc
+    ![connctionstepper](imgs/connctionstepper.jpg)
+
+- from datasheet: Frequency is 100H~z
+- THat means 100 step/sec
+- then step = 1/100 sec = 10 msec (Optimum speed)
+- max speed step each 2 msec
+  ![codeStepper](imgs/codeStepper.jpg)
+
+###### we need the stepper for specific angle not continus rotation
+
+- Req angle = 17.5 deg
+- stepper motor stride angle or resolution: 0.175 deg/step
+- no. of steps = req deg / motor deg
+- no of iteration = no of steps / steps per iteration
+  ![reqAngle](imgs/reqAngle.jpg)
+
+- Another way to calculate a specific angle
+  ![angleStepper](imgs/angleStepper.jpg)
+
 #### Additional Resources
 
 [switches](https://www.ermicro.com/blog/?p=423)
