@@ -205,8 +205,6 @@ why this flag is NOT Read Only
 
 ```c
 // code
-
-
 #include "STD_TYPES.h"
 #include "DIO_interface.h"
 #include "PORT_interface.h"
@@ -241,3 +239,158 @@ void __vector_1(void){
 }
 
 ```
+
+- ROM is read only for the processor but can write in it in runtime for permenant data by flash driver
+
+![returnINT](imgs/returnINT.JPG)
+
+- ISR ends with assembly instruction called return interrupt `RETI`.
+
+##### Optimizer
+
+- what is the attribute and signal in ISR template?
+- Optimizar tool in Toolchain
+- can be in compiler and linker
+  ![optmi](imgs/optmi.JPG)
+
+for example the ==compiler optimizer== can optimize code like this
+
+![optimzer](imgs/optimzer.JPG)
+
+for example the ==linker optimizer== can optimize:
+
+- unused function in code
+  ![vali](imgs/vali.JPG)
+- what if this function is ISR?
+  - actually it's not called by software
+    ![inter](imgs/inter.JPG)
+
+so i have to say to linker don't optimize this code:
+![directive](imgs/directive.JPG)
+but this is a compiler directive but i talk to linker through compiler
+i don't have a way to talk directly to linker
+linker script is like a set of configuration not a way of communication
+
+- we have the #progma and **attribute** because we use MinGW (Min GNU For Windows)
+- why we write the \_\_vector\_\_no () 2 times
+- it's NOT A function prototype just attribute should ended with ;
+
+![temp](imgs/temp.JPG)
+
+#### Configuration Types
+
+`what is the time of setting the configuration?`
+
+1. **Prebuild / Precompiled configs**
+   ![precompiled](imgs/precompiled.JPG)
+
+2. **Link configs**
+   ![link_time](imgs/link_time.JPG)
+3. **Postbuild configs**
+
+- SSD_PORT, SSD_COM_TYPE these are configs
+  may change if i have a 2 different types of 7segment
+
+- link time configs similar to post build configs
+- post build much used because AUTOSAR use it
+
+#### prebuild vs post build
+
+![comparason](imgs/comparason.JPG)
+
+##### when i decide to develop the drivers with post build or prebuild configs?
+
+![driver](imgs/driver.JPG)
+
+- repeated such as LEDs, Switches, SSD, ..
+- Not Repeated such as KEYPAD,...
+- BUT let's the driver component is
+  - NOT Repeated
+  - configs changes at runtime
+- Provide the 2 options in the driver
+
+#### EXTI SWC
+
+![exti](imgs/exti.JPG)
+
+- Rule: NEVER use 0 as a configuration option
+
+```c
+#define  LOW_LEVEL		0
+```
+
+- because if you make mistake in choosing from the available options we consider it as 0
+
+```c
+/* Options:
+			1-LOW_LEVEL
+			2-ON_CHANGE
+			3-FALLING_EDGE
+			4-RISING_EDGE
+							  */
+
+#define INT0_SENSE			ANY_THING_ELSE
+// this will be LOW_LEVEL
+
+```
+
+```c
+// Start from 1
+#define  LOW_LEVEL		1
+```
+
+##### who and where the ISR should write?
+
+![isrdepend](imgs/isrdepend.JPG)
+
+- Application dependent ISR body changes from app to another
+- writing ISR template is MCAL developer job
+
+`SO sol is callback`: خلاص اكتبها في الابليكشن واديني بوينتر ليها
+
+![callback](imgs/callback.JPG)
+
+```c
+// EXTI code with callback
+
+#include "STD_TYPES.h"
+#include "DIO_interface.h"
+#include "PORT_interface.h"
+#include "EXTI_interface.h"
+#include "GIE_interface.h"
+#include "LED_interface.h"
+#include <util/delay.h>
+
+LED_t led_red = {DIO_u8PORTC, DIO_u8PIN0, LED_CONN_SRC};
+
+void ISR_INT0(void);
+
+void main(void)
+{
+	PORT_voidInit();
+	GIE_voidEnable();
+	EXTI_voidInt0Init();
+
+	EXTI_u8IntEnable(INT0);
+
+	EXTI_u8Int0SetCallBack(ISR_INT0);
+
+	while(1)
+	{
+		LED_u8TurnOff(&led_red);
+	}
+}
+
+void ISR_INT0(void) {
+	LED_u8TurnOn(&led_red);
+	_delay_ms(2000);
+}
+```
+
+#### Assignment
+
+- EXTI Driver
+- Ping Pong
+
+![extass](imgs/extass.JPG)
+0b00000111,0b00000111,0b00000011,0b00000011,0b00000011,0b00000011,0b00000011,0b00000111,0b00000000

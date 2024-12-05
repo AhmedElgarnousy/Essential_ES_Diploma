@@ -2,11 +2,10 @@
 /***************************************************************/
 /*************   Author: Ahmed Kamal   *************************/
 /*************   Layer: MCAL           *************************/
-/*************   SWC: 	EXTI             *************************/
+/*************   SWC: 	EXTI           *************************/
 /*************   Version: 1.00         *************************/
 /***************************************************************/
 /***************************************************************/
-
 
 #ifndef EXTI_interface_H_
 #define EXTI_interface_H_
@@ -20,14 +19,14 @@
 #define INT1		2
 #define INT2		3
 
-/*Always the functions in PreBuild configuration void in input and output */
+/* Always the functions in PreBuild configuration void in input and output */
 void EXTI_voidInt0Init(void);
 
 void EXTI_voidInt1Init(void);
 
 void EXTI_voidInt2Init(void);
 
-/*PostBluid Configuration*/
+/*Post Build Configuration*/
 u8 EXTI_u8Int0SetSenseControl(u8 Copy_u8Sense);
 
 u8 EXTI_u8Int1SetSenseControl(u8 Copy_u8Sense);

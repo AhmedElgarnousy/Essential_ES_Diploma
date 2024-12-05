@@ -25,7 +25,7 @@
 							  */
 #define INT2_SENSE FALLING_EDGE
 
-/*means that you want to start the code with enabling the interrupt or not*/
+/* means that you want to start the code with enabling the interrupt or not*/
 /*OPTIONS:
 			1-ENABLED
 			2-DISABLE

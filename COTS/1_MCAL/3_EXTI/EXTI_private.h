@@ -10,11 +10,6 @@
 #ifndef EXTI_private_H_
 #define EXTI_private_H_
 
-
-
-
-
-
 #define ENABLED 		1
 #define DISABLE			2
 
