@@ -2,12 +2,12 @@
 
 #### Examples on Analog signal
 
-- light
-- sound
-- temperature
-- speed
-- distance
-- pressure
+- Light
+- Sound
+- Temperature
+- Speed
+- Distance
+- Pressure
 
 #### Analog signal Characteristics
 
@@ -69,20 +69,112 @@ to decrease it
 
 ##### Conversion Quality
 
-for example recording for 1 sec
+For example recording for 1 sec
 
-- shikha freq: 3000Hz
+- shikha freq: 3000 hz
   ![quality](imgs/quality.JPG)
 
 when sampling rate increase qualilty increase but need more memory
 for example
 
-- we choose 42000 Hz sampling rate
+- we choose 42000 hz sampling rate
 - and resolution is 8 bit (1 Byte) so each sample stored in 1 byte
-- we consumes 42 KB ~ 4 MB for just 1 sec
+- we will consume 42 KB ~ 4 MB for just 1 sec
 
 ---
 
 - ADC contains DAC
+  ![adc_st](imgs/adc_st.JPG)
+- `max volt == reference volt`
 
 #### DAC
+
+![dac](imgs/dac.JPG)
+![dacex](imgs/dacex.JPG)
+
+- famous DAC circuits is `R2R`, `Weighted Resistor`.
+
+##### R2R (Resistor, 2 Resistor)
+
+كل ماتحب تزود بتايه زود ار نايمه و تو ار قايمه
+
+![R2R](imgs/R2R.JPG)
+
+- so DAC can use to control motor speed
+
+###### How to generate this wave using DAC
+
+![ledAss](imgs/ledAss.JPG)
+
+### ADC
+
+![adctask](imgs/adctask.JPG)
+
+#### RAMP ADC
+
+![Ramp](imgs/Ramp.JPG)
+
+- atmega32 ADC example
+  ![adc_ex](imgs/adc_ex.JPG)
+
+##### some important parameters
+
+###### 1- conversion time (T~c~)
+
+Time to know what volt the signal has
+
+- T~c~min: 1 `*` Clock Cycle Time
+- T~c~max: 2^n^ `*` Clock Cycle Time, n: resolution
+
+###### conversion time vs sampling Freq
+
+No relationship
+but conversion time should be <= to sampling time
+
+![coversiontime](imgs/coversiontime.JPG)
+
+- conversion time is variable
+- sampling time is constant
+
+##### Big disadvantage
+
+That the conversion time is variable depend on input signal
+
+##### 2- Errors
+
+![errors](imgs/errors.JPG)
+
+1- Quantization Error
+
+- decreasing the ref volt to reduce step is not applicable if often want all range from 0 to 5v
+
+2- Propagation Error
+![delayErr](imgs/delayErr.JPG)
+
+#### SAR ADC
+
+Successive Approximation Register
+
+- Like the RAMP circuit with a different counter
+- SAR Counter initially starts with 1
+- DAC Output or analog signal = Digital signal `*` Step
+- DAC INPUT
+  - 0 : Put 0 in current and 1 in next Bit
+  - 1 : Put 1 in next Bit of current Bit
+
+![sar](imgs/sar.JPG)
+
+- ADC Features
+  ![featuresadc](imgs/featuresadc.JPG)
+
+- LSB == STEP
+  step changes in conversions due to H/W disability
+  حجم الاستب متفير كمشكله طبيعيه للهادوير
+- `+or- 2 كه Adc مجموع الايروز لل `
+- Coversion time is constant but in terms of i/p clk cycle
+- KSPS : `k`ilo `s`ample `p`er `s`econd
+  - 1/65 = 15k freq bit/sec
+- 8 Multiplexed Signle Ended Input channels
+  ![featuresadc](imgs/featuresadc.JPG)
+
+###### Single Ended vs Differential
