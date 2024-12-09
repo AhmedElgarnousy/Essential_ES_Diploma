@@ -106,6 +106,8 @@ for example
 
 ![ledAss](imgs/ledAss.JPG)
 
+- Assignment: control motor using DAC with externel power
+
 ### ADC
 
 ![adctask](imgs/adctask.JPG)
@@ -321,27 +323,22 @@ void ADC_voidInit(void) {
 #include "GIE_interface.h"
 #include "ADC_interface.h"
 #include "LED_interface.h"
-
 #include "ADC_register.h"
 #include "BIT_MATH.h"
 
-
-u8 ADC_u8GetReading(u8 Copy_u8Channel){
+u8 ADC_u8GetReading(u8 Copy_u8Channel) {
 	ADMUX &= 0b11111000; // clear bits
 	ADMUX |= Copy_u8Channel; // select the channel
 	// start conversion
 	SET_BIT(ADCSRA, ADCSRA_ADSC);
-
 	// Polling until flag raised
 	while(GET_BIT(ADCSRA, ADCSRA_ADIF) == 0);
-
 	// clear flag
 	SET_BIT(ADCSRA, ADCSRA_ADIF);
-
 	// return reading
 	return ADCH;
+  }
 
-}
 void main()
 {
 	PORT_voidInit();
@@ -356,3 +353,283 @@ void main()
 }
 
 ```
+
+---
+
+#### Transducers
+
+- we knows that ADCs only measures VOLT as an analog signal
+
+- What if i want to measures analog signal neither than volt like temperature and etc.
+  ![transducer](imgs/transducer.JPG)
+
+##### Temperature Sensing
+
+- Thermistor (Thermal Resistor)
+- عندنا ماده في الطبيعه ربنا خلقها بتتغير بتغير درجه الحراره
+- Thermistor Types
+  - NTC FOR Measuing Ordinary Range
+  - PTC FOR Measuing Extreme Range
+    ![tempSensing](imgs/tempSensing.JPG)
+
+##### LM35 Temperature Sensor
+
+- single ended sensor
+- 0 v means 0^o^c
+- 10 mv means 1^o^c
+
+  ![lm35](imgs/lm35.JPG)
+
+###### LM35 Interfacing
+
+```c
+// return digital value from 0 to 255 (8 bit resolution)
+// in other words these return digital value that stored in ADC register ADCH and ADCL
+GetChannelReading();
+```
+
+###### To Get the analog value
+
+- take care to write a correct formula
+
+  - overflow
+  - precendence
+
+- analog volt = digital \* step
+- analog volt = digital \* Vref / 2 ^res^
+
+**note**: if Vref / 2 ^res^ calculated first always result will be zero
+
+```c
+// analog volt = digital * step
+```
+
+- casting a constant number like 5 to u32
+
+```c
+5UL
+```
+
+```c
+u8 Volt = (( (u32)digital * 5UL ) / 256UL )
+// but this always with integer number
+```
+
+```c
+u16 MiliVolt = (u16) (( (u32)digital * 5000UL ) / 256UL )
+// but this always with integer number
+```
+
+![milivolt](imgs/milivolt.JPG)
+
+```c
+// if resolution is 10 Bits
+u16 MiliVolt = (u16) (( (u32)digital * 5000UL ) / 1024UL )
+```
+
+###### calculate the temperature
+
+![calctemp](imgs/calctemp.JPG)
+
+##### what about temperature negative reading LM35(-40 TO 140)
+
+....
+bad in lm35
+
+**Obersvation**: if we choose 10 bit resolution and Vref = 5v
+step = 5 / 1024 = 19 mv
+so min temperature can read is 2^o^c because
+1^o^c is 10 mv
+
+```c
+// display temperature on LCD
+#include "STD_TYPES.h"
+#include "DIO_interface.h"
+#include "PORT_interface.h"
+#include "ADC_interface.h"
+#include "CLCD_interface.h"
+#include <util/delay.h>
+#include "ADC_register.h"
+#include "BIT_MATH.h"
+
+u8 ADC_u8GetReading(u8 Copy_u8Channel) {
+	ADMUX &= 0b11111000; // clear bits
+	ADMUX |= Copy_u8Channel; // select the channel
+	// start conversion
+	SET_BIT(ADCSRA, ADCSRA_ADSC);
+	// Polling until flag raised
+	while(GET_BIT(ADCSRA, ADCSRA_ADIF) == 0);
+	// clear flag
+	SET_BIT(ADCSRA, ADCSRA_ADIF);
+	// return reading
+	return ADCH;
+}
+
+void main()
+{
+	PORT_voidInit();
+	CLCD_voidInit();
+	ADC_voidInit();
+
+	u16 miliVolt;
+
+//	u16 * Local_pu8digitalVal = NULL;
+	u16 Local_u8digitalVal ;
+
+	while(1)
+	{
+//		ADC_u8StartConversionSynch(SINGLE_ENDED_ADC0, digitalVal);
+//		u16 miliVolt = (u16)(((u32)*digitalVal * 5000UL) / 256UL);
+
+		Local_u8digitalVal = ADC_u8GetReading(SINGLE_ENDED_ADC0);
+		u16 miliVolt = (u16)(((u32)Local_u8digitalVal * 5000UL) / 256UL);
+
+		u8 temp = miliVolt / 10;
+
+		CLCD_voidWriteNumber(temp);
+		CLCD_voidSendString(" C");
+		_delay_ms(200);
+		CLCD_voidClearScreen();
+	}
+}
+```
+
+---
+
+#### LDR_interface
+
+![ldr](imgs/ldr.JPG)
+
+- LDR reading Map with leds app
+  ![ldr_app](imgs/ldr_app.JPG)
+
+```c
+#include "STD_TYPES.h"
+#include "DIO_interface.h"
+#include "PORT_interface.h"
+#include "ADC_interface.h"
+#include "CLCD_interface.h"
+#include <util/delay.h>
+
+#include "ADC_register.h"
+#include "BIT_MATH.h"
+
+u8 ADC_u8GetReading(u8 Copy_u8Channel) {
+	ADMUX &= 0b11111000; // clear bits
+	ADMUX |= Copy_u8Channel; // select the channel
+	// start conversion
+	SET_BIT(ADCSRA, ADCSRA_ADSC);
+	// Polling until flag raised
+	while(GET_BIT(ADCSRA, ADCSRA_ADIF) == 0);
+	// clear flag
+	SET_BIT(ADCSRA, ADCSRA_ADIF);
+
+	// return reading
+#if ADC_RESOLUTION == EIGHT_BIT_RESOLUTION
+		return ADCH;
+#elif	ADC_RESOLUTION == TEN_BIT_RESOLUTION
+	return ADC;
+#endif
+}
+
+s32 map(s32 Input_min, s32 Input_max, s32 Output_min, s32 Output_max, s32 Input_x)
+{
+    return (((Output_max - Output_min) * (Input_x - Input_min)) / (Input_max - Input_min)) + Output_min;
+}
+void main(void)
+{
+	PORT_voidInit();
+	ADC_voidInit();
+
+
+	while(1)
+	{
+		u8 Local_u8ADCReading = ADC_u8GetReading(SINGLE_ENDED_ADC0);
+
+		u16 Local_u16LRDMiliVolt = (u16) (( (u32)Local_u8ADCReading * 5000UL) / 256UL);
+
+		u8 output = map(0, 5000, 1, 8, Local_u16LRDMiliVolt);
+
+		switch (output)
+		{
+			case 1: DIO_u8SetPortValue(DIO_u8PORTB, 0b00000001); break;
+			case 2: DIO_u8SetPortValue(DIO_u8PORTB, 0b00000011); break;
+			case 3: DIO_u8SetPortValue(DIO_u8PORTB, 0b00000111); break;
+			case 4: DIO_u8SetPortValue(DIO_u8PORTB, 0b00001111); break;
+			case 5: DIO_u8SetPortValue(DIO_u8PORTB, 0b00011111); break;
+			case 6: DIO_u8SetPortValue(DIO_u8PORTB, 0b00111111); break;
+			case 7: DIO_u8SetPortValue(DIO_u8PORTB, 0b01111111); break;
+			case 8: DIO_u8SetPortValue(DIO_u8PORTB, 0b11111111); break;
+			default: DIO_u8SetPortValue(DIO_u8PORTB, 0b00000000); break;
+		}
+
+	}
+}
+
+```
+
+- Mapping Concept
+  ![mapping](imgs/mapping.JPG)
+
+- حل هندسي
+
+  ![mapping](imgs/mapping.JPG)
+
+- حل جبري بانك تجيب معادله الخط المستقيم
+  ![sol](imgs/sol.JPG)
+
+```c
+s32 my_map(s32 Input_min, s32 Input_max, s32 Output_min, s32 Output_max, s32 Input_x)
+{
+    return (((Output_max - Output_min) * (Input_x - Input_min)) / (Input_max - Input_min)) + Output_min;
+}
+```
+
+---
+
+### ADC Design Concepts
+
+![adc_concepts](imgs/adc_concepts.JPG)
+
+#### Synchronous vs Asynchronous
+
+what if i use asych and send reading to LCD.
+
+- waiting == blocking code to do any thing in this time
+
+**Notes**:
+
+- **Synchronous**: Timeout Mechanism
+
+  - we will not waiting until flag raised
+  - may be ADC lates for any reason for example hardware issue
+
+  ```c
+  // may be has blocking or NOT
+  // this is a synchronous function
+  int add(int x , int y)
+  {
+  	return x + y;
+  }
+  ```
+
+  - There are different ways to calculate TIMEOUT
+
+  ![timeout](imgs/timeout.JPG)
+
+- **Asynchronous**: End of Job Notification
+
+- Interrupt complete the job
+
+Note: software safety : how to notify the user with any software issue can happen
+
+what if we use a Asynchronous function and ADC issue happened the remaining software will continue but we will not know and ISR Will not executed
+
+- Auto Trigger vs Conversion Complete Interrupt
+  Auto triiger choose a interrupt source that trigger ADC to make a conversion based on interrupt source event (its flag raised for example EXTI falling edge)
+
+  ![notification](imgs/notification.JPG)
+
+#### What's Better?
+
+![better](imgs/better.JPG)

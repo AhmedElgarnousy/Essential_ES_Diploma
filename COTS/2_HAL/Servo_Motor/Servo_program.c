@@ -20,13 +20,13 @@
 s32 map(s32 Copy_s32InputMin,s32 Copy_s32InputMax,s32 Copy_s32OutputMin,s32 Copy_s32OutputMax,s32 Copy_s32InputVal)
 {
 	s32 Local_s32outputVal;
-	Local_s32outputVal=Copy_s32OutputMax-Copy_s32OutputMin;
-	 Local_s32outputVal *=(Copy_s32InputVal-Copy_s32InputMin);
-	 Local_s32outputVal /=Copy_s32InputMax-Copy_s32InputMin;
-	 Local_s32outputVal +=Copy_s32OutputMin;
+	Local_s32outputVal = Copy_s32OutputMax - Copy_s32OutputMin;
+	Local_s32outputVal *= ( Copy_s32InputVal - Copy_s32InputMin);
+	Local_s32outputVal /= Copy_s32InputMax - Copy_s32InputMin;
+	Local_s32outputVal += Copy_s32OutputMin;
 
 	return Local_s32outputVal;
-	}
+}
 
 
 
