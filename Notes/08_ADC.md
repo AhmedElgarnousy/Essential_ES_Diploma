@@ -469,18 +469,12 @@ void main()
 {
 	PORT_voidInit();
 	CLCD_voidInit();
-	ADC_voidInit();
 
 	u16 miliVolt;
-
-//	u16 * Local_pu8digitalVal = NULL;
 	u16 Local_u8digitalVal ;
 
 	while(1)
 	{
-//		ADC_u8StartConversionSynch(SINGLE_ENDED_ADC0, digitalVal);
-//		u16 miliVolt = (u16)(((u32)*digitalVal * 5000UL) / 256UL);
-
 		Local_u8digitalVal = ADC_u8GetReading(SINGLE_ENDED_ADC0);
 		u16 miliVolt = (u16)(((u32)Local_u8digitalVal * 5000UL) / 256UL);
 
@@ -540,7 +534,6 @@ void main(void)
 {
 	PORT_voidInit();
 	ADC_voidInit();
-
 
 	while(1)
 	{
@@ -626,10 +619,152 @@ Note: software safety : how to notify the user with any software issue can happe
 what if we use a Asynchronous function and ADC issue happened the remaining software will continue but we will not know and ISR Will not executed
 
 - Auto Trigger vs Conversion Complete Interrupt
-  Auto triiger choose a interrupt source that trigger ADC to make a conversion based on interrupt source event (its flag raised for example EXTI falling edge)
+  Auto triiger choose a interrupt source that trigger ADC to make a conversion based on interrupt source event (its flag raised for example EXTI falling edge) and u may doesn't enable the interrupt source
 
   ![notification](imgs/notification.JPG)
 
 #### What's Better?
 
 ![better](imgs/better.JPG)
+
+- for long time jobs such as EEPROM writing for example 10ms so cen do around 80k instructions in this time
+  - after writing finished EEPROM raised a flag.
+-
+
+##### What if the user call this Asynch function more than one time before the previous funcion complete the conversion
+
+```c
+void main()
+{
+	while(1)
+	{
+		// Each time function calls again and overwite on the previous operation registers
+		ADC_u8StartConversionAsynch (SINGLE_ENDED_ADC0, &Local_pu16ADCReading, &ADC_voidNotification);
+	}
+}
+```
+
+##### SO we have to implement Busy Function State concept
+
+```c
+u8 ADC_u8StartConversionAsynch(u8 Copy_u8Channel, u16* Copy_pu16Reading, void (*Copy_pvNotificationFunc)(void))
+{
+	u8 Local_u8ErrorState = OK;
+	if(ADC_u8BusyState == IDLE)
+	{
+		if(Copy_pvNotificationFunc == NULL || Copy_pu16Reading == NULL)
+		{
+			Local_u8ErrorState = NULL_POINTER;
+		}
+		else
+		{
+			/*make ADC busy in order not to work until being idle */
+			ADC_u8BusyState = BUSY;
+
+			/*Make ISR Source single channel asynchronous*/
+			ADC_u8ISRSource = SINGLE_CHANNEL_ASYNCH;
+
+			/*Initialize the reading variable globally*/
+			ADC_pu16Reading = Copy_pu16Reading;
+
+			/*Initialize the call back notification function globally*/
+			ADC_pvCallBackNotificationFunc = Copy_pvNotificationFunc;
+
+			/*Clear the MUX bits in ADMUX register*/
+			ADMUX &= ADC_MULTIPLEXER_MASK;
+
+			/*set the required channel into the MUX bits*/
+			ADMUX |=Copy_u8Channel;
+
+			/*start conversion*/
+			SET_BIT(ADCSRA, ADCSRA_ADSC);
+
+			/*ADC interrupt enable */
+			SET_BIT(ADCSRA, ADCSRA_ADIE);
+
+			/*Set flag to indicate the ISR from where it comes*/
+			SET_BIT(ADC_flag, 0);
+		}
+	}
+	else
+	{
+		Local_u8ErrorState = BUSY_FUNC;
+	}
+	return Local_u8ErrorState;
+}
+```
+
+##### Why i should implement this busy function state concept in synch also?
+
+- the synch will not return until conversion complete or timeout finish
+- but the function can interrupt by another ISR?
+
+```c
+u8 ADC_u8StartConversionSynch(u8 Copy_u8Channel, u16 *Copy_pu16Reading)
+{
+	u32 Local_u32Counter = 0;
+	u8 Local_u8ErrorState = OK;
+
+	if(ADC_u8BusyState == IDLE)
+	{
+		ADC_u8BusyState = BUSY;
+
+		/*Clear the MUX bits in ADMUX register*/
+		ADMUX &=ADC_MULTIPLEXER_MASK;
+
+		/*set the required channel into the MUX bits*/
+		ADMUX |=Copy_u8Channel;
+
+		/*start conversion*/
+		SET_BIT(ADCSRA,ADCSRA_ADSC);
+
+		/*Polling (busy waiting) until the conversion complete flag is set or counter reached timeout*/
+		while( (GET_BIT(ADCSRA,ADCSRA_ADIF) == 0) && (Local_u32Counter != ADC_u32TIMEOUT) )
+		{
+			Local_u32Counter++;
+		}
+		if(Local_u32Counter == ADC_u32TIMEOUT)
+		{
+			/*Loop is broken because the timeout is reached*/
+			Local_u8ErrorState = NOK;
+		}
+		else
+		{
+			/*Loop is broken because flag is raised */
+			 /*clear the conversion complete flag*/
+			 SET_BIT(ADCSRA, ADCSRA_ADIF);
+
+			#if ADC_RESOLUTION == EIGHT_BIT_RESOLUTION
+					*Copy_pu16Reading = ADCH;
+
+					/*ADC finished return it to idle*/
+					ADC_u8BusyState = IDLE;
+
+			#elif	ADC_RESOLUTION == TEN_BIT_RESOLUTION
+					*Copy_pu16Reading = ADC;
+
+					/*ADC finished return it to idle*/
+					ADC_u8BusyState = IDLE;
+			#else
+				#error "Wrong Resolution Selection"
+			#endif
+		}
+	}
+	else
+	{
+		ADC_u8BusyState = BUSY_FUNC;
+	}
+	return Local_u8ErrorState;
+}
+
+```
+
+- **Note**:
+- Where this state should writen in Private.h or Interface.h
+  `BUSY_FUNC`?
+  - In private and user will Know it from function comment
+  - because user will Not use it to pass to function just knowing the status
+
+```c
+ADC_u8BusyState = BUSY_FUNC;
+```

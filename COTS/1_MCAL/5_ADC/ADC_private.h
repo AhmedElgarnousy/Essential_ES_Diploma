@@ -10,6 +10,7 @@
 #ifndef	ADC_private_H_
 #define ADC_private_H_
 
+// here is state can be 0 so i will NOT check on it with #if
 #define IDLE	0
 #define BUSY	1
 

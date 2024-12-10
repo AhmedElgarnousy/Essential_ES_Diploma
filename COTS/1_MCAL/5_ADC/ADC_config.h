@@ -11,7 +11,6 @@
 #define ADC_config_H_
 
 #define	ADC_Chain_Index	4
-
 #define ADC_u32TIMEOUT		50000
 
 /*
