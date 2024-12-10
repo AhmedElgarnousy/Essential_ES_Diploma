@@ -872,6 +872,8 @@ void __vector_16(void)
 
 - important assignment because it's a base for next assignments
   ![assAdcProj](imgs/assAdcProj.JPG)
+- NOTES:
+  - IF u don't have enough pins use a multiplexed connection concept with the componnets that will not work in the same period
 
 ##### Additional Resources
 
