@@ -34,37 +34,30 @@ u8 ADC_u8BusyState = IDLE;
 void ADC_voidInit(void)
 {
 	/*set the reference voltage*/
-#if  ADC_REFERENCE_VOLTAGE==AREF
+	#if  ADC_REFERENCE_VOLTAGE==AREF
+		CLR_BIT(ADMUX,ADMUX_REFS0);
+		CLR_BIT(ADMUX,ADMUX_REFS1);
 
-	CLR_BIT(ADMUX,ADMUX_REFS0);
-	CLR_BIT(ADMUX,ADMUX_REFS1);
+	#elif ADC_REFERENCE_VOLTAGE==AVCC
+		SET_BIT(ADMUX,ADMUX_REFS0);
+		CLR_BIT(ADMUX,ADMUX_REFS1);
 
-#elif ADC_REFERENCE_VOLTAGE==AVCC
-
-	SET_BIT(ADMUX,ADMUX_REFS0);
-	CLR_BIT(ADMUX,ADMUX_REFS1);
-	
-#elif ADC_REFERENCE_VOLTAGE	== INTERNAL
-
-	SET_BIT(ADMUX,ADMUX_REFS0);
-	SET_BIT(ADMUX,ADMUX_REFS1);
-
-#else
-	#error "Wrong Voltage Reference Selection"
-#endif
+	#elif ADC_REFERENCE_VOLTAGE	== INTERNAL
+		SET_BIT(ADMUX,ADMUX_REFS0);
+		SET_BIT(ADMUX,ADMUX_REFS1);
+	#else
+		#error "Wrong Voltage Reference Selection"
+	#endif
 
 	/*set the adjust result left adjust 8bit resolution right adjust 10bit resolution*/
-#if ADC_ADJUST_RESULT==LEFT_ADJUST_RESULT
+	#if ADC_ADJUST_RESULT == LEFT_ADJUST_RESULT
+		SET_BIT(ADMUX, ADMUX_ADLAR);
 
-	SET_BIT(ADMUX,ADMUX_ADLAR);
-
-#elif ADJUST_RESULT==RIGHT_ADJUST_RESULT
-
-	CLR_BIT(ADMUX,ADMUX_ADLAR);
-
-#else
-	#error "Wrong Adjust Result "
-#endif
+	#elif ADJUST_RESULT == RIGHT_ADJUST_RESULT
+		CLR_BIT(ADMUX,ADMUX_ADLAR);
+	#else
+		#error "Wrong Adjust Result "
+	#endif
 
 	/*Set prescaler(Bit Masking) */
 	ADCSRA &=ADC_PRESCALER_MASK;/*to make the first three bits equal zeros*/
@@ -104,19 +97,16 @@ u8 ADC_u8StartConversionSynch(u8 Copy_u8Channel, u16 *Copy_pu16Reading)
 		}
 		else
 		{
-			/*Loop is broken because flag is raised */
-			 /*clear the conversion complete flag*/
-			 SET_BIT(ADCSRA, ADCSRA_ADIF);
+			/* Loop is broken because flag is raised */
+			/* clear the conversion complete flag */
+			SET_BIT(ADCSRA, ADCSRA_ADIF);
 
 			#if ADC_RESOLUTION == EIGHT_BIT_RESOLUTION
 					*Copy_pu16Reading = ADCH;
-
 					/*ADC finished return it to idle*/
 					ADC_u8BusyState = IDLE;
-
-			#elif	ADC_RESOLUTION == TEN_BIT_RESOLUTION
+			#elif ADC_RESOLUTION == TEN_BIT_RESOLUTION
 					*Copy_pu16Reading = ADC;
-
 					/*ADC finished return it to idle*/
 					ADC_u8BusyState = IDLE;
 			#else
@@ -238,28 +228,27 @@ void __vector_16(void)
 {
 	if(ADC_u8ISRSource == SINGLE_CHANNEL_ASYNCH)
 	{
-		/*Read ADC Result */
+		/* Read ADC Result */
 		#if ADC_RESOLUTION == EIGHT_BIT_RESOLUTION
-				*ADC_pu16Reading = ADCH;
+			*ADC_pu16Reading = ADCH;
 		#elif	ADC_RESOLUTION == TEN_BIT_RESOLUTION
-						*ADC_pu16Reading = ADC;
+			*ADC_pu16Reading = ADC;
 		#else
 			#error "Wrong Resolution Selection"
 		#endif
 
-		/*Make ADC state be IDLE because it finished*/
+		/* Make ADC state be IDLE because it finished */
 		ADC_u8BusyState = IDLE;
 		
 		/*Invoke the call back notification*/
 		ADC_pvCallBackNotificationFunc();
 		
-		/*Disable the ADC Conversion complete interrupt*/
+		/* Disable the ADC Conversion complete interrupt */
 		CLR_BIT(ADCSRA, ADCSRA_ADIE);
 	}
-
-	else if(ADC_u8ISRSource==CHAIN_ASYNCH)
+	else if(ADC_u8ISRSource == CHAIN_ASYNCH)
 	{
-		/*Read the current conversion*/
+		/* Read the current conversion*/
 		#if ADC_RESOLUTION == EIGHT_BIT_RESOLUTION
 			ADC_pu16ChainResultArr[ADC_u8ChainConversionIndex] = ADCH;
 		#elif ADC_RESOLUTION == TEN_BIT_RESOLUTION

@@ -768,3 +768,111 @@ u8 ADC_u8StartConversionSynch(u8 Copy_u8Channel, u16 *Copy_pu16Reading)
 ```c
 ADC_u8BusyState = BUSY_FUNC;
 ```
+
+---
+
+#### Chain Conversion
+
+for example want to get reading of 4 sensors connected on ADC.
+![4sens](imgs/4sens.JPG)
+
+##### 1- Synch
+
+- conversion time around 100 us
+  ![synchChain](imgs/synchChain.JPG)
+
+- Valid solution but takes long time
+
+##### 2-Asynch
+
+![synchChain](imgs/synchChain.JPG)
+
+- InValid because only the last conersion will done without overwrite
+
+![asynchChain](imgs/asynch.JPG)
+
+- **So we want to store the channels reading before the ISR Comes again**.
+
+![chainConversion](imgs/chainConversion.JPG)
+
+- what about ISR?
+  - we need a flag to know which ISR code should execute
+    - chainAsynch Coversion
+    - Asynch single channel conversion
+
+```C
+void __vector_16(void) __attribute__((signal));
+void __vector_16(void)
+{
+	if(ADC_u8ISRSource == SINGLE_CHANNEL_ASYNCH)
+	{
+		/* Read ADC Result */
+		#if ADC_RESOLUTION == EIGHT_BIT_RESOLUTION
+			*ADC_pu16Reading = ADCH;
+		#elif	ADC_RESOLUTION == TEN_BIT_RESOLUTION
+			*ADC_pu16Reading = ADC;
+		#else
+			#error "Wrong Resolution Selection"
+		#endif
+
+		/* Make ADC state be IDLE because it finished */
+		ADC_u8BusyState = IDLE;
+
+		/*Invoke the call back notification*/
+		ADC_pvCallBackNotificationFunc();
+
+		/* Disable the ADC Conversion complete interrupt */
+		CLR_BIT(ADCSRA, ADCSRA_ADIE);
+	}
+	else if(ADC_u8ISRSource == CHAIN_ASYNCH)
+	{
+		/* Read the current conversion*/
+		#if ADC_RESOLUTION == EIGHT_BIT_RESOLUTION
+			ADC_pu16ChainResultArr[ADC_u8ChainConversionIndex] = ADCH;
+		#elif ADC_RESOLUTION == TEN_BIT_RESOLUTION
+			ADC_pu16ChainResultArr[ADC_u8ChainConversionIndex] = ADC;
+		#else
+			#error "Wrong Resolution Selection"
+		#endif
+
+		/*increment chain index*/
+		ADC_u8ChainConversionIndex ++;
+
+		/*Check the size */
+		if(ADC_u8ChainConversionIndex == ADC_u8ChainSize)
+		{
+			/*ADC is now idle*/
+			ADC_u8BusyState = IDLE;
+
+			/*invoke the call back  notification Function*/
+			ADC_pvCallBackNotificationFunc();
+
+			/*Disable ADC conversion complete interrupt*/
+			CLR_BIT(ADCSRA, ADCSRA_ADIE);
+		}
+		else
+		{
+			/*Chain is not finished*/
+			/*Set the new required channel */
+			ADMUX &= ADC_MULTIPLEXER_MASK;
+			ADMUX |= ADC_pu8ChainChannelArr[ADC_u8ChainConversionIndex];
+
+			/*Start the conversion*/
+			SET_BIT(ADCSRA, ADCSRA_ADIE);
+		}
+	}
+}
+```
+
+#### ADC Driver
+
+![adcDriver](imgs/adcDriver.JPG)
+
+#### Assignments
+
+- important assignment because it's a base for next assignments
+  ![assAdcProj](imgs/assAdcProj.JPG)
+
+##### Additional Resources
+
+[ADC methods in Arduino](https://www.electronicwings.com/arduino/adc-in-arduino)
