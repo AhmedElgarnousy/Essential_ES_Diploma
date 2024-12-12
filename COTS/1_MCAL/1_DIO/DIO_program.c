@@ -58,6 +58,28 @@ u8 DIO_u8SetPinValue(u8 Copy_u8Port,u8 Copy_u8Pin,u8 Copy_u8Value)
 	return Local_u8ErrorState;
 }
 
+u8 DIO_u8TogglePinValue(u8 Copy_u8Port,u8 Copy_u8Pin){
+
+	u8 Local_u8ErrorState=0;
+
+	if(Copy_u8Pin <= DIO_u8PIN7)
+	{
+			switch(Copy_u8Port)
+			{
+				case DIO_u8PORTA: TOGGLE_BIT(PORTA, Copy_u8Pin); break;
+				case DIO_u8PORTB: TOGGLE_BIT(PORTB, Copy_u8Pin); break;
+				case DIO_u8PORTC: TOGGLE_BIT(PORTC, Copy_u8Pin); break;
+				case DIO_u8PORTD: TOGGLE_BIT(PORTD, Copy_u8Pin); break;
+				default: Local_u8ErrorState = 1; break;
+			}
+	}
+	else
+	{
+		Local_u8ErrorState=1;
+	}
+
+	return Local_u8ErrorState;
+}
 
 u8 DIO_u8SetPortValue(u8 Copy_u8Port,u8 Copy_u8Value)
 {

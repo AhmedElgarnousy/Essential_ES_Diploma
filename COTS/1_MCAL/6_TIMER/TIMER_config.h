@@ -18,7 +18,7 @@
  * 			3-CTC: Clear Timer on Compare Match
  * 			4-FAST_PWM
  * */
-#define WAVE_GENERATION_MODE	FAST_PWM
+#define WAVE_GENERATION_MODE	CTC
 
 /*
  * Options:

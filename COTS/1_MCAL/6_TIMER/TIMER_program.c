@@ -24,6 +24,9 @@ static void (*ICU_pvCallBackFunc)(void)=NULL;
 /*Global Array of PointerToFunc*/
 static void (*TIMER_pvCallBackFunc[8])(void)={NULL};
 
+
+
+
 void TIMER0_voidInit(void)
 {
 #if WAVE_GENERATION_MODE == NORMAL
@@ -84,7 +87,7 @@ void TIMER0_voidInit(void)
 
 
 
-#elif	WAVE_GENERATION_MODE	PWM_PHASE_CORRECT
+#elif	WAVE_GENERATION_MODE == PWM_PHASE_CORRECT
 
 	SET_BIT(TCCR0,TCCR0_WGM00);
 	CLR_BIT(TCCR0,TCCR0_WGM01);
@@ -121,11 +124,11 @@ void TIMER0_voidSetCompMatchValue(u8 Copy_u8Value)
 
 u8 TIMER0_u8SetCallBack(void (*Copy_pvCallBackFunc)(void))
 {
-	u8 Local_u8ErrorState=OK;
+	u8 Local_u8ErrorState = OK;
 	
-	if(Copy_pvCallBackFunc!=NULL)
+	if(Copy_pvCallBackFunc != NULL)
 	{
-		TIMER0_pvCallBackFunc=Copy_pvCallBackFunc;
+		TIMER0_pvCallBackFunc = Copy_pvCallBackFunc;
 	}
 	else
 	{
@@ -326,10 +329,16 @@ void __vector_11 (void)
 void __vector_10 (void) __attribute__((signal));
 void __vector_10 (void)
 {
+	if(TIMER0_pvCallBackFunc != NULL)
+	{
+		TIMER0_pvCallBackFunc();
+	}
+	/*
 	if(TIMER_pvCallBackFunc[TIMER0_COMP] != NULL)
 	{
 		TIMER_pvCallBackFunc[TIMER0_COMP]();
 	}
+	 */
 }
 
 

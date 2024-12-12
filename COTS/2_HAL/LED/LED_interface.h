@@ -12,7 +12,10 @@ typedef struct{
 } LED_t;
 
 u8 LED_u8TurnOn(LED_t *Copy_u16Ptr);
+
 u8 LED_u8TurnOff(LED_t *Copy_u16Ptr);
+
+u8 LED_u8Toggle(LED_t *Copy_u16Ptr);
 
 
 #endif /* LED_INTERFACE_H_ */

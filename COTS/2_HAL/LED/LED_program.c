@@ -43,3 +43,18 @@ u8 LED_u8TurnOff(LED_t *Copy_u16Ptr) {
     }
     return Local_u8ErrorState;
 }
+
+u8 LED_u8Toggle(LED_t *Copy_u16Ptr) {
+    u8 Local_u8ErrorState = 0;
+
+    if(Copy_u16Ptr != NULL)
+    {
+            DIO_u8TogglePinValue(Copy_u16Ptr->Port,Copy_u16Ptr->Pin);
+    }
+    else
+    {
+        Local_u8ErrorState = 1;
+    }
+    return Local_u8ErrorState;
+}
+
