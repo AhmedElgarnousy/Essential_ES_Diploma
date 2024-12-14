@@ -62,7 +62,7 @@ _delay_ms(100);
 _delay_us(100);
 ```
 
-- Timer is anotehr prepherial it will responsible for counting and give you notification(by callback) that time finished
+- Timer is another prepherial it will responsible for counting and give you notification(by callback) that time finished
 
 #### Why while(1) is important
 

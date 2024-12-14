@@ -288,3 +288,21 @@ void TIMER0_ISR(void)
 
 - use Timer0 to generate frequency of opening / closing 7-segs
 - and also to increment or decrement every 1 sec
+
+---
+
+#### ADC Chain Conversion Implementation
+
+```c
+u8 ADC_u8StartChainConversionAsynch(){
+
+}
+```
+
+---
+
+#### Reentrant vs Non-Reentrant
+
+```
+هل الفانكشن دي لو اتقطعت `اكيد من انترابت` واتنادت من اللي قطعها هل الفانكشن هتشتغل مظبوط ولا لا ؟
+```

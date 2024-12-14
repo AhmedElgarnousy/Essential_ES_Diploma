@@ -19,48 +19,48 @@
 #### Harvard Architecture
 
 - harvard architecture added pipelining feature (fetch - decode - execute circuits operates in the same time in accessing different memory (program memory , Data Memory))
--
-- bus set (data - address - control buses)
+- ==Bus Set (data - address - control buses)==
 
 ![harvard](imgs/harvard.JPG)
 
-#### the important disadvantage of harvard
+#### The important disadvantage of harvard
 
-that the memory starts with address 0 in reallity for sure and also virtually
+That the memory starts with address 0 in reallity for sure, and also virtually
 
-so know for example we have addresse 0x1 in which memory should we access?
+so for example we have address 0x1 in which memory should we access?
 
 - in vonnuemann we have memory addresses range
-- in harvard we enfored to added a new instruction set for each memory
+- in harvard we enfored to add a new instruction set for each memory
 - READ , WRITE for (PROGRAM MEM)
 - LOAD, STORE for (DATA MEM)
   but this is for assembly what about C?
   The compiler by default consider reading and writing for RAM.
   if you want to access another memory use assembly
 
-#### after adding I/O memory
+#### After adding I/O memory(Peripherals Mem)
 
 ![iomem](imgs/iomem.JPG)
-2 ways
 
-1. memory mapped:to add it after data memory with the same busset
-2. port mapped : to add it seperately with a third bus set
+###### 2 ways to add it
 
-- here we added another assembly instruction set (IN/OUT)
+1. **memory mapped** : to add it after data memory with the same busset
+2. **port mapped** : to add it seperately with a third bus set.
+   - here we will add another assembly instruction set (IN/OUT)
 
 #### what about AVR(Atmega32)
 
-- it a harvard archhitecture
-- and memory mapped and port mampped
+- `it a harvard archhitecture`
+- `and memory mapped and port mapped`
   ![avrmem](imgs/arvmem.JPG)
-  so for example if u want to write in DDRA
-- In assembly has address 0x3A(memory mapped) -> high speed
-- In C has address 0x1(port mapped) -> simple sw (in C)
-  ![avrmem](imgs/ddra.JPG)
+
+- so if u want to write/read in I/O memory for example DDRA, we have 2 options
+  - In assembly has address 0x3A (memory mapped) -> high speed
+  - In C has address 0x1(port mapped) -> simple sw (in C)
+    ![avrmem](imgs/ddra.JPG)
 - AVR Block Diagram
   ![avrbd](imgs/AVR_Block_Diagram.JPG)
 
-##### examples of peripherals
+##### Examples of MCU peripherals (I/O Memory)
 
 ![avrmem](imgs/peripheral.JPG)
 
@@ -70,9 +70,10 @@ so know for example we have addresse 0x1 in which memory should we access?
 
 ##### The AVR
 
-The basic architecture of AVR was designed by two students of Norwegian Institute of Technology (NTH), Alf-Egil Bogen and Vegard Wollan, and then was bought and developed by Atmel in 1996.
-The AVR stands for Advanced Virtual RISC, or Alf and Vegard RISC.
-The AVR is an 8-bit RISC single-chip microcontroller with Harvard architecture.
+- The basic architecture of AVR was designed by `two students` of `Norwegian Institute of Technology (NTH)`, `Alf-Egil Bogen` and `Vegard Wollan`,
+- and then was bought and developed by Atmel in 1996.
+- The AVR stands for Advanced Virtual RISC, `or` Alf and Vegard RISC.
+- The AVR is an 8-bit RISC single-chip microcontroller with Harvard architecture.
 
 ##### The AVR Family
 
@@ -87,6 +88,7 @@ Program memory: 16K to 512K bytes
 Package: 48 to 144 pins
 Operating Frequency: Up to 66 MHz
 Performance: 1.5 MIPS/MHz
+CPU throughput approaching one million instructions per second (MIPS) per megahertz, allowing the system designer to optimize power consumption versus processing speed.
 
 ##### XMega AVR (ATxmegaxxxx)
 
@@ -113,7 +115,7 @@ Operating Frequency: Up to 20 MHz
 Performance: 1.0 MIPS/MHz
 ![atmega](imgs/ATMEGA.JPG)
 
-#### pinout
+#### Pinout
 
 ![pinout](imgs/pinout.JPG)
 ![pins](imgs/PINS.JPG)

@@ -139,9 +139,10 @@ void main()
 should define its clock firstly by fuses
 
 - project Properities
-  - Fuses
-    - Direct hex value -> FF D9
-  - after upload -> select `do not use fuze bits`
+  - AVRDUDE
+    - Fuses
+      - Direct hex value -> FF D9
+  - after upload -> select `do not set fuze bytes`
 
 ##### LCD MCU memories
 

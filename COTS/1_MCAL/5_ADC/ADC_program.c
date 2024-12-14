@@ -134,28 +134,20 @@ u8 ADC_u8StartConversionAsynch(u8 Copy_u8Channel, u16* Copy_pu16Reading, void (*
 		{
 			/*make ADC busy in order not to work until being idle */
 			ADC_u8BusyState = BUSY;
-
 			/*Make ISR Source single channel asynchronous*/
 			ADC_u8ISRSource = SINGLE_CHANNEL_ASYNCH;
-
 			/*Initialize the reading variable globally*/
 			ADC_pu16Reading = Copy_pu16Reading;
-
 			/*Initialize the call back notification function globally*/
 			ADC_pvCallBackNotificationFunc = Copy_pvNotificationFunc;
-
 			/*Clear the MUX bits in ADMUX register*/
 			ADMUX &= ADC_MULTIPLEXER_MASK;
-
 			/*set the required channel into the MUX bits*/
 			ADMUX |=Copy_u8Channel;
-
 			/*start conversion*/
 			SET_BIT(ADCSRA, ADCSRA_ADSC);
-
 			/*ADC interrupt enable */
 			SET_BIT(ADCSRA, ADCSRA_ADIE);
-
 			/*Set flag to indicate the ISR from where it comes*/
 			SET_BIT(ADC_flag, 0);
 		}
