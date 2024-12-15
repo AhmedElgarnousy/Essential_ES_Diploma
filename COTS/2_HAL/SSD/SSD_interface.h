@@ -37,7 +37,8 @@ typedef struct
 /*make Function for enable and disable the 7_seg to used for multiplexing */
 u8 SSD_u8Enable_SDD(SSD_t * Copy_u16Ptr);
 u8 SSD_u8Disable_SDD(SSD_t * Copy_u16Ptr);
-u8 SSD_u8SetNumber(u8 Copy_u8Number,SSD_t*Copy_u16Ptr);
+u8 SSD_u8SetNumber(u8 Copy_u8Number, SSD_t*Copy_u16Ptr);
 
+void SSD_void2Mux_display_num(SSD_t * Copy_u16Ptr1, SSD_t * Copy_u16Ptr2, u8 Copy_u8DisplayNum, u8 Copy_u8SEETimeInSeconds);
 
 #endif

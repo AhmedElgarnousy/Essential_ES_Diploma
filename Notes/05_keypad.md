@@ -1,6 +1,6 @@
 ## keypad
 
-### LCD Ass
+#### LCD Ass
 
 1. complete on 2nd line when first line is filled.
    ![ass_complete2nd](imgs/ass_complete2nd.JPG)
@@ -22,28 +22,31 @@ if sw based on prebuild configs -> the uglification engineer make the code unrea
 
 ##### Inituation
 
-- what is the best PIn Direction Definition in main or in each module?
+- what is better Pin Direction Definition in main `or` in each module(SWC)?
   ![port1](imgs/port1.JPG)
 
 - i think it's better to let someone define the all pins for the entire project.
 - AUTOSAR define a SWC called PORT in MCAL for this task
 - AUTOSAR : Automotive SW Architecture definition
 
-##### what is PORT Driver?
+##### What is PORT Driver?
 
 ![port1](imgs/PORT_SWC.JPG)
 
 ![port1](imgs/port_conf.JPG)
 
+![port1](imgs/port_way1.JPG)
+
 - one way to implement that to write 5 line for 1 pin for just direction value
-- 5 _ 32 pin _ 2 (dir val, init val) around 320 hash define
+- `5*32 pin*2` (dir val, init val) around 320 hash define
 - it's a big hassl way
-  ![port1](imgs/port_way1.JPG)
 
 - `preprocessor` comes here
 
-- is the advantage of function like macro than normal function
-- that is allowing stringification and concatination
+  - Remember the usage of preprocessors configurability and readability
+
+- what is the advantage of function like macro than normal function
+  - that is allowing stringification and concatination
 
 #### stringification (`#`)
 
@@ -129,7 +132,7 @@ void PORT_voidInit()
 
 ### Keypad
 
-- KEYPAD is about HW connection and SW sol
+- KEYPAD is about HW connection and SW solution
   ![keypad_intuation](imgs/keypad_intuation.JPG)
 
 - connection details

@@ -19,9 +19,9 @@
 - As digital world for MCU
   - we define a fixed clk cycle
   - 2 possibilities (0, 1)
-- ![digitalworld](imgs/digitalworld.JPG)
+    ![digitalworld](imgs/digitalworld.JPG)
 
-### So ADC comes to make MCU understand analog world
+#### So ADC comes to make MCU understand analog world
 
 #### Digitalization Process
 
@@ -60,7 +60,7 @@ to decrease it
 2. decrease the max voltage
    ![adc](imgs/adc.JPG)
 
-#### what if signal > 4v (max volt for previous example) or when saturation(all bits becomes 1s) happen
+##### what if signal > 4v (max volt for previous example) or when saturation(all bits becomes 1s) happen
 
 ![sat](imgs/sat.JPG)
 
@@ -553,12 +553,10 @@ void main(void)
 			case 6: DIO_u8SetPortValue(DIO_u8PORTB, 0b00111111); break;
 			case 7: DIO_u8SetPortValue(DIO_u8PORTB, 0b01111111); break;
 			case 8: DIO_u8SetPortValue(DIO_u8PORTB, 0b11111111); break;
-			default: DIO_u8SetPortValue(DIO_u8PORTB, 0b00000000); break;
+			default:DIO_u8SetPortValue(DIO_u8PORTB, 0b00000000); break;
 		}
-
 	}
 }
-
 ```
 
 - Mapping Concept
@@ -756,7 +754,6 @@ u8 ADC_u8StartConversionSynch(u8 Copy_u8Channel, u16 *Copy_pu16Reading)
 	}
 	return Local_u8ErrorState;
 }
-
 ```
 
 - **Note**:
@@ -873,7 +870,7 @@ void __vector_16(void)
 - important assignment because it's a base for next assignments
   ![assAdcProj](imgs/assAdcProj.JPG)
 - NOTES:
-  - IF u don't have enough pins use a multiplexed connection concept with the componnets that will not work in the same period
+  - If u don't have enough pins use a multiplexed connection concept with the componnets that will not work in the same period
 
 ##### Additional Resources
 

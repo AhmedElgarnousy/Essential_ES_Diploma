@@ -1,6 +1,6 @@
 ## Electrical Switches
 
-### LCD & KeyPad Assignments
+##### LCD & KeyPad Assignments
 
 1. 3 Buttons Calculator
 2. Complete Calculator
@@ -8,20 +8,23 @@
 
 ![LCD_KPD](imgs/LCD_KPD.JPG)
 
-#### TypesSwitches
+#### Types of Switches
 
-##### inituation for electrical switches
+##### Inituation
 
-- recommended current can be provided be atmega32 20mA
-- max current cab be provided be atmega32 40mA
-- min current for small motor around 100mA
+###### Why we need electrical switches?
+
+- `Recommended` current can be provided be ATmega32 `20mA`.
+- `Max` current cab be provided be ATmega32 `40mA`.
+- Min current for small motor around 100mA
 
 ![swIntuation](imgs/swIntuation.JPG)
 
-- so why we didn't use a driving circuit with lEDs and Seven Segment?
-  - because it consume alittle bit power, but it will be better to use
+###### so why we didn't use a driving circuit with lEDs and Seven Segment?
 
-#### electronis or physics behind the electrical switches
+- because it consume a little bit power, but it will be better to use
+
+#### Electronis or Physics behind the electrical switches
 
 ##### PN-junction
 
@@ -44,7 +47,7 @@
 - case 3(Active Mode):
   ![case3](imgs/case3.JPG)
 
-##### this is the trasistor
+##### This is the transistor
 
 ![trasistor](imgs/trasistor.JPG)
 
@@ -63,7 +66,7 @@
 
 ![rb](imgs/rb.JPG)
 
-- option2 not avaialable on atmega32 due to current limitiation from MCU so(MAX current is 40mA)
+- option2 not avaialable on ATmega32 due to current limitiation from MCU so (MAX current is 40mA)
 
   ![option2](imgs/option2.JPG)
 
@@ -84,7 +87,7 @@
 
 ![coils](imgs/coils.JPG)
 
-- Advantages of DC Motor
+##### Advantages of DC Motor
 
 1. Simple in H/W
 2. simple in SW
@@ -136,7 +139,7 @@ from Kirchoff Volt Law : I~E~ = I~C~ + I~B~
 ![DISADV](imgs/DISADV.JPG)
 That means no complete isolation may be MCU effected by motor BEMF
 
-##### transistor adv and disadv
+##### Adv / disadv of transistor
 
 ![transistorcharachteristics](imgs/transistorcharachteristics.JPG)
 
@@ -158,7 +161,7 @@ That means no complete isolation may be MCU effected by motor BEMF
 - coil is a source to electric magnetism
 - switch is made of ferromagnetic material like iron, ..
 
-###### advantages
+###### Relay Advantages
 
 - complete power isolation
 - high power delivery
@@ -166,7 +169,7 @@ That means no complete isolation may be MCU effected by motor BEMF
   - in smart homes,
   - automotive such as (كتاوت) come from cutout word
 
-###### disadvantages
+###### Relay Disadvantages
 
 - low frequency (Mechanical action)
   - switching time more than 50ms
@@ -203,7 +206,7 @@ use a switching circuit (transistor) with the relay because the coil may burn th
 
 ![relay_cir](imgs/relay_cir.JPG)
 
-##### how we can control motor direction with relays
+##### How we can control motor direction with relays
 
 ## ![relayMotorDir](imgs/relayMotorDir.JPG)
 
@@ -216,13 +219,13 @@ TRANSISTOR Law:
 
 ## ![darlington](imgs/darlington.JPG)
 
-acording to this law we can increase the current with this circuit or connection
+Acording to this law we can increase the current with this circuit or connection
 
 ## ![beta](imgs/beta.JPG)
 
 ## ![darlingtonfina](imgs/darlingtonfina.JPG)
 
-- IC contains 7 darlington pairs (ULN2003)
+- IC contains 7 darlington pairs (**ULN2003**)
 
 ###### It doesn't make sense to generate high to base to get low on collector
 
@@ -342,5 +345,4 @@ each stepper has gearbox internally
 
 [switches](https://www.ermicro.com/blog/?p=423)
 [encoder](https://automaticaddison.com/calculate-pulses-per-revolution-for-a-dc-motor-with-encoder/)
-
 [encoder](https://deepbluembedded.com/arduino-motor-encoder-optical-encoder-interfacing/)

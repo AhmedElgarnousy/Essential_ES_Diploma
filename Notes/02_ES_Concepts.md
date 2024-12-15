@@ -140,6 +140,16 @@ The quartz crystal oscillator connected to the XTAL1 and XTAL2 pins
 
 ![resetConn](imgs/resetConn.JPG)
 
+## connecting new MCU first time
+
+should define its clock firstly by fuses
+
+- project Properities
+  - AVRDUDE -> Fuses
+    - Direct hex value -> `FF D9`
+  - after upload -> select `do not set fuze bytes` And Restore Default
+    ![Fuses](imgs/Fuses.JPG)
+
 ##### clock resources
 
 - something takes volt and gives square wave and viceversa

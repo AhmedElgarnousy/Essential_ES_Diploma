@@ -4,7 +4,7 @@
 
 - output (5V , 0V)
 - input (5V , 0V)
-  Each port has 3 I/O registers associated with it They are designated as
+  Each port has 3 I/O registers associated with it
 
 1. DDRx (Data Direction),
 2. PORTx(output value),
@@ -19,11 +19,11 @@ PINx Read only Register
 DDRx Register decide pin will be in or out
 using tristate buffer
 
-- digital buffer -> make a isolation between input and output circuits
+- digital buffer -> makes a isolation between input and output circuits
 - tristate buffer -> buffer control input to pass or not.
 
 - I/O Synchronization feature
-- when you write on PORTA register, this data goes to pin and PIN register and you can read it
+  - when you write on PORTA register, this data goes to pin and PIN register and you can read it
 
 ###### Led Interfacing
 
@@ -51,7 +51,7 @@ what is time consuming for this for loop?
 3 ways to know
 
 - by assembly instructions: around 300 000 assembly so 300k cycle
-- using ossiliscope
+- using osciliscope
 - using Timer
 
 use a toolchain delay ready function
@@ -64,14 +64,14 @@ _delay_us(100);
 
 - Timer is another prepherial it will responsible for counting and give you notification(by callback) that time finished
 
-#### Why while(1) is important
+#### ==Why while(1) is important and mandatory==
 
 - is a Infinity Loop == Super Loop
 
 ##### Do i need while(1) even if i don't need program to repeat?
 
 - yes, to prevent the program counter(PC) to load garbage address
-- by prevent the CPU to execute out of main function
+- by preventing the CPU to execute out of main function
   ![while1](imgs/while1.JPG)
 
 ```c
@@ -120,13 +120,13 @@ LED Matrix for advertising
 switches types
 
 1. Mechanical
-2. electronic switches
+2. Electronic Switches
    1. transistors
    2. optocouples
    3. relays
    4. Darlington pairs
 
-#### mechanical switches
+#### Mechanical Switches
 
 divide to many type categories
 
@@ -139,7 +139,7 @@ divide to many type categories
 - pole means input
 - throw means output
 
-##### according to \# of contacts
+##### According to \# of contacts
 
 1. SPST (`S`ingle `P`ole `S`ingle `T`hrow)
 2. SPDT
@@ -147,7 +147,7 @@ divide to many type categories
 4. DPDT
 5. multipole multithrow
 
-##### according to \# shape, trigger, action and application
+##### According to \# shape, trigger, action and application
 
 - **Tactile Push Button**
   - it a momentary switch
@@ -219,35 +219,33 @@ _delay_ms(250); // waste much time
 ###### SevenSegment Multiplexing
 
 let's say we have 2 or more 7-seg in our projects
-so we need 16 pin pr more for only seven segments
+so we need 18 pin for only 2 7-segs
 
-###### POV(Persistence of vision) قصور الرؤية
+##### ==POV(Persistence of vision) قصور الرؤية==
 
-most humans sees less than 25 fps(frame per second)
-that means we can't note changes with rate less than 40 ms
+Most humans sees less than 25 fps(frame per second)
+that means we can't note changes with rate less than 40 ms(0.025 sec)
 
-- This concept widely used
+- This concept widely used in
 
-  - media industry
-  - advertising (while watching film in cinima but speed frames about burgur for example)
+  - Media Industry
+  - Advertising (while watching film in cinima put speed frames about burgur for example)
 
   - Home Lighting
-    is a AC Signal with Freq 50Hz
-
-real test
+    is a AC Signal with Freq 50Hz(20 ms)
 
 ```c
+// Real POV Test on led
 while(1){
   // LED on
-  _delay_ms(10);
+  _delay_ms(10); // less than 25 fps or 40ms
   // LED off
   _delay_ms(10);
   // you may see this with mobile camera
 }
 ```
 
-best POV
-50 to 70 hz
+==**Best POV:** 50 to 70 hz==
 
 - (< 50 hz): flickering
 - (> 70 hz): ghosting (شبح)
@@ -260,30 +258,28 @@ for example for we choose 50hz and we have 4 SSD
 but we notice with icreasing the number of 7 segments
 the light intensity with decrease (as we turn for 5ms and turn off for 15ms)
 
-- Assignment 2 : 2 Multiplexed seven segments
+##### Assignment 2 : 2 Multiplexed seven segments
 
 1. display your birth day last 2 number
 2. counting up and dowm
 3. display number 50, and use sw1 to increment and sw2 to decrement
-   if we pressed for big press seven segment in/decrement faster
+   **if we pressed for big press seven segment in/decrement faster**.
 
 ---
 
-##### resuable/ portable software
+##### Resuable / Portable Software
 
 ```c
 #include <avr/io.h>
 
 void main(void)
 {
-	  DDRA = 0xff;
-
+    DDRA = 0xff;
     while(1)
     {
     	for(int i = 0; i < 10; i++) {
-    		 PORTA = sevenSegNums[i];
-    		_delay_ms(1000);
-
+    	     PORTA = sevenSegNums[i];
+    	     _delay_ms(1000);
     	}
     }
 }

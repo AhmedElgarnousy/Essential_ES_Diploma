@@ -69,7 +69,7 @@ void main()
 
 ---
 
-### Timers
+## Timers
 
 #### Clock
 
@@ -110,7 +110,7 @@ This is a busy waiting way
 
 ##### Timer(timer counter)
 
-- Counter Mode: value indicates for counts for example no of switch presses
+- Counter Mode: value indicates for counts for example no. of switch presses
 
   - provide a pin to connect the input device for non periodic event counting
 
@@ -118,7 +118,7 @@ This is a busy waiting way
 
 ![timercounter](imgs/timercounter.JPG)
 
-- atmega32 define system clock the external not the internal
+- ATmega32 define system clock the external not the internal
 
 ---
 
@@ -249,7 +249,6 @@ Note: here is we write Compare match value only once in its register, Not every 
 #include "TIMER_interface.h"
 #include "LED_interface.h"
 
-
 LED_t Local_led_tRedLed = {DIO_u8PORTC, DIO_u8PIN0, LED_CONN_SRC};
 
 void TIMER0_ISR(void);
@@ -265,17 +264,15 @@ void main(void)
 	GIE_voidEnable();
 	while(1)
 	{
-
 	}
 }
 
 void TIMER0_ISR(void)
 {
 	static u16 counter = 0;
-
-	if(counter == 4000) {
+	if(counter == 4000)
+	{
 		LED_u8Toggle(&Local_led_tRedLed);
-
 		counter = 0;
 	}
 	counter ++;

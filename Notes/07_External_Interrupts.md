@@ -1,11 +1,11 @@
 ## External Interrupt
 
-- Assignment: Dashboard App
+- Assignment: Motor Dashboard App
   ![assDashboard](imgs/assDashboard.JPG)
 
 ---
 
-###### Determinism
+#### Determinism
 
 knowing what happening at every point in timeline
 
@@ -13,12 +13,14 @@ knowing what happening at every point in timeline
 
 - each super loop apps is high dertimistic
 
-###### Responisvensess
+#### Responisvensess
 
 How fast you can respond to external events
 ![responsiveness](imgs/responsiveness.JPG)
 
-##### 1- Super loop system
+---
+
+##### 1- Super Loop System
 
 ![superloop](imgs/superloop.JPG)
 
@@ -26,7 +28,7 @@ How fast you can respond to external events
 - high power consumption (because always while(1) has code and working)
   - if while(1) is empty it will be low power consumption just jump instruction no ALU or other peripherals
 
-###### 2- Foreground background system
+##### 2- Foreground background system
 
 ![foreground_background](imgs/foreground_background.JPG)
 
@@ -47,7 +49,7 @@ How fast you can respond to external events
 
   ![flag](imgs/flag.JPG)
 
-##### How Interrupts is handled
+#### How Interrupts is handled?
 
 ![handled](imgs/handled.JPG)
 
@@ -55,20 +57,18 @@ How fast you can respond to external events
 
 ![vectorable](imgs/vectorable.JPG)
 
-- INT in processor: for interrupt happened
-- send Interrupt ID on data bus
+- **INT** in processor: for interrupt happened
+- send **Interrupt ID** on data bus
 
-###### how does it know where peripheral ISR?
+###### How does it know where peripheral ISR?
 
 - flash starts with vector table memory section in AVR
   - but in ARM vector table in RAM
-- flash location is 2 bytes
-- but vector table location is 4 bytes
+- flash location is 2 bytes, but vector table location is 4 bytes
+- Each loaction has a jump address instruction
+  ![vectortable](imgs/vectortable.JPG)
 
-- each loaction has a jump address instruction
-- ![vectortable](imgs/vectortable.JPG)
-
-  - address of the first line of peripheral ISR
+- address of the first line of peripheral ISR
 
 - ابطي هاردوير اسرع من اسرع سوفتوير
 
@@ -115,21 +115,21 @@ means ISR itself can be interrupted by another ISR (higher priority)
 
 - AVR doesn't support any internal interrupts called ==traps==
 
-##### what happens when interrupt happens(fires)(Interrupt Context Switching)
+##### what happen when interrupt happens(fires)(Interrupt Context Switching)
 
 ![contextSwitching](imgs/contextSwitching.JPG)
 
-##### context switching
+##### Context Switching
 
 ![v](imgs/c.JPG)
 
-##### Interrupt Types based on maskablility
+##### Interrupt Types based on Maskablility
 
 can't be ignored or Not
 ![maskable](imgs/maskable.JPG)
 
 - **ISR of the Reset Interrupt** is the ==startup code==.
-- in AVR we just have one non-maskable interrupt (RESET)
+- in AVR we just have `one` `non-maskable interrupt` (**RESET**)
 
 ##### Interrupt Latency
 
@@ -139,7 +139,7 @@ can't be ignored or Not
   ![latency](imgs/latency.JPG)
 
 - response time is the time of context switching execution
-  - is fixed fixed for each MCU Peripherial
+  - is fixed for each MCU Peripherial
 
 ---
 
@@ -147,7 +147,7 @@ can't be ignored or Not
 
 ![events](imgs/events.JPG)
 
-- Atmega support for events for external Interrupt
+- ATmega32 support four events for external Interrupt
 
   - low level
   - rising edge
@@ -186,7 +186,7 @@ why this flag is NOT Read Only
 
 ![ISR](imgs/ISR.JPG)
 
-- Interrupt ID or no = `vector No. - 1`
+- Interrupt ID or no = `vector Num - 1`
   ![int_no](imgs/int_no.JPG)
 
 - GIE
@@ -204,7 +204,7 @@ why this flag is NOT Read Only
   - because all peripherals will use it
 
 ```c
-// code
+// EXTI ISR Test
 #include "STD_TYPES.h"
 #include "DIO_interface.h"
 #include "PORT_interface.h"
@@ -212,7 +212,6 @@ why this flag is NOT Read Only
 #include "GIE_interface.h"
 #include "LED_interface.h"
 #include <util/delay.h>
-
 
 LED_t led_red = {DIO_u8PORTC, DIO_u8PIN0, LED_CONN_SRC};
 
@@ -224,12 +223,10 @@ void main(void)
 
 	EXTI_u8IntEnable(INT0);
 
-
 	while(1)
 	{
-		LED_u8TurnOff(&led_red);
+	    LED_u8TurnOff(&led_red);
 	}
-
 }
 
 void __vector_1(void) __attribute__((signal));
@@ -237,7 +234,6 @@ void __vector_1(void){
 	LED_u8TurnOn(&led_red);
 	_delay_ms(1000);
 }
-
 ```
 
 - ROM is read only for the processor but can write in it in runtime for permenant data by flash driver
@@ -298,7 +294,7 @@ linker script is like a set of configuration not a way of communication
 
 ![comparason](imgs/comparason.JPG)
 
-##### when i decide to develop the drivers with post build or prebuild configs?
+#### When i decide to develop the drivers with post build or prebuild configs?
 
 ![driver](imgs/driver.JPG)
 
@@ -393,4 +389,3 @@ void ISR_INT0(void) {
 - Ping Pong
 
 ![extass](imgs/extass.JPG)
-0b00000111,0b00000111,0b00000011,0b00000011,0b00000011,0b00000011,0b00000011,0b00000111,0b00000000

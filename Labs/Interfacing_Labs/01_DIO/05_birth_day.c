@@ -16,8 +16,9 @@
 #define GET_BIT(VAR,BIT_NO) ((VAR>>BIT_NO)&1)
 
 
-void SSD_2Mux_display_num(u8 SSD_port_num, u8 SSD_COM_port, u8 seg1_COM, u8 seg2_COM ,u8 display_num, u8 time) {
-	
+void SSD_2Mux_display_num(u8 SSD_port_num, u8 SSD_COM_port, u8 seg1_COM, 
+						u8 seg2_COM ,u8 display_num, u8 time) 
+{
 	if(display_num < 0 | display_num > 99)
 		return;
 
@@ -28,7 +29,6 @@ void SSD_2Mux_display_num(u8 SSD_port_num, u8 SSD_COM_port, u8 seg1_COM, u8 seg2
 
 	second_digit = num % 10; // get last digit
 	first_digit = num / 10; // remove last digit
-
 
 	for (int i = 0 ; i < time ; i++)
 	{

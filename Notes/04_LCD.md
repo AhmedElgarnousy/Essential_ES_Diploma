@@ -110,41 +110,24 @@ C know the ASCII Table just put it in single quote like -> 'A'
 #include"CLCD_interface.h"
 #include<util/delay.h>
 
-
-
 void main()
 {
 	PORT_voidInit();
 	CLCD_voidInit();
-
 	CLCD_voidClearScreen();
-
 //	CLCD_voidSendData('A');
 //	CLCD_voidSendData('H');
 //	CLCD_voidSendData('M');
 //	CLCD_voidSendData('E');
 //	CLCD_voidSendData('D');
-
 	CLCD_voidSendString("Ahmed");
 	while(1)
 	{
-
 	}
 }
-
 ```
 
-## connecting new MCU first time
-
-should define its clock firstly by fuses
-
-- project Properities
-  - AVRDUDE
-    - Fuses
-      - Direct hex value -> FF D9
-  - after upload -> select `do not set fuze bytes`
-
-##### LCD MCU memories
+#### LCD MCU Memories
 
 ##### How can we calculate the displayed position?
 
@@ -166,7 +149,7 @@ should define its clock firstly by fuses
 ![DDRAM addresses](imgs/DDRAM.JPG)
 
 ```c
-u8 CLCD_voidGoToXY(u8 Copy_u8XPos,u8 Copy_u8YPos);
+u8 CLCD_voidGoToXY(u8 Copy_u8XPos, u8 Copy_u8YPos);
 ```
 
 - first calculate the address
@@ -174,13 +157,13 @@ u8 CLCD_voidGoToXY(u8 Copy_u8XPos,u8 Copy_u8YPos);
 - then go to datasheet to know how to send the address to LCD MCU(set DDRAM Address)
   ![DDRAM](imgs/Table6.1.JPG)
 
-- LCD MCu has register called Address Counter that carry the next DDRAM Address to display and `automatically increment`
--
+- LCD MCU has register called Address Counter that carry the next DDRAM Address to display and `automatically increment`
+
 - one way to set pin 7 with 1
   - add 128 on calculated address
 
 ```c
-u8 CLCD_voidGoToXY(u8 Copy_u8XPos,u8 Copy_u8YPos)
+u8 CLCD_voidGoToXY(u8 Copy_u8XPos, u8 Copy_u8YPos)
 {
 	u8 Local_u8ErrorState=0;
 
@@ -206,7 +189,7 @@ u8 CLCD_voidGoToXY(u8 Copy_u8XPos,u8 Copy_u8YPos)
 }
 ```
 
-##### how LCD MCD knows the english letters and numbers?
+##### How LCD MCD knows the english letters and numbers?
 
 - CGROM
   each address is alocation for 8 bytes contains a character pattern
