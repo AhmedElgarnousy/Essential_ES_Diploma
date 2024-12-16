@@ -469,6 +469,73 @@ here we continue on Comapare Match Not Clear and also generate event at MAX valu
 
 ![lab_fastPWM](imgs/lab_fastPWM.JPG)
 
+- overflow time = tick time `*` overflow ticks(255)
+  - 255 NOT 256 because the tick through clearing counter between 255 and 0
+
 ---
 
-##### 2- Phase Correct
+#### 2- Phase Correct
+
+- at top timer downcounting
+  ![phasecorrect](imgs/phasecorrect.JPG)
+
+- 2 actions on timer pin OCx
+- 1 - set on comp match at up counting, clear on comp match at down counting
+- 2 - clear on comp match at up counting, set on comp match at down counting
+
+  ![PHASE](imgs/PHASE.JPG)
+  ![PHASEnON](imgs/PHASEnON.JPG)
+
+- observation: phase correct mode for low speed signals
+
+---
+
+### PWM as a way of communication
+
+#### SERVO Motor
+
+- DC Motor uncontrolable with extra HW
+- Stepper Motor: High power consuming
+  - Does't have feedback
+- adding feedback element: encoder or potentiometer
+  ![servo_intuation](imgs/servo_intuation.JPG)
+  ![feedback](imgs/feedback.JPG)
+- error correction circuit: can be comparater
+
+- servo motor is just a motor(DC/Stepper) has internal feedback element or circuit:
+
+- Note: servo == Feedback
+- SERVO Operating principle
+  ![servo](imgs/servo.JPG)
+
+- SERVO Types
+- Limiting
+  - has piece of iron that limit it to rotate more than 180
+  - also working principle prevent it
+- No Angle Control (in direct way)
+- Absolute position (so if u want motor goes to 20 deg give it 20 even if motor in any position)
+
+#### Limitng Interface
+
+![selimitingrvo](imgs/limiting.JPG)
+
+- Apply signal continous to get breaking feature
+
+#### Continious servo Interface
+
+## ![continous_servo](imgs/continous_servo.JPG)
+
+- Limiting Servo use pot with ADC
+  - more accurate
+  - but limited angle 180 deg
+  - pot is cheaper
+- Continious Servo uses encoder
+  - continous range
+
+#### SERVO VS STEPPER VS DC MOTOR
+
+## ![servo_dc_stepper](imgs/servo_dc_stepper.JPG)
+
+##### References
+
+[AVR TIMERS](https://www.electronicwings.com/avr-atmega/atmega1632-pwm)

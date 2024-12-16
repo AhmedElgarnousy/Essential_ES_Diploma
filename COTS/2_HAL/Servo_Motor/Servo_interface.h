@@ -11,7 +11,6 @@
 #define Servo_interface_H_
 
 
-
 u8 Servo_u8ServoRotate(u8 Copy_u8ChannalID, u8 Copy_u8Degree);
 
 #define OC1A	1
