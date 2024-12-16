@@ -30,96 +30,78 @@ static void (*TIMER_pvCallBackFunc[8])(void)={NULL};
 void TIMER0_voidInit(void)
 {
 #if WAVE_GENERATION_MODE == NORMAL
-
 	CLR_BIT(TCCR0,TCCR0_WGM00);
 	CLR_BIT(TCCR0,TCCR0_WGM01);
 
 #elif 	WAVE_GENERATION_MODE == CTC
-
 	/*choose CTC Mode*/
 	CLR_BIT(TCCR0,TCCR0_WGM00);
 	SET_BIT(TCCR0,TCCR0_WGM01);
 
-
-		#if COMP_OUT_MODE_NON_PWM==TOGGLE
-			/*Toggle OC0 on Compare Match*/
-			CLR_BIT(TCCR0,TCCR0_COM01);
-			SET_BIT(TCCR0,TCCR0_COM00);
-
-		#elif	COMP_OUT_MODE_NON_PWM==CLEAR
-			/*Clear OC0 on Compare Match*/
-			SET_BIT(TCCR0,TCCR0_COM01);
-			CLR_BIT(TCCR0,TCCR0_COM00);
-
-		#elif 	COMP_OUT_MODE_NON_PWM==SET
-			/*Set OC0 on Compare Match*/
-			SET_BIT(TCCR0,TCCR0_COM01);
-			SET_BIT(TCCR0,TCCR0_COM00);
-
-		#else
+	#if COMP_OUT_MODE_NON_PWM==TOGGLE
+		/*Toggle OC0 on Compare Match*/
+		CLR_BIT(TCCR0,TCCR0_COM01);
+		SET_BIT(TCCR0,TCCR0_COM00);
+	#elif	COMP_OUT_MODE_NON_PWM==CLEAR
+		/*Clear OC0 on Compare Match*/
+		SET_BIT(TCCR0,TCCR0_COM01);
+		CLR_BIT(TCCR0,TCCR0_COM00);
+	#elif 	COMP_OUT_MODE_NON_PWM==SET
+		/*Set OC0 on Compare Match*/
+		SET_BIT(TCCR0,TCCR0_COM01);
+		SET_BIT(TCCR0,TCCR0_COM00);
+	#else
 		#error"Wrong Compare Output Mode,Non PWM  Configuration "
-		#endif
+	#endif
 
-			/*Output Compare Match Interrupt Enable*/
-			SET_BIT(TIMSK,TIMSK_OCIE0);
+	/*Output Compare Match Interrupt Enable*/
+	SET_BIT(TIMSK,TIMSK_OCIE0);
 
-#elif	WAVE_GENERATION_MODE == FAST_PWM
-
+#elif WAVE_GENERATION_MODE == FAST_PWM
 	/*choose fastPWM Mode*/
 	SET_BIT(TCCR0,TCCR0_WGM00);
 	SET_BIT(TCCR0,TCCR0_WGM01);
 
-		#if COMP_OUT_MODE	== INVERTING_MODE
-
-			/* Choose Inverting Mode*/
+	#if COMP_OUT_MODE == INVERTING_MODE
+		/* Choose Inverting Mode*/
 		SET_BIT(TCCR0,TCCR0_COM01);
 		SET_BIT(TCCR0,TCCR0_COM00);
-
-		#elif COMP_OUT_MODE == NON_INVERTING_MODE
-
+	#elif COMP_OUT_MODE == NON_INVERTING_MODE
 		/*Choose Non_Inverting mode*/
 		SET_BIT(TCCR0,TCCR0_COM01);
 		CLR_BIT(TCCR0,TCCR0_COM00);
-
-		#else
+	#else
 		#error "Wrong Compare output mode Configuration"
-		#endif
+	#endif
 
-
-
-#elif	WAVE_GENERATION_MODE == PWM_PHASE_CORRECT
-
+#elif WAVE_GENERATION_MODE == PWM_PHASE_CORRECT
 	SET_BIT(TCCR0,TCCR0_WGM00);
 	CLR_BIT(TCCR0,TCCR0_WGM01);
 
-		#if COMP_OUT_MODE_PHASE_CORRECT	== INVERTING
-
-			/* Choose Inverting Mode*/
+	#if COMP_OUT_MODE_PHASE_CORRECT	== INVERTING
+		/* Choose Inverting Mode*/
 		SET_BIT(TCCR0,TCCR0_COM01);
 		SET_BIT(TCCR0,TCCR0_COM00);
-
-		#elif COMP_OUT_MODE_PHASE_CORRECT == NON_INVERTING
-
+	#elif COMP_OUT_MODE_PHASE_CORRECT == NON_INVERTING
 		/*Choose Non_Inverting mode*/
 		SET_BIT(TCCR0,TCCR0_COM01);
 		CLR_BIT(TCCR0,TCCR0_COM00);
-
-		#else
+	#else
 		#error "Wrong Compare output mode,Phase Correct PWM Configuration"
-		#endif
+	#endif
 
 #else
-#error "Wrong Configuration of Waveform Generation"
+	#error "Wrong Configuration of Waveform Generation"
 #endif
-
-		/*Set prescaler(Bit Masking) */
-		TCCR0 &=TIMER_PRESC_MASK;
-		TCCR0 |=CLK_PRESCALER;
+	
+	/*Set prescaler(Bit Masking) */
+	TCCR0 &=TIMER_PRESC_MASK;
+	TCCR0 |=CLK_PRESCALER;
 }
 
 void TIMER0_voidSetCompMatchValue(u8 Copy_u8Value)
 {
-	OCR0=Copy_u8Value;
+	OCR0 = Copy_u8Value;
 }
 
 u8 TIMER0_u8SetCallBack(void (*Copy_pvCallBackFunc)(void))
@@ -139,7 +121,6 @@ u8 TIMER0_u8SetCallBack(void (*Copy_pvCallBackFunc)(void))
 
 
 void TIMER1_voidInit()
-
 {
 	/*Compare Output Mode, fast PWM, non inverted
 		SET_BIT(TCCR1A,TCCR1A_COM1A1);
@@ -163,7 +144,7 @@ void TIMER1_voidInit()
 
 void TIMER1_voidSetTimerValue(u16 Copy_u16Value)
 {
-	TCNT1=Copy_u16Value;
+	TCNT1 = Copy_u16Value;
 }
 
 u16 TIMER1_u16ReadTimerValue()

@@ -13,12 +13,12 @@
 
 /*
  * Options:
- * 			1-NORMAL: Normal mode(overflow mode)
- * 			2-PWM_PHASE_CORRECT
- * 			3-CTC: Clear Timer on Compare Match
- * 			4-FAST_PWM
+ * 			1- NORMAL: Normal mode(overflow mode)
+ * 			2- PWM_PHASE_CORRECT
+ * 			3- CTC: Clear Timer on Compare Match
+ * 			4- FAST_PWM
  * */
-#define WAVE_GENERATION_MODE	CTC
+#define WAVE_GENERATION_MODE	FAST_PWM
 
 /*
  * Options:

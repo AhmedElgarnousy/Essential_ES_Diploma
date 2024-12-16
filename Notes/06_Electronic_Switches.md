@@ -346,3 +346,5 @@ each stepper has gearbox internally
 [switches](https://www.ermicro.com/blog/?p=423)
 [encoder](https://automaticaddison.com/calculate-pulses-per-revolution-for-a-dc-motor-with-encoder/)
 [encoder](https://deepbluembedded.com/arduino-motor-encoder-optical-encoder-interfacing/)
+
+[Motor drivers](https://robocraze.com/blogs/post/what-is-motor-driver?srsltid=AfmBOop5cmrmXYjTjRGYMdHksGOkr5UVsmGxL9P2fpBXJ3mMjgd8evSM)
