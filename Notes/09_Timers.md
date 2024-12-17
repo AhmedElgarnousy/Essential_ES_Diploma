@@ -534,8 +534,198 @@ here we continue on Comapare Match Not Clear and also generate event at MAX valu
 
 #### SERVO VS STEPPER VS DC MOTOR
 
-## ![servo_dc_stepper](imgs/servo_dc_stepper.JPG)
+![servo_dc_stepper](imgs/servo_dc_stepper.JPG)
 
-##### References
+---
+
+#### Generating PWM Signal to Limiting Servo
+
+- Req: Period Time: 20ms
+  On Time: 1 to 2ms
+  1ms for 0 deg, 2ms for 180 deg
+  ![servosig](imgs/servosig.JPG)
+
+- **Try1**
+- generating PWM can be by SW or HW
+- Let's try SW way using Timer0 Compare Match Mode(CTC)
+- we know the ON time is (1 -2)ms
+- Let's choose ISR to come every 0.5ms
+  - but this makes resolution to 90 deg, only able to go to Angles: 0 , 90, 180 deg
+- this lead us to reduce time ISR comes to 1us and this causes an interrupt saturation
+
+- **Try2**: Fast PWM mode for Timer 0r Timer2 (8bit)
+- 1- period time = overflow time = 20ms
+- select a prescaller to achieve this period time
+- option 1: NO Division
+  - `overflow time = prescaler/ system clock `\*` overflow ticks`
+  - overflow time = 1/8us `*` 255 = 32us -> So Invalid
+- option 2: Division by 8
+  - overflow time = 1us `*` 255 = 0.25 ms -> So Invalid
+- option 3: Division by 64
+  - overflow time = 8us `*` 255 = 2 ms -> So Invalid
+- option 4: Division by 256
+  - overflow time = 32us `*` 255 = 8 ms -> So Invalid
+- option 5: Division by 1024
+
+  - overflow time = 128us `*` 255 = 32ms -> So Invalid
+
+- **Try3**: Fast PWM mode for Timer1 (16 bit)
+- 1- period time = overflow time = 20ms
+- select a prescaller to achieve this period time
+- option 1: NO Division
+  - `overflow time = prescaler/ system clock `\*` overflow ticks`
+  - overflow time = 1/8us `*` 65536 = 8ms -> So Invalid
+- option1: Division by 8
+  - overflow time = 1us `*` 65536 = 65ms -> So Invalid
+- and so on we will be invalid
+
+- **Try4**: also phase correct mode will be invalid
+  - because period time = 2 `*` overflow time
+
+##### Solution of SERVO PWM Signal with period time = 20ms
+
+![fast](imgs/fastmode.JPG)
+
+- that we have a mode in Timer1 called FAST PWM Mode, The Top value is variable (ICR1 Register)
+- so assume prescaller div by 8
+- Top time = tick time `*` Top ticks(ICR1)
+- 20ms = 1us `*` ICR1
+- so ICR1 = 20000
+- what about on time or duty cycle
+- let's choose non-inverted Mode, comp time = tick time
+- comp match time = tick time `*` comp match value
+- 1000 to 2000 us = 1us `*` OCR1
+- so OCR1 = 1000 to 2000
+
+- here is PWM by HW action happened auto on pin , NO ISR
+- tick time = 1us
+- so resoluton is 180/ 1000 = 0.18 deg
+
+## ![pinAction](imgs/pinAction.JPG)
+
+## ![ser_sig](imgs/ser_sig.JPG)
+
+- Practical values: 750us t0 2500us
+
+![practical_readings](imgs/practical_readings.JPG)
+![pinsservo](imgs/pinsservo.JPG)
+
+- ICR1 is 16 bit  
+  ![icr](imgs/icr.JPG)
+
+```C
+#define ICR1 		*((volatile u16*)0x46)
+```
+
+![datasheet_ser1](imgs/datasheet_ser1.JPG)
+![fast](imgs/fastmode.JPG)
+![timerclk1](imgs/timerclk1.JPG)
+![clk1](imgs/clk1.JPG)
+
+```C
+
+void TIMER1_voidInit()
+{
+	/*Compare Output Mode, fast PWM, non inverted
+		*/
+		SET_BIT(TCCR1A,TCCR1A_COM1A1);
+		CLR_BIT(TCCR1A,TCCR1A_COM1A0);
+
+		/*Waveform generation mode , Fast PWM */
+		CLR_BIT(TCCR1A,TCCR1A_WGM10);
+		SET_BIT(TCCR1A,TCCR1A_WGM11);
+		SET_BIT(TCCR1B,TCCR1B_WGM12);
+		SET_BIT(TCCR1B,TCCR1B_WGM13);
+
+		/*Prescaler */
+		TCCR1B &=TIMER_PRESC_MASK;
+		TCCR1B |= DIVIDE_BY_8;
+}
+
+void TIMER1_voidSetICR(u16 Copy_u16TopValue)
+{
+	ICR1 = Copy_u16TopValue;
+}
+void TIMER1_voidSetChannelACompMatch(u16 Copy_u16ChannelACompMatch)
+{
+	OCR1A=Copy_u16ChannelACompMatch;
+}
+```
+
+- SERVO Pinout
+  ![servo_Pinout](imgs/servo_Pinout.JPG)
+
+```C
+// servo app test rotation
+#include "STD_TYPES.h"
+#include "DIO_interface.h"
+#include "PORT_interface.h"
+#include "TIMER_interface.h"
+#include "Servo_interface.h"
+#include <util/delay.h>
+
+void main(void)
+{
+	PORT_voidInit();
+	TIMER1_voidInit();
+
+	TIMER1_voidSetICR(20000);
+	while(1)
+	{
+		for(u16 i = 750; i< 2500; i++)
+		{
+			TIMER1_voidSetChannelACompMatch(i);
+			_delay_ms(10);
+		}
+
+	}
+}
+```
+
+#### Lab2
+
+
+```c
+// map pot to servo
+#include "STD_TYPES.h"
+#include "DIO_interface.h"
+#include "PORT_interface.h"
+#include "TIMER_interface.h"
+#include "ADC_interface.h"
+#include "Servo_interface.h"
+#include <util/delay.h>
+
+
+void main(void)
+{
+	PORT_voidInit();
+	TIMER1_voidInit();
+	ADC_voidInit();
+	TIMER1_voidSetICR(20000);
+
+	u8 Local_u8Angle = 0;
+	u16 Local_u16ADCReading;
+	u16 Local_u16ONTime = 1000;
+
+	while(1)
+	{
+		ADC_u8StartConversionSynch(SINGLE_ENDED_ADC0, &Local_u16ADCReading);
+//		Local_u8Angle = map2(0, 255, 0, 180, Local_u16ADCReading);
+//		Local_u16ONTime = map2(0, 180, 750, 2500, Local_u8Angle);
+
+		// or
+		Local_u16ONTime = map(0, 255, 750, 2500, Local_u16ADCReading);
+
+		TIMER1_voidSetChannelACompMatch(Local_u16ONTime);
+
+	}
+}
+
+
+```
+
+##### Additional Resources
 
 [AVR TIMERS](https://www.electronicwings.com/avr-atmega/atmega1632-pwm)
+
+
