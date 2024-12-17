@@ -684,7 +684,6 @@ void main(void)
 
 #### Lab2
 
-
 ```c
 // map pot to servo
 #include "STD_TYPES.h"
@@ -717,15 +716,222 @@ void main(void)
 		Local_u16ONTime = map(0, 255, 750, 2500, Local_u16ADCReading);
 
 		TIMER1_voidSetChannelACompMatch(Local_u16ONTime);
+	}
+}
+```
 
+---
+
+- FOC Bit
+- Force output compare bit
+
+```c
+SET_BIT(foc); // this will generate Compare Match action by sw on OCx pin, and will not make interrupt
+// used for test
+```
+
+---
+
+## ICU (Input Capture Unit)
+
+- Intuation, How servo undersatnd this signal
+  ![icu_sig](imgs/icu_sig.JPG)
+
+- ICU -> caputure (screenshoot) the rising and falling edge and tell timer to calculate time between them
+- Period time = time between rising and next rising edge
+- On time = time between rising and next falling edge.
+
+#### 2 Ways to calculate PWM signal
+
+1. ICU_SW
+   1. EXTI + Timer
+2. ICU_HW
+   1. External Timer Normal
+   2. Interal Timer has ICU Mode
+
+### ICU_SW
+
+EXTI + Timer
+
+![ICU_SW](imgs/ICU_SW.JPG)
+
+##### SW ICU CODE TEST
+
+![sw_icu_ex](imgs/sw_icu_ex.JPG)
+
+#### Design this system
+
+![systemdes](imgs/systemdes.JPG)
+
+#### 1- Timer 0
+
+- Timer0_init
+  ![des1](imgs/des1.JPG)
+- FAST PWM Way, Non Inverted Mode
+  ![fastPWM_NON_inverting](imgs/fastPWM_NON_inverting.JPG)
+
+#### 2- Timer 1
+
+![Timerdes](imgs/Timerdes.JPG)
+
+- Timer1_init
+  - normal mode(overflow)
+  - prescaler div by 8
+
+```C
+void TIMER1_voidInit()
+{
+	/*Initialize TIMER1 normal Mode, By default is normal 000*/
+
+	/*Compare Output Mode, fast PWM, non inverted
+	SET_BIT(TCCR1A,TCCR1A_COM1A1);
+	CLR_BIT(TCCR1A,TCCR1A_COM1A0);
+	 * */
+
+	/* Waveform generation mode , Fast PWM
+	CLR_BIT(TCCR1A,TCCR1A_WGM10);
+	SET_BIT(TCCR1A,TCCR1A_WGM11);
+	SET_BIT(TCCR1B,TCCR1B_WGM12);
+	SET_BIT(TCCR1B,TCCR1B_WGM13);
+	 * */
+
+	/* Prescaler */
+	TCCR1B &=TIMER_PRESC_MASK;
+	TCCR1B |= DIVIDE_BY_8;
+}
+
+void TIMER1_voidSetTimerValue(u16 Copy_u16Value)
+{
+	TCNT1 = Copy_u16Value;
+}
+
+u16 TIMER1_u16ReadTimerValue()
+{
+	return TCNT1;
+}
+```
+
+#### 3- EXTI SWC
+
+![exti_comp](imgs/exti_comp.JPG)
+
+- why we made a dis/enable EXTI function
+  - After we know period time, and Duty from just one cycle, we finished and will Not need this system
+
+#### 4- SW_ICU state machine
+
+![statemachine](imgs/statemachine.JPG)
+
+```C
+void ICU_SW_ISR_INT0(void)
+{
+	static u8 Local_u8Counter = 0;
+	static 	u16 Local_u16PeriodTicks;
+	static 	u16 Local_u16OnTimeTicks;
+
+	Local_u8Counter++;
+	if(Local_u8Counter == 1)
+	{
+		// clear timer
+		TIMER1_voidSetTimerValue(0);
+	}
+	else if(Local_u8Counter == 2)
+	{
+		Local_u16PeriodTicks = TIMER1_u16ReadTimerValue();
+		App_u16PeriodTime =Local_u16PeriodTicks * 1 ; // 1us is tick time
+		EXTI_u8Int0SetSenseControl(FALLING_EDGE);
+	}
+	else if(Local_u8Counter == 3)
+	{
+		Local_u16OnTimeTicks = TIMER1_u16ReadTimerValue() - Local_u16PeriodTicks;
+		App_u16ONTime = Local_u16OnTimeTicks * 1;
+
+		// disable Interrupt
+		EXTI_u8IntDisable(INT0);
 	}
 }
 
+```
+
+```c
+// ICU by SW app
+#include "STD_TYPES.h"
+#include "DIO_interface.h"
+#include "PORT_interface.h"
+#include "GIE_interface.h"
+#include "EXTI_interface.h"
+#include "TIMER_interface.h"
+#include "CLCD_interface.h"
+#include <util/delay.h>
+
+void ICU_SW_ISR_INT0(void);
+
+u16 App_u16PeriodTime = 2;
+u16 App_u16ONTime = 2;
+
+void main(void)
+{
+	PORT_voidInit();
+	CLCD_voidInit();
+	GIE_voidEnable();
+
+	EXTI_voidInt0Init();
+	TIMER0_voidInit();
+	TIMER0_voidSetCompMatchValue(64);
+
+	TIMER1_voidInit();
+
+	EXTI_u8Int0SetCallBack(&ICU_SW_ISR_INT0);
+
+	while(1)
+	{
+		// wait until signal captured(period time, on time meaured)
+		while(App_u16PeriodTime == 0);
+		CLCD_voidGoToXY(0,0);
+		CLCD_voidSendString("Period Time:");
+		CLCD_voidWriteNumber(App_u16PeriodTime);
+		CLCD_voidSendString("us");
+
+
+		CLCD_voidGoToXY(1,0);
+		CLCD_voidSendString("ON Time: ");
+		CLCD_voidWriteNumber(App_u16ONTime);
+		CLCD_voidSendString("us");
+//		_delay_ms(3000);
+	}
+}
+
+// notification or callback
+void ICU_SW_ISR_INT0(void)
+{
+	static u8 Local_u8Counter = 0;
+	static 	u16 Local_u16PeriodTicks;
+	static 	u16 Local_u16OnTimeTicks;
+
+	Local_u8Counter++;
+	if(Local_u8Counter == 1)
+	{
+		// clear timer
+		TIMER1_voidSetTimerValue(0);
+	}
+	else if(Local_u8Counter == 2)
+	{
+		Local_u16PeriodTicks = TIMER1_u16ReadTimerValue();
+		App_u16PeriodTime =Local_u16PeriodTicks * 1 ; // 1us is tick time
+		EXTI_u8Int0SetSenseControl(FALLING_EDGE);
+	}
+	else if(Local_u8Counter == 3)
+	{
+		Local_u16OnTimeTicks = TIMER1_u16ReadTimerValue() - Local_u16PeriodTicks;
+		App_u16ONTime = Local_u16OnTimeTicks * 1;
+
+		// disable Interrupt
+		EXTI_u8IntDisable(INT0);
+	}
+}
 
 ```
 
 ##### Additional Resources
 
 [AVR TIMERS](https://www.electronicwings.com/avr-atmega/atmega1632-pwm)
-
-

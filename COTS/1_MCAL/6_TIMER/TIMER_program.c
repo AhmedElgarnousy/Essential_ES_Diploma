@@ -122,24 +122,23 @@ u8 TIMER0_u8SetCallBack(void (*Copy_pvCallBackFunc)(void))
 
 void TIMER1_voidInit()
 {
+	/*Initialize TIMER1 normal Mode, By default is normal 000*/
+
 	/*Compare Output Mode, fast PWM, non inverted
-		*/
-		SET_BIT(TCCR1A,TCCR1A_COM1A1);
-		CLR_BIT(TCCR1A,TCCR1A_COM1A0);
+	SET_BIT(TCCR1A,TCCR1A_COM1A1);
+	CLR_BIT(TCCR1A,TCCR1A_COM1A0);
+	 * */
 
-	/*Initialize TIMER1 normal Mode
-	 * By default is normal*/
+	/* Waveform generation mode , Fast PWM
+	CLR_BIT(TCCR1A,TCCR1A_WGM10);
+	SET_BIT(TCCR1A,TCCR1A_WGM11);
+	SET_BIT(TCCR1B,TCCR1B_WGM12);
+	SET_BIT(TCCR1B,TCCR1B_WGM13);
+	 * */
 
-		/*Waveform generation mode , Fast PWM
-		*/
-		CLR_BIT(TCCR1A,TCCR1A_WGM10);
-		SET_BIT(TCCR1A,TCCR1A_WGM11);
-		SET_BIT(TCCR1B,TCCR1B_WGM12);
-		SET_BIT(TCCR1B,TCCR1B_WGM13);
-
-		/*Prescaler */
-		TCCR1B &=TIMER_PRESC_MASK;
-		TCCR1B |= DIVIDE_BY_8;
+	/* Prescaler */
+	TCCR1B &=TIMER_PRESC_MASK;
+	TCCR1B |= DIVIDE_BY_8;
 }
 
 void TIMER1_voidSetTimerValue(u16 Copy_u16Value)

@@ -41,8 +41,6 @@
 #define TCCR1A_COM1A1	7
 
 
-
-
 #define TCCR1B 		*((volatile u8*)0x4E)		/*TIMER1 Control Register B*/
 
 #define	TCCR1B_ICES1	6						/*input Capature edge select*/
@@ -50,13 +48,13 @@
 #define TCCR1B_WGM13	4
 
 
-#define ICR1 		*((volatile u16*)0x46)
+#define ICR1 		*((volatile u16*)0x46) 	/* Top Value Register */
 
-#define OCR1A 		*((volatile u16*)0x4A)
+#define OCR1A 		*((volatile u16*)0x4A) /*Compare Match value TIMER1 channel A Register*/
 
-#define OCR1B		*((volatile u16*)0x48)
+#define OCR1B		*((volatile u16*)0x48) /*Compare Match value TIMER1 channel B Register*/
 
-#define TCNT1	*((volatile u16*)0x4C)
+#define TCNT1	*((volatile u16*)0x4C)  /*Timer Counter 1 register*/
 
 
 #endif

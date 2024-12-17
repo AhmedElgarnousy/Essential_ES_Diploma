@@ -12,7 +12,7 @@
 #define TIMER_config_H_
 
 /*
- * Options:
+ * Options: For Timer 0
  * 			1- NORMAL: Normal mode(overflow mode)
  * 			2- PWM_PHASE_CORRECT
  * 			3- CTC: Clear Timer on Compare Match
@@ -37,8 +37,10 @@
 
 /*
  * Options:
- * 			1- NON_INVERTING: Clear OC0 on compare match when up-counting. Set OC0 on compare match when downcounting.
- * 			2- INVERTING: Set OC0 on compare match when up-counting. Clear OC0 on compare match when downcounting.
+ * 	1- NON_INVERTING:
+ * 			Clear OC0 on compare match when up-counting. Set OC0 on compare match when downcounting.
+ * 	2- INVERTING:
+ * 		Set OC0 on compare match when up-counting. Clear OC0 on compare match when downcounting.
  * */
 #define COMP_OUT_MODE_PHASE_CORRECT	NON_INVERTING
 
