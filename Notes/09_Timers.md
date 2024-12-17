@@ -866,21 +866,18 @@ void ICU_SW_ISR_INT0(void)
 
 void ICU_SW_ISR_INT0(void);
 
-u16 App_u16PeriodTime = 2;
-u16 App_u16ONTime = 2;
+u16 App_u16PeriodTime = 0;
+u16 App_u16ONTime = 0;
 
 void main(void)
 {
 	PORT_voidInit();
 	CLCD_voidInit();
 	GIE_voidEnable();
-
 	EXTI_voidInt0Init();
 	TIMER0_voidInit();
 	TIMER0_voidSetCompMatchValue(64);
-
 	TIMER1_voidInit();
-
 	EXTI_u8Int0SetCallBack(&ICU_SW_ISR_INT0);
 
 	while(1)
@@ -892,12 +889,10 @@ void main(void)
 		CLCD_voidWriteNumber(App_u16PeriodTime);
 		CLCD_voidSendString("us");
 
-
 		CLCD_voidGoToXY(1,0);
 		CLCD_voidSendString("ON Time: ");
 		CLCD_voidWriteNumber(App_u16ONTime);
 		CLCD_voidSendString("us");
-//		_delay_ms(3000);
 	}
 }
 
@@ -908,7 +903,7 @@ void ICU_SW_ISR_INT0(void)
 	static 	u16 Local_u16PeriodTicks;
 	static 	u16 Local_u16OnTimeTicks;
 
-	Local_u8Counter++;
+	Local_u8Counter ++;
 	if(Local_u8Counter == 1)
 	{
 		// clear timer
@@ -927,6 +922,146 @@ void ICU_SW_ISR_INT0(void)
 
 		// disable Interrupt
 		EXTI_u8IntDisable(INT0);
+	}
+}
+```
+
+### ICU By Hardware
+
+- ICU mode in our Timer 1
+- ICU by hardware is more accurate than ICU by software due to interrupt latency waiting
+- in this way Hardware stores reading TCNT1 in ICR1 until you come to read it
+  ![ICU_HW](imgs/ICU_HW.JPG)
+- when event (FALLING/RAISING Edge) hardware capture(screenshoot) reading from TCNT1 to ICR1
+- now we don't need EXTI
+
+  ![bit_icu](imgs/bit_icu.JPG)
+  ![ICR1](imgs/ICR1.JPG)
+  ![TICUE](imgs/TICUE.JPG)
+
+##### ICU By Hardware System Design
+
+![hw_icu_des](imgs/hw_icu_des.JPG)
+
+```c
+// funcs
+```
+
+![hw_irs_icu](imgs/hw_irs_icu.JPG)
+
+- after falling edge change sense to falling edge
+
+```c
+// ICU_HW_ISR
+
+// notification or callback
+void ICU_HW_ISR(void)
+{
+	static u8 Local_u8Counter = 0;
+	static u16 Reading1, Reading2, Reading3;
+	static u16 Local_u16PeriodTicks, Local_u16OnTicks;
+	Local_u8Counter++;
+
+	if(Local_u8Counter == 1)
+	{
+		Reading1 =  ICU_u16ReadInputCaputure();
+	}
+	else if(Local_u8Counter == 2)
+	{
+		Reading2 =  ICU_u16ReadInputCaputure();
+		Local_u16PeriodTicks = Reading2 - Reading1;
+		ICU_u8SetTriggerEdge(ICU_FALLING_EDGE);
+		App_u16PeriodTime = Local_u16PeriodTicks * 1; // 1us is tick time
+	}
+	else if(Local_u8Counter == 3)
+	{
+		Reading3 =  ICU_u16ReadInputCaputure();
+		Local_u16OnTicks = Reading3 - Reading2;
+		App_u16ONTime = Local_u16OnTicks * 1; // 1us is tick time
+		// disable interrupt
+		ICU_voidDisableInterrupt();
+	}
+}
+```
+
+```c
+// HW ICU APP
+#include "STD_TYPES.h"
+#include "DIO_interface.h"
+#include "PORT_interface.h"
+#include "GIE_interface.h"
+
+#include "TIMER_interface.h"
+#include "CLCD_interface.h"
+#include <util/delay.h>
+
+void ICU_HW_ISR(void);
+
+u16 App_u16PeriodTime = 0;
+u16 App_u16ONTime = 0;
+
+int main(void)
+{
+	PORT_voidInit();
+
+	CLCD_voidInit();
+
+	// Counter
+//	ICU_u8SetCallBack(&ICU_HW_ISR);
+	TIMER_voidSetCallBack(&ICU_HW_ISR,5); // 5 is TIMER1_CAPT
+	ICU_voidInit();
+
+	TIMER1_voidInit();
+
+	// generate PWM Signal
+	TIMER0_voidInit();
+	TIMER0_voidSetCompMatchValue(64);
+	GIE_voidEnable();
+
+	while(1)
+	{
+		// wait until signal captured(period time, on time measured)
+//		while(App_u16PeriodTime == 0 && App_u16ONTime == 0);
+		while(App_u16PeriodTime == 0);
+
+		CLCD_voidGoToXY(0,0);
+		CLCD_voidSendString("Period:");
+		CLCD_voidWriteNumber(App_u16PeriodTime);
+		CLCD_voidSendString("us");
+
+		CLCD_voidGoToXY(1,0);
+		CLCD_voidSendString("ON Time: ");
+		CLCD_voidWriteNumber(App_u16ONTime);
+		CLCD_voidSendString("us");
+	}
+}
+
+// notification or callback
+void ICU_HW_ISR(void)
+{
+	static u8 Local_u8Counter = 0;
+	static u16 Reading1, Reading2, Reading3;
+	static u16 Local_u16PeriodTicks, Local_u16OnTicks;
+	Local_u8Counter++;
+
+	if(Local_u8Counter == 1)
+	{
+		Reading1 =  ICU_u16ReadInputCaputure();
+	}
+	else if(Local_u8Counter == 2)
+	{
+		Reading2 =  ICU_u16ReadInputCaputure();
+		Local_u16PeriodTicks = Reading2 - Reading1;
+		ICU_u8SetTriggerEdge(ICU_FALLING_EDGE);
+		App_u16PeriodTime = Local_u16PeriodTicks * 1; // 1us is tick time
+	}
+	else if(Local_u8Counter == 3)
+	{
+		Reading3 =  ICU_u16ReadInputCaputure();
+		Local_u16OnTicks = Reading3 - Reading2;
+		App_u16ONTime = Local_u16OnTicks * 1; // 1us is tick time
+		// disable interrupt
+		ICU_voidDisableInterrupt();
 	}
 }
 
