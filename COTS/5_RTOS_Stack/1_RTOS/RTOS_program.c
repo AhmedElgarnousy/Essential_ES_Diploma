@@ -19,9 +19,7 @@
 
 Task_t SystemTasks[TASK_NUM] = {{NULL}};
 
-void RTOS_voidStart(void)
-{
-	/**/
+void RTOS_voidStart(void) {
 	TIMER0_u8SetCallBack(&voidScheduler);
 	GIE_voidEnable();
 	TIMER0_voidInit();
@@ -31,7 +29,6 @@ void RTOS_voidCreateTask(u8 Copy_u8Priority, u16 Copy_u16Periodicity, void(*Copy
 {
 	SystemTasks[Copy_u8Priority].Periodicity = Copy_u16Periodicity;
 	SystemTasks[Copy_u8Priority].TaskFunc = Copy_pvTaskFunc;
-
 }
 
 static void voidScheduler(void)
@@ -47,7 +44,7 @@ static void voidScheduler(void)
 		if((Local_u16TickCounter % SystemTasks[Local_u8TaskCounter].Periodicity) == 0)
 		{
 			/*Invoke the task function*/
-		    if(SystemTasks[Local_u8TaskCounter].TaskFunc != NULL)
+			if(SystemTasks[Local_u8TaskCounter].TaskFunc != NULL)
 			{
 				SystemTasks[Local_u8TaskCounter].TaskFunc();
 			}
