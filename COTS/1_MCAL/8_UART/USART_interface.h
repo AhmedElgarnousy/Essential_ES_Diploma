@@ -10,7 +10,7 @@
 #define UART_interface_H_
 
 
-void USART_Init();
+void USART_voidInit(void);
 void USART_voidSend(u8 Copy_u8Data);
 u8 USART_voidReceive();
 

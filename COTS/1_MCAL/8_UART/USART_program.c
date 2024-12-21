@@ -8,34 +8,42 @@
 
 #include"STD_TYPES.h"
 #include "BIT_MATH.h"
-#include "UART_interface.h"
-#include "UART_register.h"
-#include "UART_config.h"
-#include "UART_private.h"
+#include "USART_interface.h"
+#include "USART_register.h"
+#include "USART_config.h"
+#include "USART_private.h"
 
-void USART_Init()
+void USART_voidInit()
 {
-	u8 Local_u8UCSRAValue = 0;	//We use this Method because u should put the total value at one time
-	SET_BIT(Local_u8UCSRAValue,7);
-	CLR_BIT(UCSRC,UCSRC_UPM1);
-	CLR_BIT(UCSRC,UCSRC_UPM0);
+	u8 Local_u8UCSRAValue = 0; 	// We use this Method because u should put the total value at one time
+
+
+	SET_BIT(Local_u8UCSRAValue,UCSRC_URSEL); // UCSRC_URSEL, select UCSRC
+
+	// Asynchronous Mode
+	CLR_BIT(Local_u8UCSRAValue,UCSRC_UMSEL);
+
+	/*8 data bits*/
+	CLR_BIT(UCSRB,UCSRB_UCSZ2);
+	SET_BIT(Local_u8UCSRAValue,UCSRC_UCSZ1);
+	SET_BIT(Local_u8UCSRAValue,UCSRC_UCSZ0);
+
+	// Disable Parity
+	CLR_BIT(Local_u8UCSRAValue,UCSRC_UPM1);
+	CLR_BIT(Local_u8UCSRAValue,UCSRC_UPM0);
 
 	/*1 Stop bit*/
 	CLR_BIT(Local_u8UCSRAValue,UCSRC_USBS);
-	CLR_BIT(UCSRB,UCSRB_UCSZ2);
-
-	/*8 data bits*/
-	SET_BIT(Local_u8UCSRAValue,UCSRC_UCSZ0);
-	SET_BIT(Local_u8UCSRAValue,UCSRC_UCSZ0);
 
 	UCSRC = Local_u8UCSRAValue;
 
 	/*Baud Rate 9600 bit/sec*/
+	// if value bigger than 255 use high register also
 	UBRRL = 51;
 
 	/*Enable Transmitter and Receiver*/
-	SET_BIT(UCSRB,UCSRB_TXEN);
-	SET_BIT(UCSRB,UCSRB_RXEN);
+	SET_BIT(UCSRB, UCSRB_TXEN);
+	SET_BIT(UCSRB, UCSRB_RXEN);
 }
 
 
