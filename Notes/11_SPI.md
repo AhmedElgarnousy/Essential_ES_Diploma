@@ -126,3 +126,7 @@ it's NOT practical concept (NOT used)
 ![spi14](imgs/spi14.JPG)
 ![spi15](imgs/spi15.JPG)
 user: means the slave the will be master
+
+---
+
+#### SPI SWC
