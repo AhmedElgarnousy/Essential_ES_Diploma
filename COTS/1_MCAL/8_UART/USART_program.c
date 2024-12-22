@@ -17,29 +17,28 @@ void USART_voidInit()
 {
 	u8 Local_u8UCSRAValue = 0; 	// We use this Method because u should put the total value at one time
 
-
 	SET_BIT(Local_u8UCSRAValue,UCSRC_URSEL); // UCSRC_URSEL, select UCSRC
-
 	// Asynchronous Mode
 	CLR_BIT(Local_u8UCSRAValue,UCSRC_UMSEL);
 
 	/*8 data bits*/
-	CLR_BIT(UCSRB,UCSRB_UCSZ2);
 	SET_BIT(Local_u8UCSRAValue,UCSRC_UCSZ1);
 	SET_BIT(Local_u8UCSRAValue,UCSRC_UCSZ0);
+	CLR_BIT(UCSRB,UCSRB_UCSZ2);
 
-	// Disable Parity
+	// No Parity
 	CLR_BIT(Local_u8UCSRAValue,UCSRC_UPM1);
 	CLR_BIT(Local_u8UCSRAValue,UCSRC_UPM0);
 
 	/*1 Stop bit*/
 	CLR_BIT(Local_u8UCSRAValue,UCSRC_USBS);
 
-	UCSRC = Local_u8UCSRAValue;
+	UCSRC = Local_u8UCSRAValue; // Load UCSRC value
 
 	/*Baud Rate 9600 bit/sec*/
 	// if value bigger than 255 use high register also
 	UBRRL = 51;
+	UBRRH = 51>>8; // 0
 
 	/*Enable Transmitter and Receiver*/
 	SET_BIT(UCSRB, UCSRB_TXEN);

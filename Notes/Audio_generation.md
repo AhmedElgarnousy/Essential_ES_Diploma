@@ -36,7 +36,8 @@ differ from human to another acording to (age, health, etc)
 2. Audacity
 
 ![audio3](imgs/audio3.JPG)
-![audio3](imgs/audio4.JPG)
+![audio4](imgs/audio4.JPG)
+![audio7](imgs/audio7.JPG)
 
 1. **xxd.exe**
 

@@ -6,19 +6,12 @@
 /*************   Version: 1.00           ***********************/
 /***************************************************************/
 
-#ifndef  SPI_INTERFACE_H_
-#define  SPI_INTERFACE_H_
+#ifndef SPI_INTERFACE_H_
+#define SPI_INTERFACE_H_
 
+void SPI_voidInitMaster();
+void SPI_voidInitSlave();
 
-void SPI_voidInit();
-
-void SPI_voidSend();
-
-u16 SPI_u16Receive();
-
-
-
-
-
+u8 SPI_u8Transceive(u8 Copy_u8Data);
 
 #endif

@@ -36,6 +36,8 @@ Shift Register Concept
 - And Repeats this action 8 times
   ![spi4](imgs/spi4.JPG)
 
+  ![alt](imgs/spi.gif)
+
 - observation: i send to slave and receive also from slave
 
 ---
@@ -130,3 +132,68 @@ user: means the slave the will be master
 ---
 
 #### SPI SWC
+
+```c
+void SPI_voidMasterInit();
+void SPI_voidSlaveInit();
+u8 SPI_u8Transceive(u8 Data);
+```
+
+```c
+/***************************************************************/
+/***************************************************************/
+/*************   Author: Ahmed Kamal   *************************/
+/*************   Layer: MCAL           *************************/
+/*************   SWC: SPI           ****************************/
+/*************   Version: 1.00           ***********************/
+/***************************************************************/
+
+
+#include"STD_TYPES.h"
+#include"BIT_MATH.h"
+
+#include"SPI_interface.h"
+#include"SPI_Config.h"
+#include"SPI_private.h"
+#include"SPI_register.h"
+
+
+void SPI_voidInitMaster()
+{
+	/*Master Initialization*/
+	SET_BIT(SPCR, SPCR_MSTR);
+
+	/* Clock Prescaler divide by 16 */
+	SET_BIT(SPCR, SPCR_SPR0);
+	CLR_BIT(SPCR, SPCR_SPR1);
+	CLR_BIT(SPSR, SPSR_SPI2X);
+
+
+	/* SPI Enable */
+	SET_BIT(SPCR, SPCR_SPE);
+}
+
+void SPI_voidInitSlave()
+{
+	/* Slave Initialization */
+	CLR_BIT(SPCR, SPCR_MSTR);
+
+	/* SPI Enable */
+	SET_BIT(SPCR, SPCR_SPE);
+
+}
+
+u8 SPI_u8Transceive(u8 Copy_u8Data){
+	/*send the data*/
+	SPDR = Copy_u8Data;
+
+	// wait until tranfer is complete
+	while(GET_BIT(SPSR, SPSR_SPIF) == 0);
+	return SPDR;
+}
+
+```
+
+#### SPI TEST
+
+#### Assignments
