@@ -261,3 +261,27 @@ void SPI_voidTransceiveAsynch(u8 * ReceivedData, u8 SendData, notificationFunc);
 void SPI_voidTransceiveArraySynch(u8 * ReceivedData, u8 SendData);
 void SPI_voidTransceiveArrayAsynch(u8 * ReceivedData, u8 SendData, notificationFunc);
 ```
+
+---
+
+### C String compare
+
+```c
+#include<string.h>
+
+Name: strcmp
+Prototype: int strcmp (const char *s1, const char *s2)
+Description:
+The strcmp function compares the string s1 against s2, returning a value that has the same sign as the difference
+ between the first differing pair of characters (interpreted as unsigned char objects, then promoted to int).
+
+If the two strings are equal, strcmp returns 0.
+
+A consequence of the ordering used by strcmp is that if s1 is an initial substring of s2, then s1 is considered to be ``less
+ than'' s2.
+
+strcmp does not take sorting conventions of the language the strings are written in into account. To get that one has to
+ use strcoll.
+Header files:
+string.h
+```

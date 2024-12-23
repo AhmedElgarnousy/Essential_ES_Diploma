@@ -9,5 +9,8 @@
 #ifndef	UART_config_H_
 #define UART_config_H_
 
+// sending Timeout, so waiting in synch function until data register gets ready(Empty)
+#define USART_u32TIME_OUT  5000
+
 
 #endif

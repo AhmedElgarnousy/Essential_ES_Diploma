@@ -41,20 +41,98 @@ void USART_voidInit()
 	UBRRH = 51>>8; // 0
 
 	/*Enable Transmitter and Receiver*/
-	SET_BIT(UCSRB, UCSRB_TXEN);
 	SET_BIT(UCSRB, UCSRB_RXEN);
+	SET_BIT(UCSRB, UCSRB_TXEN);
+}
+
+u8 USART_u8SendCharSynch(u8 Copy_u8Data)
+{
+	/* wait until transmit data buffer is empty(flag raised) or time out finsihed */
+	u16 Local_u8ErrorState = OK;
+	u32 Local_u32Timeout = 0;
+
+	while((GET_BIT(UCSRA, UCSRA_UDRE) == 0) && (Local_u32Timeout < USART_u32TIME_OUT))
+	{
+		Local_u32Timeout ++;
+	}
+
+	if(Local_u32Timeout >= USART_u32TIME_OUT)
+	{
+		/*Loop is broken because the timeout is reached*/
+		Local_u8ErrorState = ERR_TIME_OUT;
+	}
+	else
+	{
+		UDR = Copy_u8Data;
+	}
+	return Local_u8ErrorState;
+}
+
+u8 USART_u8ReceiveCharSynch(u8 * Copy_pu8ReceivedChar)
+{
+	u8 Local_u8ErrorState = OK;
+
+	if(Copy_pu8ReceivedChar == NULL)
+	{
+		Local_u8ErrorState = NULL_POINTER;
+	}
+	// WE add TIMEout because we wait here user input or add time out for receive if needed
+	while( GET_BIT(UCSRA,UCSRA_RXC) == 0);
+		*Copy_pu8ReceivedChar = UDR;
+
+	return Local_u8ErrorState;
+}
+
+void USART_voidSendStringSynch(char *string){
+	u8 Local_u8Counter = 0;
+
+	while(string[Local_u8Counter] != '\0')
+	{
+		USART_u8SendCharSynch(string[Local_u8Counter]);
+		Local_u8Counter++;
+	}
+}
+
+u8 USART_u8ReceivedBufferSynch(u8 * Copy_pu8Buffer, u8 Copy_u8BufferSize)
+{
+	u8 Local_u8ErrorState = OK;
+
+	// check pointer is Null or not
+	for(u8 Local_u8Counter = 0;  Local_u8Counter < Copy_u8BufferSize; Local_u8Counter++)
+	{
+		USART_u8ReceiveCharSynch(&Copy_pu8Buffer[Local_u8Counter]);
+	}
+	return Local_u8ErrorState;
 }
 
 
-void USART_voidSend(u8 Copy_u8Data)
+
+// Asynchronous
+// you have to enable GIE before use thes functions
+void USART_voidSendCharAsynch(u8 Copy_u8Data, void (*Copy_pvNotificationFunc)(void))
 {
-	/*wait until transmit data buffer is empty*/
-	while(GET_BIT(UCSRA,UCSRA_UDRE) == 0);
-	UDR = Copy_u8Data;
+
 }
 
-u8 USART_u8Receive()
+// -------------------------------------ISRs------------------------------------
+
+//  USART, Rx Complete
+void __vector_13(void) __attribute__((signal));
+void __vector_13(void)
 {
-	while(GET_BIT(UCSRA,UCSRA_RXC) == 0);
-	return UDR;
+
+}
+
+// USART Data Register Empty
+void __vector_14(void) __attribute__((signal));
+void __vector_14(void)
+{
+
+}
+
+//USART, Tx Complete
+void __vector_15(void) __attribute__((signal));
+void __vector_15(void)
+{
+
 }
