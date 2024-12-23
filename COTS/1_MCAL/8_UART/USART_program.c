@@ -53,7 +53,7 @@ void USART_voidSend(u8 Copy_u8Data)
 	UDR = Copy_u8Data;
 }
 
-u8 USART_voidReceive()
+u8 USART_u8Receive()
 {
 	while(GET_BIT(UCSRA,UCSRA_RXC) == 0);
 	return UDR;

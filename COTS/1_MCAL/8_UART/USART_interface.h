@@ -12,7 +12,7 @@
 
 void USART_voidInit(void);
 void USART_voidSend(u8 Copy_u8Data);
-u8 USART_voidReceive();
+u8 USART_u8Receive();
 
 
 #endif

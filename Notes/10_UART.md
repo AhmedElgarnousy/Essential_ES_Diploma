@@ -259,6 +259,9 @@ u8 USART_voidReceive()
 
 ```
 
+#### UART Basic test
+
+![uart_sim](imgs/uart_test.JPG)
 .
 .
 .
