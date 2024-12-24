@@ -28,13 +28,13 @@ typedef double f64;
 #define OK    0
 #define NOK	  1
 
-#define NULL_POINTER	1
+#define NULL_POINTER	1 // Error State
 
-#define BUSY_FUNC	1
+#define BUSY_FUNC	1 // Error State
 
 #define IDLE	0
 #define BUSY	1
 
-#define ERR_TIME_OUT	1
+#define ERR_TIME_OUT	1 // Error State
 
 #endif /* STD_TYPES_H_ */

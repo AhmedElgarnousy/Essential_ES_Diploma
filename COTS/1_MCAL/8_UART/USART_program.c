@@ -13,6 +13,24 @@
 #include "USART_config.h"
 #include "USART_private.h"
 
+
+// Global Variables
+static void (*USART_pvSendCharNotificationFunc)(void) = NULL;
+static void (*USART_pvReceivedCharNotificationFunc)(void) = NULL;
+static void (*USART_pvSendStringNotificationFunc)(void) = NULL;
+
+#define USART_ASYNCH_SEND_CHAR  0
+#define USART_ASYNCH_SEND_STRING  1
+
+// Interrupt Source
+static u8 USART_u8TXC_IntSource = USART_ASYNCH_SEND_CHAR;
+
+static u8 USART_u8SendChar = 0;
+static u8 USART_u8ReceivedChar = 0;
+static u8 USART_u8AsynchFuncState = IDLE; // Available To call
+
+char *USART_u8SendString;
+
 void USART_voidInit()
 {
 	u8 Local_u8UCSRAValue = 0; 	// We use this Method because u should put the total value at one time
@@ -76,7 +94,7 @@ u8 USART_u8ReceiveCharSynch(u8 * Copy_pu8ReceivedChar)
 	{
 		Local_u8ErrorState = NULL_POINTER;
 	}
-	// WE add TIMEout because we wait here user input or add time out for receive if needed
+	// WE didn't add Timeout because we wait here user input or add time out for receive if needed
 	while( GET_BIT(UCSRA,UCSRA_RXC) == 0);
 		*Copy_pu8ReceivedChar = UDR;
 
@@ -106,33 +124,129 @@ u8 USART_u8ReceivedBufferSynch(u8 * Copy_pu8Buffer, u8 Copy_u8BufferSize)
 }
 
 
+// -----------------------Asynchronous--------------------
 
-// Asynchronous
-// you have to enable GIE before use thes functions
-void USART_voidSendCharAsynch(u8 Copy_u8Data, void (*Copy_pvNotificationFunc)(void))
+// you have to enable GIE before use these functions
+
+u8 USART_u8SendCharAsynch(u8 Copy_u8Data, void (*Copy_pvNotificationFunc)(void))
 {
+	u8 Local_u8ErrorState = OK;
 
+	if (USART_u8AsynchFuncState != BUSY)
+	{
+		USART_u8AsynchFuncState = BUSY;
+		// Global Variable Initialization
+		USART_pvSendCharNotificationFunc = Copy_pvNotificationFunc;
+
+		// sending Data Initialization
+		USART_u8SendChar = Copy_u8Data;
+
+		// Enable Data Register Empty Interrupt Enable
+		// SET_BIT(UCSRB, UCSRB_UDRIE);
+
+		// Enable Transmit Complete Interrupt
+		SET_BIT(UCSRB, UCSRB_TXCIE);
+
+		// send data
+		UDR = USART_u8SendChar;
+	}
+	else
+	{
+		Local_u8ErrorState = BUSY_FUNC;
+	}
+	return Local_u8ErrorState;
+}
+
+u8 USART_u8ReceiveCharAsynch(u8 * Copy_pu8ReceivedChar, void (*Copy_pvNotificationFunc)(void))
+{
+	u8 Local_u8ErrorState = OK;
+	if(Copy_pu8ReceivedChar == NULL)
+	{
+		Local_u8ErrorState = NULL_POINTER;
+	}
+	if(USART_u8AsynchFuncState != BUSY)
+	{
+		USART_u8AsynchFuncState = BUSY;
+
+		// enable
+		// enable Received Interrupt
+		SET_BIT(UCSRB, UCSRB_RXCIE);
+
+		// variables initialization
+		USART_pvReceivedCharNotificationFunc = Copy_pvNotificationFunc;
+
+		Copy_pu8ReceivedChar = &USART_u8ReceivedChar;
+	}
+	else
+	{
+		Local_u8ErrorState = NULL_POINTER;
+	}
+	return Local_u8ErrorState;
+}
+
+u8 USART_u8SendStringAsynch(char * string, void (*Copy_pvNotificationFunc)(void))
+{
+	u8 Local_u8ErrorState = OK;
+
+	// variable Initialization
+	USART_pvSendStringNotificationFunc = Copy_pvNotificationFunc;
+	USART_u8SendString = string;
+
+	// check if available to send or busy state
+
+	// enable UDRE Interrupt
+	SET_BIT(UCSRB, UCSRB_UDRIE);
+
+	return Local_u8ErrorState;
 }
 
 // -------------------------------------ISRs------------------------------------
 
-//  USART, Rx Complete
+//  USART, RX Complete
 void __vector_13(void) __attribute__((signal));
 void __vector_13(void)
 {
-
+	// Release the function
+	USART_u8AsynchFuncState = IDLE;
+	// return value
+	USART_u8ReceivedChar = UDR;
 }
 
 // USART Data Register Empty
 void __vector_14(void) __attribute__((signal));
 void __vector_14(void)
 {
+	static u8 Local_u8Counter = 0;
 
+	if(USART_u8SendString[Local_u8Counter == '\0'])
+	{
+		// CALL Notification Func
+		USART_pvSendStringNotificationFunc();
+
+		// disable UDRE Interrupt
+		CLR_BIT(UCSRB, UCSRB_UDRIE);
+
+		Local_u8Counter = 0;
+	}
+	else
+	{
+		UDR = USART_u8SendString[Local_u8Counter];
+		Local_u8Counter++;
+	}
 }
 
-//USART, Tx Complete
+//USART, TX Complete
 void __vector_15(void) __attribute__((signal));
 void __vector_15(void)
 {
+		// check pointer is not null
+
+		// CALL Notification Function
+		USART_pvSendCharNotificationFunc();
+		// Release the Function
+		USART_u8AsynchFuncState = IDLE;
+
+		// Disable Interrupt
+		CLR_BIT(UCSRB, UCSRB_TXCIE);
 
 }
