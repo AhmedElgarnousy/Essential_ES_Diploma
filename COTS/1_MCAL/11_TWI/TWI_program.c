@@ -46,7 +46,6 @@ void TWI_voidSlaveInit(u8 Copy_u8SlaveAddress)
 
 	/*Enable TWI */
 	SET_BIT(TWCR,TWCR_TWEN);
-
 }
 
 
@@ -63,7 +62,7 @@ TWI_ErrorStatus TWI_SendStartCondtionStart(void)
 	/*Wait until the interrupt flag is raised again and the previous operation is complete*/
 	while(GET_BIT(TWCR,TWCR_TWINT) == 0);
 
-	if( (TWSR & 1111000) != START_ACK)
+	if( (TWSR & 0b1111000) != START_ACK)
 	{
 		Local_ErrorStatus = StartCondtionError;
 	}
@@ -88,7 +87,7 @@ TWI_ErrorStatus TWI_SendRepeatedStart(void)
 	/*Wait until the interrupt flag is raised again and the previous operation is complete*/
 	while(GET_BIT(TWCR,TWCR_TWINT) == 0);
 
-	if( (TWSR & 1111000) != REP_START_ACK)
+	if( (TWSR & 0b1111000) != REP_START_ACK)
 	{
 		Local_ErrorStatus = RepeatedStartError;
 	}
@@ -109,7 +108,7 @@ TWI_ErrorStatus TWI_SendSlaveAddressWithWrite(u8 Copy_u8SlaveAddress)
 
 	/*Set the slave address in the 7 MSB in the data register*/
 	TWDR = Copy_u8SlaveAddress << 1;
-	CLR_BIT(TWDR,0); 		// for write request
+	CLR_BIT(TWDR,0); 		// already 0 but for readablity for write request
 
 	/*CLear the interrupt flag to start the previous operation*/
 	SET_BIT(TWCR,TWCR_TWINT);
@@ -117,7 +116,7 @@ TWI_ErrorStatus TWI_SendSlaveAddressWithWrite(u8 Copy_u8SlaveAddress)
 	/*Wait until the interrupt flag is raised again and the previous operation is complete*/
 	while(GET_BIT(TWCR,TWCR_TWINT) == 0);
 
-	if( (TWSR & 1111000) != SLAVE_ADD_AND_WR_ACK)
+	if( (TWSR & 0b1111000) != SLAVE_ADD_AND_WR_ACK)
 	{
 		Local_ErrorState = SlaveAddressWithWriteErr;
 	}
@@ -129,9 +128,7 @@ TWI_ErrorStatus TWI_SendSlaveAddressWithWrite(u8 Copy_u8SlaveAddress)
 	return Local_ErrorState;
 }
 
-
-
-TWI_ErrorStatus TWI_SendSlveAddressWithRead(u8 Copy_u8SlaveAddress)
+TWI_ErrorStatus TWI_SendSlaveAddressWithRead(u8 Copy_u8SlaveAddress)
 {
 	TWI_ErrorStatus Local_ErrorState = NoError;
 
@@ -140,7 +137,7 @@ TWI_ErrorStatus TWI_SendSlveAddressWithRead(u8 Copy_u8SlaveAddress)
 
 	/*Set the slave address in the 7 MSB in the data register*/
 	TWDR = Copy_u8SlaveAddress << 1;
-	CLR_BIT(TWDR,1); 		// for write request
+	SET_BIT(TWDR,0); 		// for Read request
 
 
 	/*CLear the interrupt flag to start the previous operation*/
@@ -150,7 +147,7 @@ TWI_ErrorStatus TWI_SendSlveAddressWithRead(u8 Copy_u8SlaveAddress)
 	while(GET_BIT(TWCR,TWCR_TWINT) == 0);
 
 	/*Check on the operation status in the status register*/
-	if( (TWSR & 1111000) != SLAVE_ADD_AND_RD_ACK)
+	if( (TWSR & 0b1111000) != SLAVE_ADD_AND_RD_ACK)
 	{
 		Local_ErrorState = SlaveAddressWithReadErr;
 	}
@@ -177,7 +174,7 @@ TWI_ErrorStatus TWI_MasterWriteDataByte(u8 Copy_u8DataByte)
 	while(GET_BIT(TWCR,TWCR_TWINT) == 0);
 
 	/*Check on the operation status in the status register*/
-	if( (TWSR & 1111000) != MSTR_WR_BYTE_ACK)
+	if( (TWSR & 0b1111000) != MSTR_WR_BYTE_ACK)
 	{
 		Local_ErrorState = MasterWriteByteErr;
 	}
@@ -203,7 +200,7 @@ TWI_ErrorStatus TWI_MasterReadDataByte(u8 *Copy_pu8DataByte)
 	while(GET_BIT(TWCR,TWCR_TWINT) == 0);
 
 	/*Check on the operation status in the status register*/
-	if( (TWSR & 1111000) != MSTR_RD_BYTE_WITH_ACK)
+	if( (TWSR & 0b1111000) != MSTR_RD_BYTE_WITH_ACK)
 	{
 		Local_ErrorState = MasterReadByteErr;
 	}
@@ -224,5 +221,4 @@ void TWI_SendStopCondition(void)
 
 	/*CLear the interrupt flag to start the slave sending data*/
 	CLR_BIT(TWCR,TWCR_TWINT);
-
 }

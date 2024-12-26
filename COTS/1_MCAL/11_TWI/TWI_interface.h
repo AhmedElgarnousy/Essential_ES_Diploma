@@ -23,8 +23,8 @@ typedef enum
 
 }TWI_ErrorStatus;
 
-
-/*Pass 0 in the SlaveAddress argument if master will not be addressed*/
+/*Pass 0 in the SlaveAddress argument if master will not be addressed or
+ * slaveAddress if master can be receiver*/
 void TWI_voidMasterInit(u8 Copy_u8SlaveAddress);
 
 void TWI_voidSlaveInit(u8 Copy_u8SlaveAddress);
@@ -35,7 +35,7 @@ TWI_ErrorStatus TWI_SendRepeatedStart(void);
 
 TWI_ErrorStatus TWI_SendSlaveAddressWithWrite(u8 Copy_u8SlaveAddress);
 
-TWI_ErrorStatus TWI_SendSlveAddressWithRead(u8 Copy_u8SlaveAddress);
+TWI_ErrorStatus TWI_SendSlaveAddressWithRead(u8 Copy_u8SlaveAddress);
 
 TWI_ErrorStatus TWI_MasterWriteDataByte(u8 Copy_u8DataByte);
 

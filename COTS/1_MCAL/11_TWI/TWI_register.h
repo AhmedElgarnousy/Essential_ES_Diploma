@@ -10,8 +10,6 @@
 #ifndef TWI_REGISTER_H_
 #define TWI_REGISTER_H_
 
-
-
 #define TWDR		*((volatile u8*)0x23)		/*TWI Data Register*/
 
 #define TWAR		*((volatile u8*)0x22)		/*TWI Data Register*/
