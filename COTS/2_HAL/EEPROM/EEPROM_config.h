@@ -10,4 +10,11 @@
 #ifndef EEPROM_CONFIG_H_
 #define EEPROM_CONFIG_H_
 
+/* options:
+ * 		0
+ * 		1
+ * */
+#define A2    1
+
+
 #endif
