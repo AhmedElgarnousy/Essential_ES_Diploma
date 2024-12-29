@@ -56,6 +56,8 @@ u8 KPD_u8GetPressedKey(void)
 
 	return Local_u8PressedKey;
 }
+
+// fares PCB connection compatible
 u8 KPD_u8GetPressedKey_v2(void)
 {
 	u8 Local_u8PressedKey = KPD_NO_PRESSED_KEY , Local_u8PinState , Local_u8ColumnIdx, Local_u8RowIdx;

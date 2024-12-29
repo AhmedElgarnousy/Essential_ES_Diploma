@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;SWC_SPI&apos; to &apos;SPI_MASTER&apos;" description="Rename resource &apos;SWC_SPI&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/SWC_SPI" name="SPI_MASTER" stamp="1655781998737" updateReferences="true"/>
-</session>

@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;SWC_KPD/KEYPAD_program.c&apos;" deleteContents="false" description="Delete resource &apos;SWC_KPD/KEYPAD_program.c&apos;" element1="/SWC_KPD/KEYPAD_program.c" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1650733175945"/>&#x0A;<refactoring comment="Delete resource &apos;SWC_KPD/KEYPAD_interface.h&apos;" deleteContents="false" description="Delete resource &apos;SWC_KPD/KEYPAD_interface.h&apos;" element1="/SWC_KPD/KEYPAD_interface.h" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1650733186652"/>
-</session>
