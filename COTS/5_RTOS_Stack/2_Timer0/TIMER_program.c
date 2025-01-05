@@ -25,11 +25,11 @@ static void (*TIMER_pvCallBackFunc[8])(void)={NULL};*/
 void TIMER0_voidInit(void)
 {
 	/*choose CTC Mode*/
-	CLR_BIT(TCCR0,TCCR0_WGM00);
-	SET_BIT(TCCR0,TCCR0_WGM01);
+	CLR_BIT(TCCR0, TCCR0_WGM00);
+	SET_BIT(TCCR0, TCCR0_WGM01);
 	
 	/*set the required compare  Match Value*/
-	OCR0=TIMER0_u8COMP_MATCH_VAL;
+	OCR0 = TIMER0_u8COMP_MATCH_VAL;
 
 	/*Set prescaler(Bit Masking) */
 	TCCR0 &=TIMER_PRESC_MASK;
@@ -45,11 +45,11 @@ u8 TIMER0_u8SetCallBack(void (*Copy_pvCallBackFunc)(void))
 	
 	if(Copy_pvCallBackFunc!=NULL)
 	{
-		TIMER0_pvCallBackFunc=Copy_pvCallBackFunc;
+		TIMER0_pvCallBackFunc = Copy_pvCallBackFunc;
 	}
 	else
 	{
-		Local_u8ErrorState=NULL_POINTER;
+		Local_u8ErrorState = NULL_POINTER;
 	}
 	return Local_u8ErrorState;
 }

@@ -14,10 +14,8 @@ typedef struct
 {
 	u16 Periodicity;
 	void (*TaskFunc)(void);
-	
 }Task_t;
 
 static void voidScheduler(void);
-
 
 #endif
