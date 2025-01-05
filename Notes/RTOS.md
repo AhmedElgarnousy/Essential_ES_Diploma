@@ -1,4 +1,4 @@
-## Introduction to RTOS
+\*## Introduction to RTOS
 
 #### Timing Concepts
 
@@ -175,9 +175,10 @@ task_t System_Tasks[TASK_NUM] = {{NULL}}
 
 **1-** in this example task periodicity is 8ms, and in some case when static counter in Scheduler function runs in Timer0 ISR overflow this task runs after 13ms instead of 8ms
 
-- for simplicity we assumed that counter overflow on 20
+- For simplicity we assumed that counter overflow on 20
 - but u8 overflow on 255, u16 overflow on 65536
-- ![rtos19](imgs/rtos19.JPG)
+
+![rtos19](imgs/rtos19.JPG)
 
 **2-**
 ![rtos19](imgs/rtos20.JPG)
@@ -185,3 +186,159 @@ task_t System_Tasks[TASK_NUM] = {{NULL}}
 - suspend means task enters state which make schedular stop calling this task even if its periodicity comes
 - assume task ID is it's priority
 - to test these functions connect 2 btns one for suspend and one for resume
+
+- our RTOS doesn't suuport same tasks priority
+- so if task created with a previous priority i shouldn't create it
+- and handle it by return error status
+
+```c
+u8 RTOS_voidCreateTask(u8 Copy_u8Priority, u16 Copy_u16Periodicity, void(*Copy_pvTaskFunc)(void))
+{
+	u8 Local_u8ErrorState = OK;
+  /*
+  Note:
+  Error: SystemTasks[Copy_u8Priority] != NULL
+  you shouldn't check struct is null or not check on any struct elemet
+  */
+	if(SystemTasks[Copy_u8Priority].TaskFunc == NULL)
+	{
+		SystemTasks[Copy_u8Priority].Periodicity = Copy_u16Periodicity;
+		SystemTasks[Copy_u8Priority].TaskFunc = Copy_pvTaskFunc;
+		SystemTasks[Copy_u8Priority].state = TASK_STATE_RESUMED;
+	}
+	else
+	{
+    /*priority is reserved before, task NOT created*/
+		Local_u8ErrorState = NOK;
+	}
+	return Local_u8ErrorState;
+}
+```
+
+###### Task Deletion
+
+- task deleted so we can create another task with the same priority
+
+```C
+void RTOS_voidDeleteTask(u8 Copy_u8Priority)
+{
+	SystemTasks[Copy_u8Priority].TaskFunc = NULL;
+}
+```
+
+##### CPU Load
+
+Example to illustrate CPU Load Intuation
+![rtos19](imgs/rtos21.JPG)
+
+- CPU at Tick no.3
+- CPU at Tick no.5
+- CPU at Tick no.10
+
+###### What is the CPU Load
+
+![rtos19](imgs/rtos22.JPG)
+
+- CPU should be less than 70%
+
+###### To enhance CPU Load
+
+![rtos](imgs/rtos23.JPG)
+
+1-Decrease task execution time(by optimization code)
+2-increase tick time
+`3`- task splitting
+
+why you started all tasks from the same tick
+shift first tick for each task(First Delay)
+
+###### CPU Load after adding First Delay for tasks
+
+![rtos](imgs/rtos24.JPG)
+
+###### First delay concept implementation
+
+![rtos](imgs/rtos25.JPG)
+
+```C
+// add variable in task data structure for firstDelay information
+
+static void voidScheduler(void)
+{
+	u8 Local_u8TaskCounter;
+	/*Loop on all tasks to check their Periodicity*/
+	for(Local_u8TaskCounter = 0; Local_u8TaskCounter < TASK_NUM; Local_u8TaskCounter++)
+	{
+		if(SystemTasks[Local_u8TaskCounter].state == TASK_STATE_RESUMED)
+		{
+			if(SystemTasks[Local_u8TaskCounter].FirstDelay == 0)
+			{
+				/*Invoke the task function*/
+				if(SystemTasks[Local_u8TaskCounter].TaskFunc != NULL )
+				{
+					SystemTasks[Local_u8TaskCounter].TaskFunc();
+
+          /* Assign first delay parameter to periodicity*/
+				  SystemTasks[Local_u8TaskCounter].FirstDelay = SystemTasks[Local_u8TaskCounter].Periodicity - 1;
+				}
+			}
+			else
+			{
+				/*Decrement the first delay*/
+				SystemTasks[Local_u8TaskCounter].FirstDelay --;
+			}
+		}
+	}
+}
+```
+
+#### Task State Machine
+
+- Dorment
+- only one task running
+- other here may be another task or Interrupt (used as notifiaction only in RTOS FOR example resumetask)
+
+![rtos](imgs/rtos26.JPG)
+
+#### RTOS Composition
+
+1. ==Task==
+2. ==schedular==
+3. ==Kernal==
+
+##### schedular
+
+1. Algorithms (Brain): (decide which task should executed now)
+2. Dispatcher (Muscles): (executes algorithms decision)
+   , execute a **task context switching**
+
+- Any RTOS Scheduler should contain of brain and Muscles
+- we implememt only schedular algorithm with Dispatcher
+- Dispatcher may require to write assembly
+
+![rtos](imgs/rtos27.JPG)
+
+##### scheduling Algorithms
+
+- priority based
+- FCFS(first Come first serve)
+- shortest job first(SJF)
+- shortest remaining time(SRT)
+  هنا بسأل فاضلك وقت اد اي وتخلص
+  لان ممكن التاسك اتقطعك قبل كده وفاضل فيها شويه صغيرين وتخلص
+- round robin (time slicing)
+
+![rtos](imgs/rtos28.JPG)
+
+- **`freeRTOS schedular` is priority based and when priorities equals runs round robin**
+
+#### Kernal
+
+OS means Kernal and Kernal means OS
+
+composed of objects and services
+objects like:
+services like:
+![rtos](imgs/rtos29.JPG)
+
+#### Kernal Types
