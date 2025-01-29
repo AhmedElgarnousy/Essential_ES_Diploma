@@ -1,4 +1,4 @@
-## Embedded System Course using atmega32 MCU
+## Embedded System Course using ATmega32 MCU
 
 ### Contents
 

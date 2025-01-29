@@ -1,4 +1,4 @@
-\*## Introduction to RTOS
+## Introduction to RTOS
 
 #### Timing Concepts
 
@@ -342,3 +342,70 @@ services like:
 ![rtos](imgs/rtos29.JPG)
 
 #### Kernal Types
+
+ISR makes higher priority task ready
+
+may be task higher priority becomes ready from running task before interrupted(preempted)
+or through changeTaskPriority kernal service called in ISR
+
+- **Observation**: The common and famous is preemtive to allow and apply priority concept
+
+![rtos](imgs/rtos30.JPG)
+
+- observation: Preemptive kernal not only calls schedular at each periodicity
+- calls it also at when task moved from suspended/waiting state to ready state
+- at each task creation
+- at every ISR
+- when task moved to suspended state
+- and so on
+
+##### priority
+
+![rtos](imgs/rtos31.JPG)
+
+- example on dynamic priority: airbag at vehicle starting doesn't have higher priority
+
+###### Assigning priorities
+
+- note: who is assign tasks priority?
+  ![rtos](imgs/rtos32.JPG)
+
+- how to assign priorities?
+  The easiest way
+  ![rtos](imgs/rtos33.JPG)
+
+#### OS Types
+
+1- General: Linux, windows, MAC, Android, IOS
+2- For Embedded Systems: Embeded Linux(Raspian, YOCTO)
+3- Real time : FreeRTOS, MCOSII(Open Source , Not Free), OSEK(Autosar req)
+
+Free means free to use in product and sell
+
+---
+
+### Free RTOS
+
+Created by: Real Time Engineers (`LTD`)
+
+developed for a decade
+because it for free and porting on many MCUs, also testing
+
+##### FreeRTOS Features:
+
+1. Preemptive or cooperwative
+2. Notifiaction Mechanism
+3. Intertask evevnt synchronisation
+4. Task communication
+5. Sw Timers
+6. Event Group (group of events occurs)
+7. Semaphore, Mutex
+
+- protect a Hardware shared between tasks in the same time.
+- for example protect LCD from more than task use it in the same time.
+
+###### Very Important RTOS Reference
+
+- µC/OS, The Real-Time Kernel
+  - CH2:Real-Time Systems Concepts
+- Mastering the FreeRTOS™ Real Time Kernel(Best Reference to learn FreeRTOS)
