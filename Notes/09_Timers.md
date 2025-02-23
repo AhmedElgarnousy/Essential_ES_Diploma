@@ -4,19 +4,27 @@
 
 #### 1- Speaker
 
-![speaker](imgs/speaker.JPG)
+<p align="center">
+  <img width="70%" height="50%" src="imgs/speaker.JPG">
+</p>
 
 #### 2- Buzzer
 
-![buzzer](imgs/buzzer.JPG)
-![buzzs.png](imgs/buzzs.png)
+<p align="center">
+  <img width="70%" height="50%" src="imgs/buzzer.JPG">
+</p>
+<p align="center">
+  <img width="60%" height="50%" src="imgs/buzzs.png">
+</p>
 
 - just one tone with different frequency
 - A buzzer is ==a type of transducer== that converts electrical energy into sound waves. It consists of a coil of wire, a magnet, and a diaphragm or a plate. When an electrical signal is applied to the coil, it creates a magnetic field that attracts or repels the magnet, causing the diaphragm to vibrate and produce sound waves.
 
 ##### Buzzer Tone Test
 
-![tone](imgs/tone.JPG)
+<p align="center">
+  <img width="70%" height="50%" src="imgs/tone.JPG">
+</p>
 
 ```c
 // Nokia 3310 ring
@@ -57,7 +65,9 @@ void main()
 
 #### Assignment 2
 
-![paino](imgs/paino.JPG)
+<p align="center">
+  <img width="70%" height="50%" src="imgs/paino.JPG">
+</p>
 
 ##### Additional Resources
 
@@ -106,7 +116,9 @@ This is a busy waiting way
 
 ##### Busy Waiting vs Timer Waiting
 
-![busy](imgs/busy.JPG)
+<p align="center">
+  <img width="70%" height="50%" src="imgs/busy.JPG">
+</p>
 
 ##### Timer(timer counter)
 
@@ -116,7 +128,9 @@ This is a busy waiting way
 
 - Timer Mode: value indcates for time because it counts clock cycles and we know clock cycle time
 
-![timercounter](imgs/timercounter.JPG)
+<p align="center">
+  <img width="70%" height="50%" src="imgs/timercounter.JPG">
+</p>
 
 - ATmega32 define system clock the external not the internal
 
@@ -133,19 +147,28 @@ it is the time unit of the timer
 
 #### 2- Overflow Time
 
-![definitions_timer](imgs/definitions_timer.JPG)
+<p align="center">
+  <img width="90%" height="50%" src="imgs/definitions_timer.JPG">
+</p>
 
 #### 3- Required Time
 
 has 3 cases
 1- Equal to overflow time
-![case1req](imgs/case1req.JPG)
+
+<p align="center">
+  <img width="70%" height="50%" src="imgs/case1req.JPG">
+</p>
 2- Greater than overflow time
-![case2req](imgs/case2req.JPG)
+<p align="center">
+  <img width="70%" height="50%" src="imgs/case2req.JPG">
+</p>
 
 - no of overflow count (C~ov~)
 - C~ov~ can be integer
-  ![int](imgs/int.JPG)
+<p align="center">
+<img width="40%" height="50%" src="imgs/int.JPG">
+</p>
 
 - C~ov~ can be decimal or float
 
@@ -171,7 +194,7 @@ has 3 cases
 
 ---
 
-#### Timers Types
+#### Timers Types in ATmega32
 
 ![typesTimer.png](imgs/typesTimer.png)
 
@@ -223,7 +246,9 @@ Note: here is we write Compare match value only once in its register, Not every 
 
 ###### App
 
-![app_timer](imgs/app_timer.JPG)
+<p align="center">
+  <img width="80%" height="50%" src="imgs/app_timer.JPG">
+</p>
 
 - Observation: It's better to minimize the counter value
   - for example: choose another prescaler like 64

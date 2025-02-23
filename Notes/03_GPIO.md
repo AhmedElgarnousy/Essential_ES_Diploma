@@ -1,4 +1,4 @@
-## Parrell(GPIO) Port for AVR
+## Parallel(GPIO) Port for AVR
 
 32 pin can be DIO (4 Ports)
 
